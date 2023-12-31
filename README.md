@@ -30,10 +30,11 @@ Visit http://localhost:8080/api/health (You will get blank page with status 200)
 ## Client
 
 ### Development
+
 ```
 # client/.env
-REACT_APP_API_DOMAIN=http://localhost:8080
-DISABLE_ESLINT_PLUGIN=true # to disable linting while developing
+REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
+DISABLE_ESLINT_PLUGIN=true # to disable lintint
 ```
 
 # Todo
@@ -79,3 +80,17 @@ DISABLE_ESLINT_PLUGIN=true # to disable linting while developing
 ## Backend
 
 [ ] Hot-reload
+
+# Docker image
+
+Build
+
+```
+docker build -t lol-app .
+```
+
+Run
+
+```
+docker run -dp 8080:8080 lol-app
+```

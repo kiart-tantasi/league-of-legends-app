@@ -7,13 +7,18 @@ function App() {
     // simulating long loading
     setTimeout(() => {
       ;(async () => {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_DOMAIN as string}/api/health`,
-        )
-        if (!response.ok) {
-          console.log(response.status)
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_DOMAIN ?? ''}/api/health`,
+          )
+          if (!response.ok) {
+            console.log(response.status)
+          }
+        } catch (err) {
+          console.error(err)
+        } finally {
+          setIsLoading(false)
         }
-        setIsLoading(false)
       })()
     }, 2000)
   }, [])
