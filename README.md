@@ -8,8 +8,12 @@
 
 ## Client
 
-`cd client
-npm start`
+```
+cd client
+npm start
+```
+
+Visit http://localhost:3000
 
 ## Backend
 
@@ -18,6 +22,8 @@ cd backend
 ./gradlew bootRun
 # you can also use your IDE to run app and that method is signicantly faster
 ```
+
+Visit http://localhost:8080/api/health (You will get blank page with status 200)
 
 # Todo
 
@@ -30,6 +36,7 @@ cd backend
 [ ] Set up github actions
 
 [ ] Configure `public/manifest.json` as below
+
 ```
 {
   "short_name": "React App",
