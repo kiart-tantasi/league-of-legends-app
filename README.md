@@ -33,6 +33,7 @@ Visit http://localhost:8080/api/health (You will get blank page with status 200)
 ```
 # client/.env
 REACT_APP_API_DOMAIN=http://localhost:8080
+DISABLE_ESLINT_PLUGIN=true # to disable linting while developing
 ```
 
 # Todo

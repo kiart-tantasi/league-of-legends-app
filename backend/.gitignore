@@ -39,3 +39,5 @@ out/
 # local application.properties
 application-local.properties
 
+# react build
+src/main/resources/static
