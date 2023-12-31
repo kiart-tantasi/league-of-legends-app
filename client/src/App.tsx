@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
+import './App.css'
+import React, { useEffect, useState } from 'react'
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     // simulating long loading
     setTimeout(() => {
-      (async () => {
+      ;(async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_DOMAIN as string}/api/health`
-        );
+          `${process.env.REACT_APP_API_DOMAIN as string}/api/health`,
+        )
         if (!response.ok) {
-          console.log(response.status);
+          console.log(response.status)
         }
-        setIsLoading(false);
-      })();
-    }, 2000);
-  }, []);
+        setIsLoading(false)
+      })()
+    }, 2000)
+  }, [])
 
   return (
     <div
-      className="w-full h-screen bg-blue-100 text-center sad asd as da  "
+      className="w-full h-screen bg-blue-100 text-center"
       data-testid="root-app"
     >
-      <h1>{isLoading ? "Loading..." : "HelloWorld"}</h1>
+      <h1>{isLoading ? 'Loading...' : 'HelloWorld'}</h1>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
