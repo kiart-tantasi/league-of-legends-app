@@ -5,3 +5,4 @@ client/.env
 backend/.gradle
 backend/bin
 backend/build
+backend/backend/src/main/resources/static

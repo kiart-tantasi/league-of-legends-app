@@ -41,7 +41,7 @@ DISABLE_ESLINT_PLUGIN=true # to disable lintint
 
 ## Client
 
-[ ] Set up tailwind
+[X] Set up tailwind
 
 [X] Set up eslint
 
