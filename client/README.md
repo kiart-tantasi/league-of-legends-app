@@ -2,7 +2,7 @@
 
 [ ] Set up tailwind
 
-[ ] Set up eslint
+[X] Set up eslint
 
 [ ] Set up github actions
 
