@@ -1,6 +1,6 @@
 # About project
 
-- This is simple to get league of legends data from riot api.
+- This is a simple app to get League of Legends match history from Riot API.
 - Client-side is made with React (CRA)
 - Backend is made with Spring Boot
 
@@ -24,6 +24,16 @@ cd backend
 ```
 
 Visit http://localhost:8080/api/health (You will get blank page with status 200)
+
+# Environment variables
+
+## Client
+
+### Development
+```
+# client/.env
+REACT_APP_API_DOMAIN=http://localhost:8080
+```
 
 # Todo
 
