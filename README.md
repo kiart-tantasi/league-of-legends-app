@@ -25,6 +25,15 @@ cd backend
 
 Then `curl http://localhost:8080/api/health -I`
 
+### Hot-reload with `spring-boot-devtools`
+
+You need to use Intellij and set these 2 settings
+- Build, Execution, Deployment
+  - Compiler
+    - Build project automatically
+- Advanced Settings
+  - Allow auto-make to start even if developed application is currently running
+
 # Environment variables
 
 ## Client
@@ -42,44 +51,14 @@ DISABLE_ESLINT_PLUGIN=true # to disable lintint
 ## Client
 
 - [x] Set up tailwind
-
 - [x] Set up eslint
-
-- [ ] Set up github actions
-
-- [ ] Configure `public/manifest.json` as below
-
-  ```
-  {
-    "short_name": "React App",
-    "name": "Create React App Sample",
-    "icons": [
-      {
-        "src": "favicon.ico",
-        "sizes": "64x64 32x32 24x24 16x16",
-        "type": "image/x-icon"
-      },
-      {
-        "src": "logo192.png",
-        "type": "image/png",
-        "sizes": "192x192"
-      },
-      {
-        "src": "logo512.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }c
-    ],
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#000000",
-    "background_color": "#ffffff"
-  }
-  ```
+- [ ] Set up github actions for jest and linting
 
 ## Backend
 
-- [ ] Hot-reload
+- [x] Hot-reload
+- [ ] Set up checkstyle
+- [ ] Set up github actions for test and checkstyle
 
 # Docker image
 
