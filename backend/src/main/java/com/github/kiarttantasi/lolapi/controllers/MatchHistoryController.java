@@ -22,11 +22,11 @@ public class MatchHistoryController {
 
     @GetMapping
     public ResponseEntity<String> getMatches(@RequestParam String gameName, @RequestParam String tagLine) {
-        System.out.println("gameName: " + gameName);
-        System.out.println("tagLine: " + tagLine);
-        final List<String> matches = matchHistoryService.getMatches();
-        if (matches == null) {
-            return ResponseEntity.notFound().build();
+        try {
+            matchHistoryService.getMatches(gameName, tagLine);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.ok().body("matches");
     }

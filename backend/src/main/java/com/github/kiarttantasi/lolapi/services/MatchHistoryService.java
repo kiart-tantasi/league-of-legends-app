@@ -1,5 +1,7 @@
 package com.github.kiarttantasi.lolapi.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kiarttantasi.lolapi.models.AccountResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,44 +12,48 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Service
 public class MatchHistoryService {
 
+    private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
+    private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
+
     @Value("${riot.api.key}")
     private String riotApiKey;
 
+    @Value("${riot.api.region.account}")
+    private String regionAccount;
+
+    @Value("${riot.api.region.match}")
+    private String regionMatch;
+
     // TODO: create private methods to separate logic
-    public List<String> getMatches() {
-        // STEP1: get puuid from gameName and tagLine
-        final String encodedGameName = URLEncoder.encode("เพชร", StandardCharsets.UTF_8);
-        final String tagLine = "ARAM";
-        final String apiRegion = "asia";
-        final URI uri;
-        try {
-            uri = new URI(String.format("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", apiRegion, encodedGameName, tagLine));
-            System.out.println("URI:" + uri.toString());
-        } catch (URISyntaxException e) {
-            System.out.println(e.getMessage());
-            throw new InternalError();
-        }
-        final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
+    public void getMatches(String gameName, String tagLine) throws URISyntaxException, IOException, InterruptedException {
+        // shared
         final HttpClient client = HttpClient.newHttpClient();
-        HttpResponse<String> response;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            final String body = response.body();
-            System.out.println("RESPONSE BODY: " + body);
-        } catch (IOException | InterruptedException e) {
-            System.out.println(e.getMessage());
-            throw new InternalError();
-        }
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        // STEP1: get puuid from gameName and tagLine
+        final String encodedGameName = URLEncoder.encode(gameName, ENCODING_CHARSET);
+        final URI uriAccount = new URI(String.format("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", regionAccount, encodedGameName, tagLine));
+        final HttpRequest request = HttpRequest.newBuilder().uri(uriAccount).header("X-Riot-Token", riotApiKey).build();
+        final HttpResponse<String> response = client.send(request, BODYHANDLER);
+        final String body = response.body();
+        final AccountResponse accountResponse = objectMapper.readValue(body, AccountResponse.class);
 
         // STEP2: get 10 matches from puuid
-        //
+        final String puuid = accountResponse.getPuuid();
+        final URI uri2 = new URI(String.format("https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=10", regionMatch, puuid));
+        final HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).header("X-Riot-Token", riotApiKey).build();
+        final HttpResponse<String> response2 = client.send(request2, BODYHANDLER);
+        final String[] matches = objectMapper.readValue(response2.body(), String[].class);
+        for (String match : matches) {
+            System.out.println("MATCH: " + match);
+        }
 
-        return null;
+        // STEP3: get all match info from match list
     }
 }
