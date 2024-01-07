@@ -28,11 +28,12 @@ Then `curl http://localhost:8080/api/health -I`
 ### Hot-reload with `spring-boot-devtools`
 
 You need to use Intellij and set these 2 settings
+
 - Build, Execution, Deployment
-  - Compiler
-    - Build project automatically
+    - Compiler
+        - Build project automatically
 - Advanced Settings
-  - Allow auto-make to start even if developed application is currently running
+    - Allow auto-make to start even if developed application is currently running
 
 # Environment variables
 
@@ -57,6 +58,8 @@ DISABLE_ESLINT_PLUGIN=true # to disable lintint
 ## Backend
 
 - [x] Hot-reload
+- [ ] Map response to java object
+- [ ] Handle errors in the same way
 - [ ] Set up checkstyle
 - [ ] Set up github actions for test and checkstyle
 

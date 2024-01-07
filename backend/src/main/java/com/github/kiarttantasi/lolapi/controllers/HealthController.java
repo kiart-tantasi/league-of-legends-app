@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/health")
-public class Health {
+public class HealthController {
     @GetMapping
     public ResponseEntity<Integer> getHealth() {
         return ResponseEntity.ok().build();
@@ -16,6 +16,6 @@ public class Health {
 
     @PostMapping
     public ResponseEntity<String> postHealth() {
-        return ResponseEntity.badRequest().body("Please use GET method for health api endpoint");
+        return ResponseEntity.badRequest().build();
     }
 }
