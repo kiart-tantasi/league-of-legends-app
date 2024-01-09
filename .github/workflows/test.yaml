@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v3
-          sparse-checkout: 'client'
+        uses: actions/checkout@v4
+          sparse-checkout: client
       - uses: actions/setup-node@v4
         with:
           node-version: 18
