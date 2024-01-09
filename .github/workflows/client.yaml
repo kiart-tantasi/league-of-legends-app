@@ -1,0 +1,19 @@
+name: Client
+on:
+  push:
+  pull-request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install packages
+        run: npm install
+      - name:
+      - name: Run test
+        run: cd ./client && npm test
