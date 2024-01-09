@@ -66,8 +66,7 @@ riot.api.key=<api-key>
 - [x] Hot-reload
 - [x] Map response to java object
 - [ ] controller advice
-- [ ] Set up checkstyle and its github action
-- [x] Set up github actions for test
+- [ ] Set up checkstyle, test and github action
 
 # Docker image
 
