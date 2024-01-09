@@ -18,12 +18,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install devDependencies
-        run: cd ./client && npm install --only=dev
+      - name: Install dependencies
+        run: cd ./client && npm install
       - name: Lint
         run: cd ./client && npm run lint
       - name: Test
         run: cd ./client && npm test
+      - name: Build
+        run: cd ./client && npm run build
   backend:
     name: Backend
     runs-on: ubuntu-latest
