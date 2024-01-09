@@ -47,6 +47,12 @@ REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
 DISABLE_ESLINT_PLUGIN=true # to disable lintint
 ```
 
+## Backend
+```
+# backend/src/main/resources/application-local.properties
+riot.api.key=<api-key>
+```
+
 # Todo
 
 ## Client
@@ -58,8 +64,8 @@ DISABLE_ESLINT_PLUGIN=true # to disable lintint
 ## Backend
 
 - [x] Hot-reload
-- [ ] Map response to java object
-- [ ] Handle errors in the same way
+- [x] Map response to java object
+- [ ] controller advice
 - [ ] Set up checkstyle
 - [ ] Set up github actions for test and checkstyle
 
