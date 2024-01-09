@@ -12,9 +12,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install packages
-        run: npm install
       - name: LS and PWD
         run: ls && pwd
+      - name: Install packages
+        run: cd ./client && npm install
       - name: Run test
-        run: cd ./client && npm test
+        run: npm test
