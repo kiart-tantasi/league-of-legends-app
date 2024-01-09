@@ -6,3 +6,4 @@ backend/.gradle
 backend/bin
 backend/build
 backend/backend/src/main/resources/static
+backend/src/main/resources/application-local.properties
