@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: client
       - uses: actions/setup-node@v4
         with:
           node-version: 18
@@ -23,5 +25,11 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: backend
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
       - name: Build with gradle
         run: cd ./backend && ./gradlew build
