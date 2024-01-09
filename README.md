@@ -59,15 +59,15 @@ riot.api.key=<api-key>
 
 - [x] Set up tailwind
 - [x] Set up eslint
-- [ ] Set up github actions for jest and linting
+- [x] Set up github actions for jest and linting
 
 ## Backend
 
 - [x] Hot-reload
 - [x] Map response to java object
 - [ ] controller advice
-- [ ] Set up checkstyle
-- [ ] Set up github actions for test and checkstyle
+- [ ] Set up checkstyle and its github action
+- [x] Set up github actions for test
 
 # Docker image
 

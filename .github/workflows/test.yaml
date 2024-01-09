@@ -7,29 +7,35 @@ on:
 
 jobs:
   client:
+    name: Client
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
         with:
           sparse-checkout: client
-      - uses: actions/setup-node@v4
+      - name: Set up Nodejs
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install packages
-        run: cd ./client && npm install
-      - name: Run test
+      - name: Install devDependencies
+        run: cd ./client && npm install --only=dev
+      - name: Lint
+        run: cd ./client && npm run lint
+      - name: Test
         run: cd ./client && npm test
   backend:
+    name: Backend
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
         with:
           sparse-checkout: backend
-      - uses: actions/setup-java@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '17'
-      - name: Build with gradle
+      - name: Build
         run: cd ./backend && ./gradlew build
