@@ -3,25 +3,25 @@ on:
   push:
   pull_request:
 
+# TODO: remove all "cd"s
+
 jobs:
   client:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
-          sparse-checkout: client
       - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install packages
-        run: npm install
+        run: cd ./client && npm install
       - name: Run test
-        run: npm test
+        run: cd ./client && npm test
   backend:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v3
-          sparse-checkout: 'backend'
+        uses: actions/checkout@v4
       - name: Build with gradle
-        run: ./gradlew build
+        run: cd ./backend && ./gradlew build
