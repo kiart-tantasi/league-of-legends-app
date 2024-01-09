@@ -1,0 +1,15 @@
+name: Backend
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+          path: 'backend'
+      - name: Build with gradle
+        run: ./gradlew build
+  

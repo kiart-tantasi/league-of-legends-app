@@ -30,7 +30,7 @@ public class MatchHistoryService {
     // use 5 threads in case I use low-spec instance
     private static final int THREAD_AMOUNT = 5;
 
-    @Value("${riot.api.key}")
+    @Value("${riot.api.key:no-key-found}")
     private String riotApiKey;
 
     @Value("${riot.api.region.account}")
