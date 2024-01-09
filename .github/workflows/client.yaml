@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  client:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
@@ -12,9 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: LS and PWD
-        run: ls && pwd
       - name: Install packages
         run: cd ./client && npm install
       - name: Run test
-        run: npm test
+        run: cd ./client && npm test
