@@ -1,7 +1,7 @@
 name: Client
 on:
   push:
-  pull-request:
+  pull_request:
 
 jobs:
   build:
@@ -14,6 +14,7 @@ jobs:
           node-version: 18
       - name: Install packages
         run: npm install
-      - name:
+      - name: LS and PWD
+        run: ls && pwd
       - name: Run test
         run: cd ./client && npm test
