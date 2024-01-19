@@ -4,6 +4,24 @@
 - Client-side is made with React
 - Backend is made with Spring Boot
 
+# Environment variables
+
+## Client
+
+### Development
+
+```
+# client/.env
+REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
+DISABLE_ESLINT_PLUGIN=true # to disable lintint
+```
+
+## Backend
+```
+# backend/src/main/resources/application-local.properties
+riot.api.key=<api-key>
+```
+
 # Run app locally
 
 ## Client
@@ -34,24 +52,6 @@ You need to use Intellij and set these 2 settings
         - Build project automatically
 - Advanced Settings
     - Allow auto-make to start even if developed application is currently running
-
-# Environment variables
-
-## Client
-
-### Development
-
-```
-# client/.env
-REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
-DISABLE_ESLINT_PLUGIN=true # to disable lintint
-```
-
-## Backend
-```
-# backend/src/main/resources/application-local.properties
-riot.api.key=<api-key>
-```
 
 # Todo
 
