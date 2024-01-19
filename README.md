@@ -12,8 +12,9 @@
 
 ```
 # client/.env
+# please remove comments at the end before using
 REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
-DISABLE_ESLINT_PLUGIN=true # to disable lintint
+DISABLE_ESLINT_PLUGIN=true # to disable lintint while developing
 ```
 
 ## Backend
@@ -28,6 +29,7 @@ riot.api.key=<api-key>
 
 ```
 cd client
+npm install # to install packages, run only at first time
 npm start
 ```
 
