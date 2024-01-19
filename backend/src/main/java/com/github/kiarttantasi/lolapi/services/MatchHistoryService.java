@@ -1,7 +1,10 @@
 package com.github.kiarttantasi.lolapi.services;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kiarttantasi.lolapi.models.AccountResponse;
+import com.github.kiarttantasi.lolapi.models.MatchDetailResponse;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Service
 public class MatchHistoryService {
 
     private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
     private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
-    // use 5 threads in case I use low-spec instance
-    private static final int THREAD_AMOUNT = 5;
+    private static final int THREAD_AMOUNT = 10; // TODO: change this in EC2 to proper number
 
     @Value("${riot.api.key:no-key-found}")
     private String riotApiKey;
@@ -56,7 +55,7 @@ public class MatchHistoryService {
         final String body = response.body();
         final AccountResponse accountResponse = objectMapper.readValue(body, AccountResponse.class);
 
-        // STEP2: get 10 matches from puuid
+        // STEP2: get 10 matches from puuidd
         final String puuid = accountResponse.getPuuid();
         final URI uri2 = new URI(
                 String.format("https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=10",
@@ -69,38 +68,47 @@ public class MatchHistoryService {
         getMatchesDetails(matchIds);
     }
 
-    private void getMatchesDetails(String[] matchIds) throws URISyntaxException, IOException, InterruptedException {
+    private void getMatchesDetails(String[] matchIds) throws InterruptedException {
         final long start = System.currentTimeMillis();
         final ExecutorService ex = Executors.newFixedThreadPool(THREAD_AMOUNT);
-        ex.invokeAll(getMatchCallables(matchIds));
-        // shutdown executor for earlier termination
-        ex.shutdown();
-        // wait for executor to finish its tasks before continuing
-        ex.awaitTermination(5, TimeUnit.SECONDS);
+        // invokeAll already blocks so no need to .shutdown() or .awaitTermination()
+        // ref: https://stackoverflow.com/q/44742444
+        final List<Future<Void>> futures = ex.invokeAll(getMatchCallables(matchIds));
+        for (final Future<Void> future : futures) {
+            try {
+                future.get();
+            } catch (ExecutionException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
         final long end = System.currentTimeMillis();
         System.out.println("got all matches' details in " + (end - start) + " ms");
     }
 
-    private void getMatchDetail(String matchId) throws URISyntaxException, IOException, InterruptedException {
+    private Collection<Callable<Void>> getMatchCallables(String[] matchIds) {
+        final List<Callable<Void>> callables = new ArrayList<>();
+        for (String matchId : matchIds) {
+            final Callable<Void> callable = new Callable<>() {
+                @Override
+                public Void call() throws Exception {
+                    final MatchDetailResponse matchDetailResponse = getMatchDetail(matchId);
+                    return null;
+                }
+            };
+            callables.add(callable);
+        }
+        return callables;
+    }
+
+    private MatchDetailResponse getMatchDetail(String matchId) throws URISyntaxException, IOException, InterruptedException {
         final HttpClient client = HttpClient.newHttpClient();
         final URI uri = new URI(
                 String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s", regionMatch, matchId));
         final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
-        client.send(request, BODYHANDLER);
-    }
-
-    private Collection<Callable<Void>> getMatchCallables(String[] matchIds) {
-        final List<Callable<Void>> callbales = new ArrayList<>();
-        for (String matchId : matchIds) {
-            final Callable<Void> callable = new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    getMatchDetail(matchId);
-                    return null;
-                }
-            };
-            callbales.add(callable);
-        }
-        return callbales;
+        final HttpResponse<String> response = client.send(request, BODYHANDLER);
+        return new ObjectMapper().readValue(response.body(), MatchDetailResponse.class);
     }
 }
+
+
