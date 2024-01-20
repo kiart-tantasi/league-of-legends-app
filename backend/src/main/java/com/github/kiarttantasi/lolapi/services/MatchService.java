@@ -6,6 +6,8 @@ import com.github.kiarttantasi.lolapi.models.MatchDetailResponse;
 import com.github.kiarttantasi.lolapi.models.MatchDetailV1;
 import com.github.kiarttantasi.lolapi.models.Participant;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +22,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
 
 @Service
+@Slf4j
 public class MatchService {
 
     private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
@@ -93,7 +95,7 @@ public class MatchService {
                             parti.getAssists()));
                 });
             } catch (ExecutionException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(), e);
             }
         }
         return matchDetails;

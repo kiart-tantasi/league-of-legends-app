@@ -3,6 +3,8 @@ package com.github.kiarttantasi.lolapi.controllers.v1;
 import com.github.kiarttantasi.lolapi.models.MatchesResponseV1;
 import com.github.kiarttantasi.lolapi.services.MatchService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/matches")
+@Slf4j
 public class MatchHistoryController {
 
     private final MatchService matchService;
@@ -26,7 +29,7 @@ public class MatchHistoryController {
                     new MatchesResponseV1(
                             matchService.getMatches(gameName, tagLine)));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
         }
     }
