@@ -2,8 +2,7 @@ client/node_modules
 client/build
 client/.env
 
-backend/.gradle
-backend/bin
-backend/build
-backend/backend/src/main/resources/static
-backend/src/main/resources/application-local.properties
+api/.gradle
+api/bin
+api/build
+api/src/main/resources/static

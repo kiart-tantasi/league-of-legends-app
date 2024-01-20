@@ -7,10 +7,10 @@ COPY ./client/. /app/
 RUN ls
 RUN npm run build
 
-# ############ BACKEND ############
+# ############ API ############
 FROM openjdk:17.0.2-jdk-slim-buster
 WORKDIR /app
-COPY ./backend/. /app/
+COPY ./api/. /app/
 COPY --from=CLIENT_BUILD /app/build/.  /app/src/main/resources/static/
 RUN ./gradlew clean assemble
 ENTRYPOINT java -jar /app/build/libs/lol-api-0.0.1-SNAPSHOT.jar

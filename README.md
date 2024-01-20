@@ -1,8 +1,8 @@
 # About project
 
 - This is a simple app to see League of Legends match history
-- Client-side is made with React
-- Backend is made with Spring Boot
+- Client is made with React
+- API is made with Spring Boot
 
 # Environment variables
 
@@ -13,13 +13,13 @@
 ```
 # client/.env
 # please remove comments at the end before using
-REACT_APP_API_DOMAIN=http://localhost:8080 # where you run backend api at
+REACT_APP_API_DOMAIN=http://localhost:8080 # where you run api at
 DISABLE_ESLINT_PLUGIN=true # to disable lintint while developing
 ```
 
-## Backend
+## API
 ```
-# backend/src/main/resources/application-local.properties
+# api/src/main/resources/application-local.properties
 riot.api.key=<api-key>
 ```
 
@@ -35,10 +35,10 @@ npm start
 
 Then visit http://localhost:3000
 
-## Backend
+## API
 
 ```
-cd backend
+cd api
 ./gradlew bootRun
 # you can also use your IDE to run app and that method is signicantly faster
 ```
@@ -61,7 +61,7 @@ You need to mark these settings
 
 - [ ] ...
 
-## Backend
+## API
 
 - [ ] Use Optional to handle null
 - [ ] Set up checkstyle
