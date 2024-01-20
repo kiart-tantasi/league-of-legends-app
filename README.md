@@ -12,9 +12,8 @@
 
 ```
 # client/.env
-# please remove comments at the end before using
-REACT_APP_API_DOMAIN=http://localhost:8080 # where you run api at
-DISABLE_ESLINT_PLUGIN=true # to disable lintint while developing
+# below is config to disable lintint while developing
+DISABLE_ESLINT_PLUGIN=true
 ```
 
 ## API

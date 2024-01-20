@@ -30,9 +30,8 @@ function SearchPage() {
     })
     // fetch matches
     try {
-      const url = process.env.REACT_APP_API_DOMAIN as string
       const response = await fetch(
-        `${url}/api/v1/matches?gameName=${name}&tagLine=${tag}`,
+        `/api/v1/matches?gameName=${name}&tagLine=${tag}`,
       )
       if (response.status === 200) {
         const json = await response.json()
