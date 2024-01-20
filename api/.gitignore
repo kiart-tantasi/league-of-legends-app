@@ -36,8 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
-# local application.properties
+# properties file
 application-local.properties
+application-production.properties
 
 # react build
 src/main/resources/static

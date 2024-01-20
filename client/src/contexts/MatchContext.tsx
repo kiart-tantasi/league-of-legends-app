@@ -1,26 +1,31 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useState } from 'react'
 
 interface IMatch {
-    championName: string;
-    kills: number;
-    deaths: number;
-    assists: number;
+  championName: string
+  kills: number
+  deaths: number
+  assists: number
 }
 
 interface IMatchContext {
-    matches: IMatch[]
-    setMatches: React.Dispatch<React.SetStateAction<IMatch[]>>
+  matches: IMatch[]
+  setMatches: React.Dispatch<React.SetStateAction<IMatch[]>>
 }
 
-const MatchContext = createContext<IMatchContext>({ matches: [], setMatches: () => { } });
+const MatchContext = createContext<IMatchContext>({
+  matches: [],
+  setMatches: () => {},
+})
 
 function MatchContextProvider({ children }: { children: ReactNode }) {
-    const [matches, setMatches] = useState<IMatch[]>([]);
-    return (<MatchContext.Provider value={{ matches, setMatches }}>
-        {children}
-    </MatchContext.Provider >)
+  const [matches, setMatches] = useState<IMatch[]>([])
+  return (
+    <MatchContext.Provider value={{ matches, setMatches }}>
+      {children}
+    </MatchContext.Provider>
+  )
 }
 
-export default MatchContext;
+export default MatchContext
 
-export { MatchContextProvider };
+export { MatchContextProvider }

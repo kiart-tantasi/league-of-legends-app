@@ -18,7 +18,8 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "@typescript-eslint/triple-slash-reference": "off"
+    "@typescript-eslint/triple-slash-reference": "off",
+    "react/react-in-jsx-scope": "off" // to omit `import React from 'react'`
   },
   "settings": {
     "react": {
