@@ -45,9 +45,9 @@ cd backend
 
 Then `curl http://localhost:8080/api/health -I`
 
-### Hot-reload with `spring-boot-devtools`
+### Hot-reload `spring-boot-devtools` on Intellij
 
-You need to use Intellij and set these 2 settings
+You need to mark these settings
 
 - Build, Execution, Deployment
     - Compiler
@@ -59,16 +59,14 @@ You need to use Intellij and set these 2 settings
 
 ## Client
 
-- [x] Set up tailwind
-- [x] Set up eslint
-- [x] Set up github actions for jest and linting
+- [ ] ...
 
 ## Backend
 
-- [x] Hot-reload
-- [x] Map response to java object
-- [ ] controller advice
-- [ ] Set up checkstyle, test and github action
+- [ ] Use Optional to handle null
+- [ ] Set up checkstyle
+- [ ] GitHub Actions for testing, checkstyling
+- [ ] Use controller advice
 
 # Docker image
 
