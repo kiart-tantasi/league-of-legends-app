@@ -63,12 +63,14 @@ function SearchPage() {
       >
         <input
           type="text"
+          id="name"
           placeholder="ชื่อ"
           className="w-[250px] mb-4"
           ref={nameRef}
         />
         <input
           type="text"
+          id="tag"
           placeholder="tag"
           className="w-[250px] mb-4"
           ref={tagRef}
@@ -85,9 +87,17 @@ function SearchPage() {
 function MatchesPage() {
   const { matches } = useContext(MatchContext)
   return (
-    <div>
+    <div className="flex flex-col justify-center  pt-4">
       {/* TEMP */}
-      {JSON.stringify(matches)}
+      {matches.map((match) => {
+        const { championName, kills, deaths, assists } = match
+        const text = `${championName}: ${kills}/${deaths}/${assists}`
+        return (
+          <div className="mb-2" key={text.replaceAll(' ', '_')}>
+            {text}
+          </div>
+        )
+      })}
     </div>
   )
 }
