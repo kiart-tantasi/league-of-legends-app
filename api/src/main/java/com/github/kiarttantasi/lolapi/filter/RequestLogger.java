@@ -20,7 +20,6 @@ public class RequestLogger extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         try {
             final long start = System.currentTimeMillis();
             filterChain.doFilter(request, response);
@@ -31,5 +30,4 @@ public class RequestLogger extends OncePerRequestFilter {
             log.error(e.getMessage(), e);
         }
     }
-
 }
