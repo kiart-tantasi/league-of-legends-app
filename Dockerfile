@@ -13,4 +13,7 @@ WORKDIR /app
 COPY ./api/. /app/
 COPY --from=CLIENT_BUILD /app/build/.  /app/src/main/resources/static/
 RUN ./gradlew clean assemble
+ARG SPRING_PROFILES_ACTIVE
+ENV SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE
+
 ENTRYPOINT java -jar /app/build/libs/lol-api-0.0.1-SNAPSHOT.jar

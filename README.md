@@ -59,7 +59,7 @@ You need to mark these settings
 
 ## Client
 
-- [ ] ...
+- [ ]
 
 ## API
 
@@ -71,13 +71,17 @@ You need to mark these settings
 # Docker image
 
 Build
-
 ```
-docker build -t lol-app .
+docker build -t app .
+```
+
+Build (production)
+```
+# needs to prepare ".env.production" for client and "application-production.properties" for api
+docker build --build-arg SPRING_PROFILES_ACTIVE=production -t app .
 ```
 
 Run
-
 ```
-docker run -dp 8080:8080 lol-app
+docker run -dp 8080:8080 app
 ```
