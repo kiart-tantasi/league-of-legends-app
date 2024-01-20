@@ -35,13 +35,10 @@ public class MatchService {
 
     @Value("${thread.amount}")
     private Integer threadAmount;
-
     @Value("${riot.api.key:no-key-found}")
     private String riotApiKey;
-
     @Value("${riot.api.region.account}")
     private String regionAccount;
-
     @Value("${riot.api.region.match}")
     private String regionMatch;
 
