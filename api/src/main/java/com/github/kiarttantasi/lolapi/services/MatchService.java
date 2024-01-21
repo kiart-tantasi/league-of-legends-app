@@ -46,9 +46,19 @@ public class MatchService {
 
     public List<MatchDetailV1> getMatches(String gameName, String tagLine)
             throws URISyntaxException, IOException, InterruptedException {
+        var start = System.currentTimeMillis();
         final String puuid = getPuuid(gameName, tagLine);
+        log.info("got puuid in " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
         final String[] matchIds = getMatchIds(puuid);
-        return getMatchesV1(matchIds, gameName);
+        log.info("got matchIds in " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        var matches = getMatchesV1(matchIds, gameName);
+        log.info("got matches in " + (System.currentTimeMillis() - start));
+
+        return matches;
     }
 
     private String getPuuid(String gameName, String tagLine)
@@ -106,7 +116,7 @@ public class MatchService {
             final Callable<MatchDetailResponse> callable = new Callable<>() {
                 @Override
                 public MatchDetailResponse call() throws Exception {
-                    return mapMatchDetailResponse(matchId);
+                    return getMatchDetail(matchId);
                 }
             };
             callables.add(callable);
@@ -115,7 +125,7 @@ public class MatchService {
         return ex.invokeAll(callables);
     }
 
-    private MatchDetailResponse mapMatchDetailResponse(String matchId)
+    private MatchDetailResponse getMatchDetail(String matchId)
             throws URISyntaxException, IOException, InterruptedException {
         final HttpClient client = HttpClient.newHttpClient();
         final URI uri = new URI(
