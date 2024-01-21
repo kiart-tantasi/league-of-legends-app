@@ -33,8 +33,6 @@ public class MatchService {
     private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
     private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
 
-    @Value("${thread.amount:10}")
-    private Integer threadAmount;
     @Value("${match.amount:10}")
     private Integer matchAmount;
     @Value("${riot.api.key:no-key-found}")
@@ -46,7 +44,7 @@ public class MatchService {
 
     public List<MatchDetailV1> getMatches(String gameName, String tagLine)
             throws URISyntaxException, IOException, InterruptedException {
-        var start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         final String puuid = getPuuid(gameName, tagLine);
         log.info("got puuid in " + (System.currentTimeMillis() - start));
 
@@ -55,7 +53,7 @@ public class MatchService {
         log.info("got matchIds in " + (System.currentTimeMillis() - start));
 
         start = System.currentTimeMillis();
-        var matches = getMatchesV1(matchIds, gameName);
+        final List<MatchDetailV1> matches = getMatchesV1SendAsync(matchIds, gameName);
         log.info("got matches in " + (System.currentTimeMillis() - start));
 
         return matches;
@@ -84,15 +82,28 @@ public class MatchService {
         return matchIds;
     }
 
-    /**
-     * V1: return champion, kills, deaths and assists
-     */
-    private List<MatchDetailV1> getMatchesV1(String[] matchIds, String gameName) throws InterruptedException {
-        final List<Future<MatchDetailResponse>> futures = getFutures(matchIds);
-        final List<MatchDetailV1> matchDetails = new ArrayList<>();
-        for (final Future<MatchDetailResponse> future : futures) {
+    private List<MatchDetailV1> getMatchesV1SendAsync(String[] matchIds, String gameName) {
+        // send requests asynchronously
+        final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
+        for (final String matchId : matchIds) {
+            URI uri;
             try {
-                final Optional<Participant> optiParti = Arrays.stream(future.get().getInfo().getParticipants())
+                uri = new URI(
+                        String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s", regionMatch, matchId));
+                final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey)
+                        .build();
+                completables.add(HttpClient.newHttpClient().sendAsync(request, BODYHANDLER));
+            } catch (URISyntaxException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        // get value from completables and map to MatchDetailV1
+        final List<MatchDetailV1> matchDetails = new ArrayList<>();
+        for (final CompletableFuture<HttpResponse<String>> completable : completables) {
+            try {
+                final MatchDetailResponse response = new ObjectMapper().readValue(completable.get().body(),
+                        MatchDetailResponse.class);
+                final Optional<Participant> optiParti = Arrays.stream(response.getInfo().getParticipants())
                         .filter(x -> {
                             return x.getRiotIdGameName().equals(gameName);
                         }).findFirst();
@@ -103,35 +114,63 @@ public class MatchService {
                             parti.getDeaths(),
                             parti.getAssists()));
                 });
-            } catch (ExecutionException e) {
-                log.error(e.getMessage(), e);
+            } catch (Exception ex) {
+                log.error(ex.getMessage(), ex);
             }
         }
         return matchDetails;
     }
 
-    private List<Future<MatchDetailResponse>> getFutures(String[] matchIds) throws InterruptedException {
-        final List<Callable<MatchDetailResponse>> callables = new ArrayList<>();
-        for (String matchId : matchIds) {
-            final Callable<MatchDetailResponse> callable = new Callable<>() {
-                @Override
-                public MatchDetailResponse call() throws Exception {
-                    return getMatchDetail(matchId);
-                }
-            };
-            callables.add(callable);
-        }
-        final ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
-        return ex.invokeAll(callables);
-    }
-
-    private MatchDetailResponse getMatchDetail(String matchId)
-            throws URISyntaxException, IOException, InterruptedException {
-        final HttpClient client = HttpClient.newHttpClient();
-        final URI uri = new URI(
-                String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s", regionMatch, matchId));
-        final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
-        final HttpResponse<String> response = client.send(request, BODYHANDLER);
-        return new ObjectMapper().readValue(response.body(), MatchDetailResponse.class);
-    }
+    // private List<MatchDetailV1> getMatchesV1ExecutorService(String[] matchIds,
+    // String gameName)
+    // throws InterruptedException {
+    // final List<Future<MatchDetailResponse>> futures = getFutures(matchIds);
+    // final List<MatchDetailV1> matchDetails = new ArrayList<>();
+    // for (final Future<MatchDetailResponse> future : futures) {
+    // try {
+    // final Optional<Participant> optiParti =
+    // Arrays.stream(future.get().getInfo().getParticipants())
+    // .filter(x -> {
+    // return x.getRiotIdGameName().equals(gameName);
+    // }).findFirst();
+    // optiParti.ifPresent(parti -> {
+    // matchDetails.add(new MatchDetailV1(
+    // parti.getChampionName(),
+    // parti.getKills(),
+    // parti.getDeaths(),
+    // parti.getAssists()));
+    // });
+    // } catch (ExecutionException e) {
+    // log.error(e.getMessage(), e);
+    // }
+    // }
+    // return matchDetails;
+    // }
+    // private List<Future<MatchDetailResponse>> getFutures(String[] matchIds)
+    // throws InterruptedException {
+    // final List<Callable<MatchDetailResponse>> callables = new ArrayList<>();
+    // for (String matchId : matchIds) {
+    // final Callable<MatchDetailResponse> callable = new Callable<>() {
+    // @Override
+    // public MatchDetailResponse call() throws Exception {
+    // return getMatchDetail(matchId);
+    // }
+    // };
+    // callables.add(callable);
+    // }
+    // final ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
+    // return ex.invokeAll(callables);
+    // }
+    // private MatchDetailResponse getMatchDetail(String matchId)
+    // throws URISyntaxException, IOException, InterruptedException {
+    // final HttpClient client = HttpClient.newHttpClient();
+    // final URI uri = new URI(
+    // String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s",
+    // regionMatch, matchId));
+    // final HttpRequest request =
+    // HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
+    // final HttpResponse<String> response = client.send(request, BODYHANDLER);
+    // return new ObjectMapper().readValue(response.body(),
+    // MatchDetailResponse.class);
+    // }
 }
