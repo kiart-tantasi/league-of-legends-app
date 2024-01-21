@@ -5,6 +5,7 @@ interface IMatch {
   kills: number
   deaths: number
   assists: number
+  win: boolean
 }
 
 interface IMatchContext {

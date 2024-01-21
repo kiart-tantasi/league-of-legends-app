@@ -12,4 +12,5 @@ public class Participant {
     private Integer deaths;
     private Integer assists;
     private String championName;
+    private Boolean win;
 }

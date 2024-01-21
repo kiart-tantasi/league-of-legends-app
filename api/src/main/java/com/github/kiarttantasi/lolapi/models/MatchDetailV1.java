@@ -10,4 +10,5 @@ public class MatchDetailV1 {
     private final Integer kills;
     private final Integer deaths;
     private final Integer assists;
+    private final Boolean win;
 }

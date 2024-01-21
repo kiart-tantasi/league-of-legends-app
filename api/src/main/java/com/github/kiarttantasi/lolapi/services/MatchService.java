@@ -112,7 +112,8 @@ public class MatchService {
                             parti.getChampionName(),
                             parti.getKills(),
                             parti.getDeaths(),
-                            parti.getAssists()));
+                            parti.getAssists(),
+                            parti.getWin()));
                 });
             } catch (Exception ex) {
                 log.error(ex.getMessage(), ex);
@@ -120,57 +121,4 @@ public class MatchService {
         }
         return matchDetails;
     }
-
-    // private List<MatchDetailV1> getMatchesV1ExecutorService(String[] matchIds,
-    // String gameName)
-    // throws InterruptedException {
-    // final List<Future<MatchDetailResponse>> futures = getFutures(matchIds);
-    // final List<MatchDetailV1> matchDetails = new ArrayList<>();
-    // for (final Future<MatchDetailResponse> future : futures) {
-    // try {
-    // final Optional<Participant> optiParti =
-    // Arrays.stream(future.get().getInfo().getParticipants())
-    // .filter(x -> {
-    // return x.getRiotIdGameName().equals(gameName);
-    // }).findFirst();
-    // optiParti.ifPresent(parti -> {
-    // matchDetails.add(new MatchDetailV1(
-    // parti.getChampionName(),
-    // parti.getKills(),
-    // parti.getDeaths(),
-    // parti.getAssists()));
-    // });
-    // } catch (ExecutionException e) {
-    // log.error(e.getMessage(), e);
-    // }
-    // }
-    // return matchDetails;
-    // }
-    // private List<Future<MatchDetailResponse>> getFutures(String[] matchIds)
-    // throws InterruptedException {
-    // final List<Callable<MatchDetailResponse>> callables = new ArrayList<>();
-    // for (String matchId : matchIds) {
-    // final Callable<MatchDetailResponse> callable = new Callable<>() {
-    // @Override
-    // public MatchDetailResponse call() throws Exception {
-    // return getMatchDetail(matchId);
-    // }
-    // };
-    // callables.add(callable);
-    // }
-    // final ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
-    // return ex.invokeAll(callables);
-    // }
-    // private MatchDetailResponse getMatchDetail(String matchId)
-    // throws URISyntaxException, IOException, InterruptedException {
-    // final HttpClient client = HttpClient.newHttpClient();
-    // final URI uri = new URI(
-    // String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s",
-    // regionMatch, matchId));
-    // final HttpRequest request =
-    // HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
-    // final HttpResponse<String> response = client.send(request, BODYHANDLER);
-    // return new ObjectMapper().readValue(response.body(),
-    // MatchDetailResponse.class);
-    // }
 }
