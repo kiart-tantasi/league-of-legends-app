@@ -32,10 +32,11 @@ public class MatchService {
 
     private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
     private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
-    private static final Integer MATCH_AMOUNT = 20;
 
-    @Value("${thread.amount}")
+    @Value("${thread.amount:10}")
     private Integer threadAmount;
+    @Value("${match.amount:10}")
+    private Integer matchAmount;
     @Value("${riot.api.key:no-key-found}")
     private String riotApiKey;
     @Value("${riot.api.region.account}")
@@ -66,7 +67,7 @@ public class MatchService {
     private String[] getMatchIds(String puuid) throws URISyntaxException, IOException, InterruptedException {
         final URI uri = new URI(
                 String.format("https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d",
-                        regionMatch, puuid, MATCH_AMOUNT));
+                        regionMatch, puuid, matchAmount));
         final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotApiKey).build();
         final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
         final String[] matchIds = new ObjectMapper().readValue(response.body(), String[].class);
