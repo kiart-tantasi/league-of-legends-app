@@ -7,5 +7,7 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 public class MatchInfo {
-    Participant[] participants;
+    private Participant[] participants;
+    private String gameMode;
+    private Long gameCreation;
 }
