@@ -82,3 +82,11 @@ Run
 ```
 docker run -dp 8080:8080 app
 ```
+
+# EC2 Manual Deployment
+
+- Build client, move client-build to api and then build api
+
+- Put `app.service` at `/etc/systemd/system/`
+
+- Run `sudo systemctl <goal> app.service` (`start`| `stop` | `restart` | `status`)
