@@ -6,6 +6,8 @@ interface IMatch {
   deaths: number
   assists: number
   win: boolean
+  gameMode: string
+  gameCreation: number
 }
 
 interface IMatchContext {
