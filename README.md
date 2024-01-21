@@ -71,12 +71,10 @@ You need to mark these settings
 
 Build
 ```
+# local
 docker build -t app .
-```
 
-Build (production)
-```
-# needs to prepare ".env.production" for client and "application-production.properties" for api
+# production
 docker build --build-arg SPRING_PROFILES_ACTIVE=production -t app .
 ```
 
