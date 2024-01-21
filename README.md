@@ -67,20 +67,12 @@ You need to mark these settings
 - [ ] GitHub Actions for testing, checkstyling
 - [ ] Use controller advice
 
-# Docker image
+# Production Image for ECS Deployment
 
 Build
 ```
-# local
-docker build -t app .
-
-# production
+# prepare `./certificates` first
 docker build --build-arg SPRING_PROFILES_ACTIVE=production -t app .
-```
-
-Run
-```
-docker run -dp 8080:8080 app
 ```
 
 # EC2 Manual Deployment

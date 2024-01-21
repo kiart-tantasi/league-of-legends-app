@@ -3,3 +3,7 @@
 
 # intellij
 .idea
+
+# nginx-https
+certificates
+nohup.out
