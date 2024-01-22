@@ -1,7 +1,11 @@
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import MatchContext from '../contexts/MatchContext'
 import { Link, useSearchParams } from 'react-router-dom'
-import { handleTagLine, validateSearchInputs, warnUser } from './SearchPage'
+import {
+  handleTagLine,
+  validateSearchInputs,
+  warnUser,
+} from './../utils/search'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()

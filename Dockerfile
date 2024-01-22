@@ -11,7 +11,6 @@ RUN npm run build
 FROM openjdk:17.0.2-jdk-slim-buster AS API
 WORKDIR /app
 COPY ./api/. /app/
-COPY --from=CLIENT /app/build/.  /app/src/main/resources/static/
 RUN ./gradlew clean assemble
 ARG SPRING_PROFILES_ACTIVE
 ENV SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE
@@ -24,4 +23,5 @@ COPY --from=API /app/build/libs/lol-api-0.0.1-SNAPSHOT.jar .
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY certificates/ssl_certificate.pem /etc/ssl/ssl_certificate.pem
 COPY certificates/ssl_certificate_key.pem /etc/ssl/ssl_certificate_key.pem
+COPY --from=CLIENT /app/build /usr/share/nginx/html/
 ENTRYPOINT nohup java -jar lol-api-0.0.1-SNAPSHOT.jar & nginx -g 'daemon off;'

@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { validateSearchInputs, warnUser } from '../utils/search'
 
 export default function SearchPage() {
   const [gameName, setGameName] = useState('')
@@ -48,25 +49,4 @@ export default function SearchPage() {
       </form>
     </div>
   )
-}
-
-export function handleTagLine({ tagLine }: { tagLine: string }) {
-  return tagLine.replace('#', '')
-}
-
-export function validateSearchInputs({
-  gameName,
-  tagLine,
-}: {
-  gameName: string | null
-  tagLine: string | null
-}) {
-  return [gameName, tagLine].every(
-    (e) => typeof e === 'string' && e.length !== 0,
-  )
-}
-
-export function warnUser(str: string) {
-  // TODO: create shared warning modal
-  alert(str)
 }
