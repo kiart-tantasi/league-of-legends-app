@@ -73,6 +73,9 @@ Build
 ```
 # prepare `./certificates` first
 docker build --build-arg SPRING_PROFILES_ACTIVE=production -t app .
+
+# for macbook
+docker build --platform=linux/amd64 --build-arg SPRING_PROFILES_ACTIVE=production -t app .
 ```
 
 # EC2 Manual Deployment
