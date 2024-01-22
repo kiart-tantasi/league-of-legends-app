@@ -58,7 +58,7 @@ You need to mark these settings
 
 ## Client
 
-- [ ]
+
 
 ## API
 
@@ -72,16 +72,8 @@ You need to mark these settings
 Build
 ```
 # prepare `./certificates` first
-docker build --build-arg SPRING_PROFILES_ACTIVE=production -t app .
+docker build -t league-of-legends-app .
 
 # for macbook
-docker build --platform=linux/amd64 --build-arg SPRING_PROFILES_ACTIVE=production -t app .
+docker build --platform=linux/amd64 -t league-of-legends-app .
 ```
-
-# EC2 Manual Deployment
-
-- Build client, move client-build to api and then build api
-
-- Put `app.service` at `/etc/systemd/system/`
-
-- Run `sudo systemctl <goal> app.service` (`start`| `stop` | `restart` | `status`)

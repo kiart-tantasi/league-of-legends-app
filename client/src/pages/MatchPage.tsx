@@ -46,7 +46,7 @@ export default function MatchPage() {
         setIsLoading(false)
       }
     })()
-  }, [paramGameName, paramTagLine])
+  }, [paramGameName, paramTagLine, setMatches])
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
