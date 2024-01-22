@@ -1,78 +1,46 @@
-import { FormEvent, useContext, useRef, useState } from 'react'
-import MatchContext from '../contexts/MatchContext'
+import { FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function SearchPage() {
-  const { setMatches } = useContext(MatchContext)
-  const [isLoading, setIsLoading] = useState(false)
-  const [name, setName] = useState('')
-  const [tag, setTag] = useState('')
-  const nameRef = useRef(null)
-  const tagRef = useRef(null)
+  const [gameName, setGameName] = useState('')
+  const [tagLine, setTagLine] = useState('')
+  const navigate = useNavigate()
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    // validate inputs
-    const toValidates = [name, tag]
-    toValidates.forEach((val) => {
-      if (!val || typeof val !== 'string') {
-        alert('กรอกข้อมูลไม่ครบถ้วน/ไม่ถูกต้อง')
-        return
-      }
-    })
-    // fetch matches
-    try {
-      setIsLoading(true)
-      const response = await fetch(
-        `/api/v1/matches?gameName=${name}&tagLine=${tag}`,
-      )
-      if (response.status === 200) {
-        const json = await response.json()
-        setMatches(json.matches)
-        console.log(json)
-      } else {
-        alert('ไม่พบ')
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoading(false)
+    if (!validateSearchInputs({ gameName, tagLine })) {
+      warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
+      return
     }
-  }
-
-  if (isLoading) {
-    return <div>loading...</div>
+    navigate(`/match?gameName=${gameName}&tagLine=${tagLine.replace('#', '')}`)
   }
 
   return (
     <div
-      className="flex justify-center items-center w-full h-screen"
+      className="flex justify-center w-full h-fit mt-[200px]"
       data-testid="root-app"
     >
       <form
-        className="flex flex-col w-screen max-w-[450px] py-4 items-center bg-blue-100 sm:rounded-xl"
+        className="flex flex-col w-screen max-w-[450px] py-4 items-center bg-blue-100"
         onSubmit={onSubmit}
       >
         <input
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value)
-          }}
+          value={gameName}
+          onChange={(e) => setGameName(e.target.value)}
           type="text"
-          name="name"
-          placeholder="ชื่อ"
-          className="w-[250px] mb-4"
-          ref={nameRef}
+          name="gameName"
+          placeholder="ชื่อในเกม"
+          className="w-[250px] mb-4 placeholder:text-[0.75rem]"
         />
         <input
-          value={tag}
+          value={tagLine}
           onChange={(e) => {
-            setTag(e.target.value)
+            setTagLine(e.target.value)
           }}
           type="text"
-          name="tag"
-          placeholder="tag"
-          className="w-[250px] mb-4"
-          ref={tagRef}
+          name="tagLine"
+          placeholder="#1234"
+          className="w-[250px] mb-4 placeholder:text-[0.75rem]"
         />
         <button className="bg-white rounded p-1 text-[14px]" type="submit">
           ดู match history
@@ -80,4 +48,25 @@ export default function SearchPage() {
       </form>
     </div>
   )
+}
+
+export function handleTagLine({ tagLine }: { tagLine: string }) {
+  return tagLine.replace('#', '')
+}
+
+export function validateSearchInputs({
+  gameName,
+  tagLine,
+}: {
+  gameName: string | null
+  tagLine: string | null
+}) {
+  return [gameName, tagLine].every(
+    (e) => typeof e === 'string' && e.length !== 0,
+  )
+}
+
+export function warnUser(str: string) {
+  // TODO: create shared warning modal
+  alert(str)
 }

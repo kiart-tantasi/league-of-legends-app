@@ -1,13 +1,25 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import App from './App'
 import { MatchContextProvider } from './contexts/MatchContext'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import SearchPage from './pages/SearchPage'
+import MatchPage from './pages/MatchPage'
 // import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
+const router = createBrowserRouter([
+  {
+    path: '*',
+    element: <SearchPage />,
+  },
+  {
+    path: '/match',
+    element: <MatchPage />,
+  },
+])
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <MatchContextProvider>
-    <App />
+    <RouterProvider router={router} />
   </MatchContextProvider>,
 )
 
