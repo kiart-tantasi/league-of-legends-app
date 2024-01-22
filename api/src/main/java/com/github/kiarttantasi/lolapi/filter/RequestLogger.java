@@ -24,10 +24,13 @@ public class RequestLogger extends OncePerRequestFilter {
             final long start = System.currentTimeMillis();
             filterChain.doFilter(request, response);
             final long end = System.currentTimeMillis();
-            final String msg = String.format("%s, %d ms", request.getRequestURI(), (end - start));
+            final String msg = String.format("%d, %s, %d ms",
+                    response.getStatus(),
+                    request.getRequestURI(),
+                    (end - start));
             log.info(msg);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
         }
     }
 }

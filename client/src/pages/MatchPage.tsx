@@ -63,7 +63,9 @@ export default function MatchPage() {
   }
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <div className="text-center pt-[200px]">กำลังโด้ข้อมูลจาก RIOT...</div>
+    )
   }
   return (
     <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">

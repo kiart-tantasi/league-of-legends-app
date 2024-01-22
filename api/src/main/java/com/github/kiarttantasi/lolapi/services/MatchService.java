@@ -43,19 +43,9 @@ public class MatchService {
 
     public List<MatchDetailV1> getMatches(String gameName, String tagLine)
             throws URISyntaxException, IOException, InterruptedException {
-        long start = System.currentTimeMillis();
         final String puuid = getPuuid(gameName, tagLine);
-        log.info("got puuid in " + (System.currentTimeMillis() - start));
-
-        start = System.currentTimeMillis();
         final String[] matchIds = getMatchIds(puuid);
-        log.info("got matchIds in " + (System.currentTimeMillis() - start));
-
-        start = System.currentTimeMillis();
-        final List<MatchDetailV1> matches = getMatchesV1SendAsync(matchIds, gameName);
-        log.info("got matches in " + (System.currentTimeMillis() - start));
-
-        return matches;
+        return getMatchesV1SendAsync(matchIds, gameName);
     }
 
     private String getPuuid(String gameName, String tagLine)
@@ -93,7 +83,7 @@ public class MatchService {
                         .build();
                 completables.add(HttpClient.newHttpClient().sendAsync(request, BODYHANDLER));
             } catch (URISyntaxException e) {
-                log.error(e.getMessage(), e);
+                log.error(e.getMessage());
             }
         }
         // get value from completables and map to MatchDetailV1
@@ -116,8 +106,8 @@ public class MatchService {
                             response.getInfo().getGameMode(),
                             response.getInfo().getGameCreation()));
                 });
-            } catch (Exception ex) {
-                log.error(ex.getMessage(), ex);
+            } catch (Exception e) {
+                log.error(e.getMessage());
             }
         }
         return matchDetails;
