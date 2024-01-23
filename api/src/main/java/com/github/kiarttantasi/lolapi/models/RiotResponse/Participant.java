@@ -13,4 +13,5 @@ public class Participant {
     private Integer assists;
     private String championName;
     private Boolean win;
+    private String puuid;
 }

@@ -2,6 +2,7 @@ package com.github.kiarttantasi.lolapi.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kiarttantasi.lolapi.models.Response.MatchDetailV1;
+import com.github.kiarttantasi.lolapi.models.Response.ParticipantV1;
 import com.github.kiarttantasi.lolapi.models.RiotResponse.AccountResponse;
 import com.github.kiarttantasi.lolapi.models.RiotResponse.MatchDetailResponse;
 import com.github.kiarttantasi.lolapi.models.RiotResponse.Participant;
@@ -21,9 +22,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.*;
 
 @Service
@@ -86,26 +85,36 @@ public class MatchService {
                 log.error(e.getMessage());
             }
         }
-        // get value from completables and map to MatchDetailV1
+        return mapMatchDetails(completables, gameName);
+    }
+
+    private List<MatchDetailV1> mapMatchDetails(List<CompletableFuture<HttpResponse<String>>> completables,
+            String gameName) {
         final List<MatchDetailV1> matchDetails = new ArrayList<>();
         for (final CompletableFuture<HttpResponse<String>> completable : completables) {
             try {
                 final MatchDetailResponse response = new ObjectMapper().readValue(completable.get().body(),
                         MatchDetailResponse.class);
-                final Optional<Participant> optiParti = Arrays.stream(response.getInfo().getParticipants())
-                        .filter(x -> {
-                            return x.getRiotIdGameName().equals(gameName);
-                        }).findFirst();
-                optiParti.ifPresent(parti -> {
-                    matchDetails.add(new MatchDetailV1(
-                            parti.getChampionName(),
-                            parti.getKills(),
-                            parti.getDeaths(),
-                            parti.getAssists(),
-                            parti.getWin(),
-                            response.getInfo().getGameMode(),
-                            response.getInfo().getGameCreation()));
-                });
+                final List<ParticipantV1> participants = new ArrayList<>();
+                ParticipantV1 user = null;
+                for (Participant parti : response.getInfo().getParticipants()) {
+                    try {
+                        if (parti.getRiotIdGameName().equals(gameName)) {
+                            user = new ParticipantV1(parti.getRiotIdGameName(), parti.getChampionName(),
+                                    parti.getKills(), parti.getAssists(),
+                                    parti.getAssists(), parti.getWin(), parti.getPuuid());
+                        }
+                        participants
+                                .add(new ParticipantV1(parti.getRiotIdGameName(), parti.getChampionName(),
+                                        parti.getKills(), parti.getAssists(),
+                                        parti.getAssists(), parti.getWin(), parti.getPuuid()));
+                    } catch (Exception e) {
+                        log.error(e.getMessage());
+                    }
+                }
+                matchDetails.add(new MatchDetailV1(user.getKills(), user.getDeaths(),
+                        user.getAssists(), user.getWin(), response.getInfo().getGameMode(),
+                        response.getInfo().getGameCreation(), participants));
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
