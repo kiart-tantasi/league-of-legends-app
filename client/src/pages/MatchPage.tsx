@@ -7,6 +7,7 @@ import {
   warnUser,
 } from './../utils/search'
 import Layout from '../components/Layout'
+import { IMatch } from '../models/match'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -30,15 +31,13 @@ export default function MatchPage() {
       try {
         setIsLoading(true)
         const response = await fetch(
-          `https://lol.petchblog.net/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine(
-            {
-              tagLine: paramTagLine ?? '',
-            },
-          )}`,
+          `/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine({
+            tagLine: paramTagLine ?? '',
+          })}`,
         )
         if (response.status === 200) {
           const json = await response.json()
-          setMatches(json.matches)
+          setMatches(json.matchDetailList)
         } else {
           setMatches([])
           warnUser('ไม่พบ กรุณาลองใหม่')
@@ -99,26 +98,27 @@ export default function MatchPage() {
             </button>
           </form>
         </div>
-        {matches.map((match, index) => {
-          const { championName, kills, deaths, assists, gameMode } = match
-          const backgroundColor = !!match.win ? 'bg-blue-100' : 'bg-red-100'
-          return (
-            <div
-              className={`mb-2 p-2 ${backgroundColor}`}
-              key={index.toString().concat('-match-detail')}
-            >
-              <div className="flex flex-row justify-between">
-                <p>{championName}</p>
-                <p>{`${kills}/${deaths}/${assists}`}</p>
-              </div>
-              <p className="text-[0.7rem]">{gameMode}</p>
-              <p className="text-[0.7rem]">
-                {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
-              </p>
-            </div>
-          )
-        })}
+        {matches.map((match, index) => (
+          <MatchCard match={match} key={`match-detail-${index}`} />
+        ))}
       </div>
     </Layout>
+  )
+}
+
+function MatchCard({ match }: { match: IMatch }) {
+  const { championName, kills, deaths, assists, gameMode } = match
+  const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
+  return (
+    <div className={`mb-2 p-2 ${backgroundColor}`}>
+      <div className="flex flex-row justify-between">
+        <p>{championName}</p>
+        <p>{`${kills}/${deaths}/${assists}`}</p>
+      </div>
+      <p className="text-[0.7rem]">{gameMode}</p>
+      <p className="text-[0.7rem]">
+        {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
+      </p>
+    </div>
   )
 }

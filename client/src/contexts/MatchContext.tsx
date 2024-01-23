@@ -1,14 +1,5 @@
 import { ReactNode, createContext, useState } from 'react'
-
-interface IMatch {
-  championName: string
-  kills: number
-  deaths: number
-  assists: number
-  win: boolean
-  gameMode: string
-  gameCreation: number
-}
+import { IMatch } from '../models/match'
 
 interface IMatchContext {
   matches: IMatch[]

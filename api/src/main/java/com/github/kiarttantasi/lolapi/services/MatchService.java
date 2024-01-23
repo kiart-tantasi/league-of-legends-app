@@ -111,7 +111,7 @@ public class MatchService {
                         log.error(e.getMessage());
                     }
                 }
-                matchDetails.add(new MatchDetailV1(user.getKills(), user.getDeaths(),
+                matchDetails.add(new MatchDetailV1(user.getChampionName(), user.getKills(), user.getDeaths(),
                         user.getAssists(), user.getWin(), response.getInfo().getGameMode(),
                         response.getInfo().getGameCreation(), participants));
             } catch (Exception e) {

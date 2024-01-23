@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MatchDetailV1 {
+    private final String championName;
     private final Integer kills;
     private final Integer deaths;
     private final Integer assists;

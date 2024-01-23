@@ -56,6 +56,10 @@ You need to mark these settings
 
 # Todo
 
+## Client
+
+- [ ] Set up src path
+
 ## API
 
 - [ ] Builder and check if it goes with Jackson
