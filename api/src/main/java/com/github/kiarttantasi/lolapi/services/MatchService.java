@@ -1,10 +1,10 @@
 package com.github.kiarttantasi.lolapi.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kiarttantasi.lolapi.models.AccountResponse;
-import com.github.kiarttantasi.lolapi.models.MatchDetailResponse;
-import com.github.kiarttantasi.lolapi.models.MatchDetailV1;
-import com.github.kiarttantasi.lolapi.models.Participant;
+import com.github.kiarttantasi.lolapi.models.Response.MatchDetailV1;
+import com.github.kiarttantasi.lolapi.models.RiotResponse.AccountResponse;
+import com.github.kiarttantasi.lolapi.models.RiotResponse.MatchDetailResponse;
+import com.github.kiarttantasi.lolapi.models.RiotResponse.Participant;
 
 import lombok.extern.slf4j.Slf4j;
 

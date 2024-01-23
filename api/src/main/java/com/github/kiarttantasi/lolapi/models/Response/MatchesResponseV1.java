@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models;
+package com.github.kiarttantasi.lolapi.models.Response;
 
 import java.util.List;
 

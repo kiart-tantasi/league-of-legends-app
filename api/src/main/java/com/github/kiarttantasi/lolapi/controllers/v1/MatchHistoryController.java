@@ -1,6 +1,6 @@
 package com.github.kiarttantasi.lolapi.controllers.v1;
 
-import com.github.kiarttantasi.lolapi.models.MatchesResponseV1;
+import com.github.kiarttantasi.lolapi.models.Response.MatchesResponseV1;
 import com.github.kiarttantasi.lolapi.services.MatchService;
 
 import lombok.extern.slf4j.Slf4j;
