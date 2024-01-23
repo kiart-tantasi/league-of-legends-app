@@ -101,12 +101,12 @@ public class MatchService {
                         if (parti.getRiotIdGameName().equals(gameName)) {
                             user = new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
                                     parti.getChampionName(),
-                                    parti.getKills(), parti.getAssists(),
+                                    parti.getKills(), parti.getDeaths(),
                                     parti.getAssists(), parti.getWin());
                         }
                         participants
                                 .add(new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
-                                        parti.getChampionName(), parti.getKills(), parti.getAssists(),
+                                        parti.getChampionName(), parti.getKills(), parti.getDeaths(),
                                         parti.getAssists(), parti.getWin()));
                     } catch (Exception e) {
                         log.error(e.getMessage());

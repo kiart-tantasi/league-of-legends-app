@@ -103,7 +103,6 @@ export default function MatchPage() {
 }
 
 function MatchCard({ match }: { match: IMatch }) {
-  const { championName, kills, deaths, assists, gameMode } = match
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -113,10 +112,10 @@ function MatchCard({ match }: { match: IMatch }) {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex flex-row justify-between">
-          <p>{championName}</p>
-          <p>{`${kills}/${deaths}/${assists}`}</p>
+          <p>{match.championName}</p>
+          <p>{`${match.kills}/${match.deaths}/${match.assists}`}</p>
         </div>
-        <p className="text-[0.7rem]">{gameMode}</p>
+        <p className="text-[0.7rem]">{match.gameMode}</p>
         <div className="flex justify-between">
           <p className="text-[0.7rem]">
             {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
