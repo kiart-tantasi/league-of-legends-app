@@ -53,7 +53,12 @@ export default function SearchPage() {
         </form>
         <div className="text-center mt-[200px]">
           By&nbsp;
-          <a href="https://www.petchblog.net" className="font-bold">
+          <a
+            href="https://www.petchblog.net"
+            className="font-bold"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             www.petchblog.net
           </a>
         </div>

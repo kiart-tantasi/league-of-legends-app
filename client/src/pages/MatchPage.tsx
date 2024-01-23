@@ -106,7 +106,7 @@ function MatchCard({ match }: { match: IMatch }) {
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className="mb-2">
+    <div className="mb-1">
       <div
         className={` p-2 ${backgroundColor}`}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -139,11 +139,18 @@ function MatchCard({ match }: { match: IMatch }) {
 function ParticipantCard({ parti }: { parti: Participant }) {
   return (
     <a
-      className="flex justify-between py-2 bg-gray-100 border-b"
+      className="flex justify-between p-2 bg-gray-100 border-b"
       href={`/match?gameName=${parti.gameName}&tagLine=${parti.tagLine}`}
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <p>{parti.gameName}</p>
-      <p>{`${parti.kills}/${[parti.deaths]}/${parti.assists}`}</p>
+      <div>
+        <p>{parti.gameName}</p>
+        <p className="text-[0.75rem]">{parti.championName}</p>
+      </div>
+      <div>
+        <p>{`${parti.kills}/${[parti.deaths]}/${parti.assists}`}</p>
+      </div>
     </a>
   )
 }
