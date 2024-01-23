@@ -6,6 +6,7 @@ import {
   validateSearchInputs,
   warnUser,
 } from './../utils/search'
+import Layout from '../components/Layout'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -29,9 +30,11 @@ export default function MatchPage() {
       try {
         setIsLoading(true)
         const response = await fetch(
-          `/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine({
-            tagLine: paramTagLine ?? '',
-          })}`,
+          `https://lol.petchblog.net/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine(
+            {
+              tagLine: paramTagLine ?? '',
+            },
+          )}`,
         )
         if (response.status === 200) {
           const json = await response.json()
@@ -63,53 +66,59 @@ export default function MatchPage() {
   }
 
   if (isLoading) {
-    return <div className="text-center pt-[200px]">กำลังโหลด...</div>
+    return (
+      <Layout>
+        <div className="text-center pt-[200px]">กำลังโหลด...</div>
+      </Layout>
+    )
   }
   return (
-    <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">
-      <div className="flex justify-between mb-4">
-        <Link className="p-2 w-fit h-fit mb-4 border" type="button" to="/">
-          กลับ
-        </Link>
-        <form className="flex flex-col w-[150px]" onSubmit={onSubmit}>
-          <input
-            value={gameName}
-            onChange={(e) => setGameName(e.target.value)}
-            placeholder="ชื่อในเกม"
-            type="text"
-            className="text-right mb-2"
-          />
-          <input
-            value={tagLine}
-            onChange={(e) => setTagLine(e.target.value)}
-            placeholder="#1234"
-            type="text"
-            className="text-right mb-2"
-          />
-          <button type="submit" className="border">
-            ดู match history
-          </button>
-        </form>
-      </div>
-      {matches.map((match, index) => {
-        const { championName, kills, deaths, assists, gameMode } = match
-        const backgroundColor = !!match.win ? 'bg-blue-100' : 'bg-red-100'
-        return (
-          <div
-            className={`mb-2 p-2 ${backgroundColor}`}
-            key={index.toString().concat('-match-detail')}
-          >
-            <div className="flex flex-row justify-between">
-              <p>{championName}</p>
-              <p>{`${kills}/${deaths}/${assists}`}</p>
+    <Layout>
+      <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">
+        <div className="flex justify-between mb-4">
+          <Link className="p-2 w-fit h-fit mb-4 border" type="button" to="/">
+            กลับ
+          </Link>
+          <form className="flex flex-col w-[150px]" onSubmit={onSubmit}>
+            <input
+              value={gameName}
+              onChange={(e) => setGameName(e.target.value)}
+              placeholder="ชื่อในเกม"
+              type="text"
+              className="text-right mb-2"
+            />
+            <input
+              value={tagLine}
+              onChange={(e) => setTagLine(e.target.value)}
+              placeholder="#1234"
+              type="text"
+              className="text-right mb-2"
+            />
+            <button type="submit" className="border">
+              ดู match history
+            </button>
+          </form>
+        </div>
+        {matches.map((match, index) => {
+          const { championName, kills, deaths, assists, gameMode } = match
+          const backgroundColor = !!match.win ? 'bg-blue-100' : 'bg-red-100'
+          return (
+            <div
+              className={`mb-2 p-2 ${backgroundColor}`}
+              key={index.toString().concat('-match-detail')}
+            >
+              <div className="flex flex-row justify-between">
+                <p>{championName}</p>
+                <p>{`${kills}/${deaths}/${assists}`}</p>
+              </div>
+              <p className="text-[0.7rem]">{gameMode}</p>
+              <p className="text-[0.7rem]">
+                {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
+              </p>
             </div>
-            <p className="text-[0.7rem]">{gameMode}</p>
-            <p className="text-[0.7rem]">
-              {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
-            </p>
-          </div>
-        )
-      })}
-    </div>
+          )
+        })}
+      </div>
+    </Layout>
   )
 }
