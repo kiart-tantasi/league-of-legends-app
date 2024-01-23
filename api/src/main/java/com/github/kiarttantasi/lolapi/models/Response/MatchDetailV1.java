@@ -14,5 +14,5 @@ public class MatchDetailV1 {
     private final Boolean win;
     private final String gameMode;
     private final Long gameCreation;
-    private final List<ParticipantV1> participants;
+    private final List<ParticipantV1> participantList;
 }

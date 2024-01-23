@@ -56,16 +56,12 @@ You need to mark these settings
 
 # Todo
 
-## Client
-
-
-
 ## API
 
-- [ ] Use Optional to handle null
-- [ ] Set up checkstyle
-- [ ] GitHub Actions for testing, checkstyling
-- [ ] Use controller advice
+- [ ] Builder and check if it goes with Jackson
+- [ ] Ccheckstyle
+- [ ] GitHub Actions
+- [ ] Swagger
 
 # Production Image for ECS Deployment
 

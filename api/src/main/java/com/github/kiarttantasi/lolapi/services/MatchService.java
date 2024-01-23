@@ -33,7 +33,7 @@ public class MatchService {
     private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
     private static final Integer MATCH_AMOUNT = 20;
 
-    @Value("${riot.api.key:no-key-found}")
+    @Value("${riot.api.key}")
     private String riotApiKey;
     @Value("${riot.api.region.account}")
     private String regionAccount;
@@ -44,7 +44,7 @@ public class MatchService {
             throws URISyntaxException, IOException, InterruptedException {
         final String puuid = getPuuid(gameName, tagLine);
         final String[] matchIds = getMatchIds(puuid);
-        return getMatchesV1SendAsync(matchIds, gameName);
+        return getMatchDetailV1List(matchIds, gameName);
     }
 
     private String getPuuid(String gameName, String tagLine)
@@ -70,8 +70,7 @@ public class MatchService {
         return matchIds;
     }
 
-    private List<MatchDetailV1> getMatchesV1SendAsync(String[] matchIds, String gameName) {
-        // send requests asynchronously
+    private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName) {
         final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
         for (final String matchId : matchIds) {
             URI uri;
@@ -85,10 +84,10 @@ public class MatchService {
                 log.error(e.getMessage());
             }
         }
-        return mapMatchDetails(completables, gameName);
+        return mapMatchDetailList(completables, gameName);
     }
 
-    private List<MatchDetailV1> mapMatchDetails(List<CompletableFuture<HttpResponse<String>>> completables,
+    private List<MatchDetailV1> mapMatchDetailList(List<CompletableFuture<HttpResponse<String>>> completables,
             String gameName) {
         final List<MatchDetailV1> matchDetails = new ArrayList<>();
         for (final CompletableFuture<HttpResponse<String>> completable : completables) {
