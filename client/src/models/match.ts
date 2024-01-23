@@ -6,15 +6,15 @@ export interface IMatch {
   win: boolean
   gameMode: string
   gameCreation: number
-  participants: Participant[]
+  participantList: Participant[]
 }
 
 export interface Participant {
   gameName: string
+  tagLine: string
   championName: string
   kills: number
   deaths: number
   assists: number
   win: boolean
-  puuid: string
 }

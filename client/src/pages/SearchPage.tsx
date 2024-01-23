@@ -21,7 +21,10 @@ export default function SearchPage() {
 
   return (
     <Layout>
-      <div className={`flex h-full ${TEMP_BG_COLOR}`} data-testid="root-app">
+      <div
+        className={`flex flex-col h-full ${TEMP_BG_COLOR}`}
+        data-testid="root-app"
+      >
         <form
           className="flex flex-col w-full items-center pt-[200px]"
           onSubmit={onSubmit}
@@ -48,6 +51,12 @@ export default function SearchPage() {
             ดู match history
           </button>
         </form>
+        <div className="text-center mt-[200px]">
+          By&nbsp;
+          <a href="https://www.petchblog.net" className="font-bold">
+            www.petchblog.net
+          </a>
+        </div>
       </div>
     </Layout>
   )

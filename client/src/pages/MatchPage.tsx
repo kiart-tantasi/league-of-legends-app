@@ -1,13 +1,10 @@
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import MatchContext from '../contexts/MatchContext'
 import { Link, useSearchParams } from 'react-router-dom'
-import {
-  handleTagLine,
-  validateSearchInputs,
-  warnUser,
-} from './../utils/search'
+import { validateSearchInputs, warnUser } from './../utils/search'
 import Layout from '../components/Layout'
-import { IMatch } from '../models/match'
+import { IMatch, Participant } from '../models/match'
+import getMatchDetailList from '../api/getMatchDetailList'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -30,18 +27,14 @@ export default function MatchPage() {
     ;(async () => {
       try {
         setIsLoading(true)
-        const response = await fetch(
-          `/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine({
-            tagLine: paramTagLine ?? '',
-          })}`,
-        )
-        if (response.status === 200) {
-          const json = await response.json()
-          setMatches(json.matchDetailList)
-        } else {
-          setMatches([])
+        const { matchDetailList, status } = await getMatchDetailList({
+          paramGameName: paramGameName || '',
+          paramTagLine: paramTagLine || '',
+        })
+        if (status !== 200) {
           warnUser('ไม่พบ กรุณาลองใหม่')
         }
+        setMatches(matchDetailList)
       } catch (e) {
         console.error(e)
       } finally {
@@ -98,6 +91,9 @@ export default function MatchPage() {
             </button>
           </form>
         </div>
+        <div className="p-2 bg-gray-200">
+          {paramGameName} #{paramTagLine}
+        </div>
         {matches.map((match, index) => (
           <MatchCard match={match} key={`match-detail-${index}`} />
         ))}
@@ -109,16 +105,46 @@ export default function MatchPage() {
 function MatchCard({ match }: { match: IMatch }) {
   const { championName, kills, deaths, assists, gameMode } = match
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className={`mb-2 p-2 ${backgroundColor}`}>
-      <div className="flex flex-row justify-between">
-        <p>{championName}</p>
-        <p>{`${kills}/${deaths}/${assists}`}</p>
+    <div className="mb-2">
+      <div
+        className={` p-2 ${backgroundColor}`}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="flex flex-row justify-between">
+          <p>{championName}</p>
+          <p>{`${kills}/${deaths}/${assists}`}</p>
+        </div>
+        <p className="text-[0.7rem]">{gameMode}</p>
+        <div className="flex justify-between">
+          <p className="text-[0.7rem]">
+            {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
+          </p>
+          <button className="font-bold text-[0.75rem]">
+            {isOpen ? 'ปิด' : 'ดูข้อมูล'}
+          </button>
+        </div>
       </div>
-      <p className="text-[0.7rem]">{gameMode}</p>
-      <p className="text-[0.7rem]">
-        {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
-      </p>
+      {isOpen && (
+        <div>
+          {match.participantList.map((parti, index) => (
+            <ParticipantCard parti={parti} key={`participant-${index}`} />
+          ))}
+        </div>
+      )}
     </div>
+  )
+}
+
+function ParticipantCard({ parti }: { parti: Participant }) {
+  return (
+    <a
+      className="flex justify-between py-2 bg-gray-100 border-b"
+      href={`/match?gameName=${parti.gameName}&tagLine=${parti.tagLine}`}
+    >
+      <p>{parti.gameName}</p>
+      <p>{`${parti.kills}/${[parti.deaths]}/${parti.assists}`}</p>
+    </a>
   )
 }

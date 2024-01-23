@@ -8,10 +8,10 @@ import lombok.Getter;
 @Getter
 public class Participant {
     private String riotIdGameName;
+    private String riotIdTagline;
     private Integer kills;
     private Integer deaths;
     private Integer assists;
     private String championName;
     private Boolean win;
-    private String puuid;
 }

@@ -14,6 +14,8 @@
 # client/.env
 # below is config to disable lintint while developing
 DISABLE_ESLINT_PLUGIN=true
+# prevent fetching riot api with mocks
+REACT_APP_IS_MOCK=true
 ```
 
 ## API

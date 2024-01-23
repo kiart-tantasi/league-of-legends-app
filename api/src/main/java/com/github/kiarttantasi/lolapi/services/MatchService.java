@@ -99,14 +99,15 @@ public class MatchService {
                 for (Participant parti : response.getInfo().getParticipants()) {
                     try {
                         if (parti.getRiotIdGameName().equals(gameName)) {
-                            user = new ParticipantV1(parti.getRiotIdGameName(), parti.getChampionName(),
+                            user = new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
+                                    parti.getChampionName(),
                                     parti.getKills(), parti.getAssists(),
-                                    parti.getAssists(), parti.getWin(), parti.getPuuid());
+                                    parti.getAssists(), parti.getWin());
                         }
                         participants
-                                .add(new ParticipantV1(parti.getRiotIdGameName(), parti.getChampionName(),
-                                        parti.getKills(), parti.getAssists(),
-                                        parti.getAssists(), parti.getWin(), parti.getPuuid()));
+                                .add(new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
+                                        parti.getChampionName(), parti.getKills(), parti.getAssists(),
+                                        parti.getAssists(), parti.getWin()));
                     } catch (Exception e) {
                         log.error(e.getMessage());
                     }
