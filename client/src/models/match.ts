@@ -7,6 +7,7 @@ export interface IMatch {
   gameMode: string
   gameCreation: number
   participantList: Participant[]
+  itemIds: number[]
 }
 
 export interface Participant {
@@ -17,4 +18,5 @@ export interface Participant {
   deaths: number
   assists: number
   win: boolean
+  itemIds: number[]
 }

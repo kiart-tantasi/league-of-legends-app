@@ -1,10 +1,13 @@
-const matchDetailListMock = [
+import { IMatch } from '../models/match'
+
+const matchDetailListMock: IMatch[] = [
   {
     championName: 'Aatrox',
     kills: 13,
     deaths: 20,
     assists: 20,
     win: false,
+    itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
     gameMode: 'ARAM',
     gameCreation: 1705943179169,
     participantList: [
@@ -16,6 +19,7 @@ const matchDetailListMock = [
         deaths: 26,
         assists: 26,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -25,6 +29,7 @@ const matchDetailListMock = [
         deaths: 39,
         assists: 39,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -34,6 +39,7 @@ const matchDetailListMock = [
         deaths: 30,
         assists: 30,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -43,6 +49,7 @@ const matchDetailListMock = [
         deaths: 30,
         assists: 30,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -52,6 +59,7 @@ const matchDetailListMock = [
         deaths: 28,
         assists: 28,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -61,6 +69,7 @@ const matchDetailListMock = [
         deaths: 17,
         assists: 17,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -70,6 +79,7 @@ const matchDetailListMock = [
         deaths: 19,
         assists: 19,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -79,6 +89,7 @@ const matchDetailListMock = [
         deaths: 20,
         assists: 20,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -88,6 +99,7 @@ const matchDetailListMock = [
         deaths: 29,
         assists: 29,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -97,6 +109,7 @@ const matchDetailListMock = [
         deaths: 28,
         assists: 28,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
     ],
   },
@@ -106,6 +119,7 @@ const matchDetailListMock = [
     deaths: 20,
     assists: 20,
     win: false,
+    itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
     gameMode: 'ARAM',
     gameCreation: 1705943179169,
     participantList: [
@@ -117,6 +131,7 @@ const matchDetailListMock = [
         deaths: 26,
         assists: 26,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -126,6 +141,7 @@ const matchDetailListMock = [
         deaths: 39,
         assists: 39,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -135,6 +151,7 @@ const matchDetailListMock = [
         deaths: 30,
         assists: 30,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -144,6 +161,7 @@ const matchDetailListMock = [
         deaths: 30,
         assists: 30,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -153,6 +171,7 @@ const matchDetailListMock = [
         deaths: 28,
         assists: 28,
         win: true,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -162,6 +181,7 @@ const matchDetailListMock = [
         deaths: 17,
         assists: 17,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -171,6 +191,7 @@ const matchDetailListMock = [
         deaths: 19,
         assists: 19,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -180,6 +201,7 @@ const matchDetailListMock = [
         deaths: 20,
         assists: 20,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -189,6 +211,7 @@ const matchDetailListMock = [
         deaths: 29,
         assists: 29,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
       {
         gameName: 'GAME_NAME',
@@ -198,6 +221,7 @@ const matchDetailListMock = [
         deaths: 28,
         assists: 28,
         win: false,
+        itemIds: [4646, 3158, 4629, 3089, 3137, 4633],
       },
     ],
   },

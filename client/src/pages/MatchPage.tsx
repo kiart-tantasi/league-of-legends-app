@@ -108,11 +108,24 @@ function MatchCard({ match }: { match: IMatch }) {
   return (
     <div className="mb-1">
       <div
-        className={` p-2 ${backgroundColor}`}
+        className={`p-2 ${backgroundColor} ${
+          isOpen ? 'border-b border-b-gray-300' : ''
+        }`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex flex-row justify-between">
-          <ChampionImage championName={match.championName} size={Size.BIG} />
+          <div className="flex">
+            <ChampionImage championName={match.championName} size={Size.BIG} />
+            <div className="flex ml-1">
+              {match.itemIds.map((itemId) => (
+                <ItemImage
+                  itemId={itemId}
+                  size={Size.BIG}
+                  key={`item-id-${itemId}-match-${match.gameCreation}`}
+                />
+              ))}
+            </div>
+          </div>
           <p>{`${match.kills}/${match.deaths}/${match.assists}`}</p>
         </div>
         <p className="text-[0.7rem]">{match.gameMode}</p>
@@ -120,8 +133,8 @@ function MatchCard({ match }: { match: IMatch }) {
           <p className="text-[0.55rem]">
             {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
           </p>
-          <button className="font-bold text-[0.75rem]">
-            {isOpen ? 'ปิด' : 'ดูข้อมูล'}
+          <button className="font-bold text-[0.6rem]">
+            {isOpen ? 'ย่อ' : 'ขยาย'}
           </button>
         </div>
       </div>
@@ -139,14 +152,32 @@ function MatchCard({ match }: { match: IMatch }) {
 function ParticipantCard({ parti }: { parti: Participant }) {
   return (
     <a
-      className="flex justify-between p-2 bg-gray-100 border-b"
+      className={`flex justify-between px-2 py-1 border-b ${
+        parti.win ? 'bg-blue-100' : 'bg-red-100'
+      }`}
       href={`/match?gameName=${parti.gameName}&tagLine=${parti.tagLine}`}
       target="_blank"
       rel="noopener noreferrer"
     >
       <div>
-        <ChampionImage championName={parti.championName} size={Size.SMALL} />
-        <p className="text-[0.7rem] mt-1">{parti.gameName}</p>
+        <div>
+          <div className="flex">
+            <ChampionImage
+              championName={parti.championName}
+              size={Size.SMALL}
+            />
+            <div className="flex ml-1">
+              {parti.itemIds.map((itemId) => (
+                <ItemImage
+                  itemId={itemId}
+                  size={Size.SMALL}
+                  key={`item-id-${itemId}-match-${parti.tagLine}`}
+                />
+              ))}
+            </div>
+          </div>
+          <p className="text-[0.7rem] mt-1">{parti.gameName}</p>
+        </div>
       </div>
       <div>
         <p>{`${parti.kills}/${[parti.deaths]}/${parti.assists}`}</p>
@@ -167,21 +198,31 @@ function ChampionImage({
   championName: string
   size: Size
 }) {
-  const src = `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`
+  const [isError, setIsError] = useState(false)
+  if (isError) {
+    return <div className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'} />
+  }
   return (
     <img
       className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'}
-      src={src}
+      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`}
       alt={`${championName} image`}
+      onError={() => setIsError(true)}
     />
   )
 }
 
-function ItemImage({ itemId }: { itemId: number }) {
+function ItemImage({ itemId, size }: { itemId: number; size: Size }) {
+  const [isError, setIsError] = useState(false)
+  if (isError) {
+    return <div className={size === Size.BIG ? 'w-8 h-8' : 'w-6 h-6'} />
+  }
   return (
     <img
+      className={size === Size.BIG ? 'w-8 h-8' : 'w-6 h-6'}
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/item/${itemId}.png`}
       alt={`league of legends item id ${itemId}`}
+      onError={() => setIsError(true)}
     />
   )
 }
