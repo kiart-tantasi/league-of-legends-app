@@ -5,6 +5,7 @@ import { validateSearchInputs, warnUser } from './../utils/search'
 import Layout from '../components/Layout'
 import { IMatch, Participant } from '../models/match'
 import getMatchDetailList from '../api/getMatchDetailList'
+import { Size } from '../constants/common'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -186,11 +187,6 @@ function ParticipantCard({ parti }: { parti: Participant }) {
   )
 }
 
-enum Size {
-  BIG,
-  SMALL,
-}
-
 function ChampionImage({
   championName,
   size,
@@ -206,7 +202,7 @@ function ChampionImage({
     <img
       className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'}
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`}
-      alt={`${championName} image`}
+      alt={`${championName}`}
       onError={() => setIsError(true)}
     />
   )
