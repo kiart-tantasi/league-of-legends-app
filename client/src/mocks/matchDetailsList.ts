@@ -1,6 +1,6 @@
 const matchDetailListMock = [
   {
-    championName: 'CHAMPION_NAME',
+    championName: 'Aatrox',
     kills: 13,
     deaths: 20,
     assists: 20,
@@ -11,7 +11,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 10,
         deaths: 26,
         assists: 26,
@@ -20,7 +20,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 11,
         deaths: 39,
         assists: 39,
@@ -29,7 +29,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 17,
         deaths: 30,
         assists: 30,
@@ -38,7 +38,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 14,
         deaths: 30,
         assists: 30,
@@ -47,7 +47,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 8,
         deaths: 28,
         assists: 28,
@@ -56,7 +56,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 11,
         deaths: 17,
         assists: 17,
@@ -65,7 +65,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 12,
         deaths: 19,
         assists: 19,
@@ -74,7 +74,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 13,
         deaths: 20,
         assists: 20,
@@ -83,7 +83,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 5,
         deaths: 29,
         assists: 29,
@@ -92,7 +92,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 10,
         deaths: 28,
         assists: 28,
@@ -101,7 +101,7 @@ const matchDetailListMock = [
     ],
   },
   {
-    championName: 'CHAMPION_NAME',
+    championName: 'Aatrox',
     kills: 13,
     deaths: 20,
     assists: 20,
@@ -112,7 +112,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 10,
         deaths: 26,
         assists: 26,
@@ -121,7 +121,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 11,
         deaths: 39,
         assists: 39,
@@ -130,7 +130,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 17,
         deaths: 30,
         assists: 30,
@@ -139,7 +139,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 14,
         deaths: 30,
         assists: 30,
@@ -148,7 +148,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 8,
         deaths: 28,
         assists: 28,
@@ -157,7 +157,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 11,
         deaths: 17,
         assists: 17,
@@ -166,7 +166,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 12,
         deaths: 19,
         assists: 19,
@@ -175,7 +175,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 13,
         deaths: 20,
         assists: 20,
@@ -184,7 +184,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 5,
         deaths: 29,
         assists: 29,
@@ -193,7 +193,7 @@ const matchDetailListMock = [
       {
         gameName: 'GAME_NAME',
         tagLine: 'TAGLINE',
-        championName: 'CHAMPION_NAME',
+        championName: 'Aatrox',
         kills: 10,
         deaths: 28,
         assists: 28,

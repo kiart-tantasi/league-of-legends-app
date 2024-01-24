@@ -112,12 +112,12 @@ function MatchCard({ match }: { match: IMatch }) {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex flex-row justify-between">
-          <p>{match.championName}</p>
+          <ChampionImage championName={match.championName} size={Size.BIG} />
           <p>{`${match.kills}/${match.deaths}/${match.assists}`}</p>
         </div>
         <p className="text-[0.7rem]">{match.gameMode}</p>
         <div className="flex justify-between">
-          <p className="text-[0.7rem]">
+          <p className="text-[0.55rem]">
             {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
           </p>
           <button className="font-bold text-[0.75rem]">
@@ -145,12 +145,34 @@ function ParticipantCard({ parti }: { parti: Participant }) {
       rel="noopener noreferrer"
     >
       <div>
-        <p>{parti.gameName}</p>
-        <p className="text-[0.75rem]">{parti.championName}</p>
+        <ChampionImage championName={parti.championName} size={Size.SMALL} />
+        <p className="text-[0.7rem] mt-1">{parti.gameName}</p>
       </div>
       <div>
         <p>{`${parti.kills}/${[parti.deaths]}/${parti.assists}`}</p>
       </div>
     </a>
+  )
+}
+
+enum Size {
+  BIG,
+  SMALL,
+}
+
+function ChampionImage({
+  championName,
+  size,
+}: {
+  championName: string
+  size: Size
+}) {
+  const src = `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`
+  return (
+    <img
+      className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'}
+      src={src}
+      alt={championName}
+    />
   )
 }
