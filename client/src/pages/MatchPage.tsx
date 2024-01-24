@@ -195,30 +195,36 @@ function ChampionImage({
   size: Size
 }) {
   const [isError, setIsError] = useState(false)
+  const widthHeightClass =
+    size === Size.BIG ? `w-10 h-10 md:w-12 md:h-12` : 'w-7 h-7 md:w-9 md:h-9'
   if (isError) {
-    return <div className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'} />
+    return <div className={widthHeightClass} />
   }
   return (
     <img
-      className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'}
+      className={widthHeightClass}
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`}
       alt={`${championName}`}
       onError={() => setIsError(true)}
+      loading="lazy"
     />
   )
 }
 
 function ItemImage({ itemId, size }: { itemId: number; size: Size }) {
   const [isError, setIsError] = useState(false)
+  const widthHeightClass =
+    size === Size.BIG ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6 md:w-8 md:h-8'
   if (isError) {
-    return <div className={size === Size.BIG ? 'w-8 h-8' : 'w-6 h-6'} />
+    return <div className={widthHeightClass} />
   }
   return (
     <img
-      className={size === Size.BIG ? 'w-8 h-8' : 'w-6 h-6'}
+      className={widthHeightClass}
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/item/${itemId}.png`}
       alt={`league of legends item id ${itemId}`}
       onError={() => setIsError(true)}
+      loading="lazy"
     />
   )
 }
