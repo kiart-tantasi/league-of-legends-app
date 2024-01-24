@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.filter;
+package com.github.kiarttantasi.lolapi.filters;
 
 import java.io.IOException;
 
@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Order
 @Slf4j
 public class RequestLogger extends OncePerRequestFilter {
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

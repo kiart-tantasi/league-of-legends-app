@@ -172,7 +172,16 @@ function ChampionImage({
     <img
       className={size === Size.BIG ? `w-10 h-10` : 'w-7 h-7'}
       src={src}
-      alt={championName}
+      alt={`${championName} image`}
+    />
+  )
+}
+
+function ItemImage({ itemId }: { itemId: number }) {
+  return (
+    <img
+      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/item/${itemId}.png`}
+      alt={`league of legends item id ${itemId}`}
     />
   )
 }

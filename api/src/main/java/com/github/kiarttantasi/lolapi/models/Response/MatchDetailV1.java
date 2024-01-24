@@ -2,11 +2,11 @@ package com.github.kiarttantasi.lolapi.models.Response;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class MatchDetailV1 {
     private final String championName;
     private final Integer kills;
@@ -16,4 +16,5 @@ public class MatchDetailV1 {
     private final String gameMode;
     private final Long gameCreation;
     private final List<ParticipantV1> participantList;
+    private final List<Integer> itemIds;
 }

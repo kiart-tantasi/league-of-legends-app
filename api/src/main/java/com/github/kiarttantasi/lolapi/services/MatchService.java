@@ -98,23 +98,22 @@ public class MatchService {
                 ParticipantV1 user = null;
                 for (Participant parti : response.getInfo().getParticipants()) {
                     try {
+                        final ParticipantV1 newParti = ParticipantV1.builder().gameName(parti.getRiotIdGameName())
+                                .tagLine(parti.getRiotIdTagline()).championName(parti.getChampionName())
+                                .kills(parti.getKills()).deaths(parti.getDeaths()).assists(parti.getAssists())
+                                .win(parti.getWin()).itemIds(parti.getItemIds()).build();
+                        participants.add(newParti);
                         if (parti.getRiotIdGameName().equals(gameName)) {
-                            user = new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
-                                    parti.getChampionName(),
-                                    parti.getKills(), parti.getDeaths(),
-                                    parti.getAssists(), parti.getWin());
+                            user = newParti;
                         }
-                        participants
-                                .add(new ParticipantV1(parti.getRiotIdGameName(), parti.getRiotIdTagline(),
-                                        parti.getChampionName(), parti.getKills(), parti.getDeaths(),
-                                        parti.getAssists(), parti.getWin()));
                     } catch (Exception e) {
                         log.error(e.getMessage());
                     }
                 }
-                matchDetails.add(new MatchDetailV1(user.getChampionName(), user.getKills(), user.getDeaths(),
-                        user.getAssists(), user.getWin(), response.getInfo().getGameMode(),
-                        response.getInfo().getGameCreation(), participants));
+                matchDetails.add(MatchDetailV1.builder().championName(user.getChampionName()).kills(user.getKills())
+                        .deaths(user.getDeaths()).assists(user.getAssists()).win(user.getWin())
+                        .gameMode(response.getInfo().getGameMode()).gameCreation(response.getInfo().getGameCreation())
+                        .participantList(participants).itemIds(user.getItemIds()).build());
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
