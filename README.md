@@ -1,6 +1,6 @@
 # Demo
 
-![App in mobile version](https://github.com/kiart-tantasi/league-of-legends-app/blob/main/demos/demo-1.png)
+<img src="/demos/demo-1.png" alt="App demo" height="800px" />
 
 # About project
 
