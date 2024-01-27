@@ -1,3 +1,7 @@
+# Demo
+
+![App in mobile version](https://github.com/kiart-tantasi/league-of-legends-app/blob/main/demos/demo-1.png)
+
 # About project
 
 - This is a simple app to see League of Legends match history
