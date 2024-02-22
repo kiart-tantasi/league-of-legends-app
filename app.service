@@ -1,15 +1,17 @@
+# /etc/systemd/system/app.service
+# systemctl (start/stop/status/restart) app
 [Unit]
 Description=lolapp
 After=multi-user.target
 
 [Service]
-ExecStart=sudo SPRING_PROFILES_ACTIVE=production /usr/bin/java -jar /home/admin/league-of-legends-app/api/build/libs/lol-api-0.0.1-SNAPSHOT.jar
+ExecStart=/usr/bin/java -jar /root/league-of-legends-app/api/build/libs/lol-api-0.0.1-SNAPSHOT.jar
 Restart=always
 RestartSec=10
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=lolapp
-User=admin
+User=root
 Environment="SPRING_PROFILES_ACTIVE=production"
 
 [Install]
