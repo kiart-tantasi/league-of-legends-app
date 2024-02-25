@@ -1,8 +1,9 @@
 # mac
 .DS_Store
 
-# intellij
+# ide
 .idea
+.vscode
 
 # nginx-https
 certificates

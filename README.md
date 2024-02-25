@@ -22,6 +22,12 @@ DISABLE_ESLINT_PLUGIN=true
 REACT_APP_IS_MOCK=true
 ```
 
+## Production
+
+```
+# still no env for production client
+```
+
 ## API
 ```
 # api/src/main/resources/application-local.properties
@@ -34,7 +40,7 @@ riot.api.key=<api-key>
 
 ```
 cd client
-npm install # to install packages, run only at first time
+npm install
 npm start
 ```
 
@@ -59,19 +65,6 @@ You need to mark these settings
         - Build project automatically
 - Advanced Settings
     - Allow auto-make to start even if developed application is currently running
-
-# Todo
-
-## Client
-
-- [ ] Set up src path
-
-## API
-
-- [ ] Builder and check if it goes with Jackson
-- [ ] Ccheckstyle
-- [ ] GitHub Actions
-- [ ] Swagger
 
 # Production Image for ECS Deployment
 
