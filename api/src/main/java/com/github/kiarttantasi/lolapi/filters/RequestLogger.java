@@ -25,11 +25,18 @@ public class RequestLogger extends OncePerRequestFilter {
             final long end = System.currentTimeMillis();
             final String msg = String.format("%d, %s, %d ms",
                     response.getStatus(),
-                    request.getRequestURI(),
+                    getUri(request),
                     (end - start));
             log.info(msg);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
+
+    private static String getUri(HttpServletRequest request) {
+        if (request.getQueryString() == null) {
+            return request.getRequestURI();
+        }
+        return request.getRequestURI().concat("?" + request.getQueryString());
     }
 }
