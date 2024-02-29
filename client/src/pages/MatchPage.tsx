@@ -33,7 +33,7 @@ export default function MatchPage() {
           paramTagLine: paramTagLine || '',
         })
         if (status !== 200) {
-          warnUser('ไม่พบ กรุณาลองใหม่')
+          warnUser('ไม่พบผู้เล่น/เซิร์ฟเวอร์กำลังทำงานหนัก กรุณาลองใหม่')
         }
         setMatches(matchDetailList)
       } catch (e) {

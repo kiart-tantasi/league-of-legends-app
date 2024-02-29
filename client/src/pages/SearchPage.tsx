@@ -43,11 +43,11 @@ export default function SearchPage() {
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
           />
           <button className="bg-white rounded p-1 text-[14px]" type="submit">
-            ดู match history
+            ดูประวัติการเล่น
           </button>
         </form>
         <div className="text-center mt-[200px]">
-          by&nbsp;
+          โดย&nbsp;
           <a
             href="https://www.petchblog.net"
             className="font-bold"
