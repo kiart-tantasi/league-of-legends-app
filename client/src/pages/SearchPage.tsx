@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { validateSearchInputs, warnUser } from '../utils/search'
 import Layout from '../components/Layout'
 
-const TEMP_BG_COLOR = 'bg-blue-100'
-
 export default function SearchPage() {
   const [gameName, setGameName] = useState('')
   const [tagLine, setTagLine] = useState('')
@@ -20,11 +18,8 @@ export default function SearchPage() {
   }
 
   return (
-    <Layout>
-      <div
-        className={`flex flex-col h-full ${TEMP_BG_COLOR}`}
-        data-testid="root-app"
-      >
+    <Layout background="BLUE">
+      <div className="flex flex-col h-full" data-testid="root-app">
         <form
           className="flex flex-col w-full items-center pt-[200px]"
           onSubmit={onSubmit}
@@ -52,14 +47,14 @@ export default function SearchPage() {
           </button>
         </form>
         <div className="text-center mt-[200px]">
-          By&nbsp;
+          by&nbsp;
           <a
             href="https://www.petchblog.net"
             className="font-bold"
             target="_blank"
             rel="noopener noreferrer"
           >
-            www.petchblog.net
+            petchblog.net
           </a>
         </div>
       </div>
