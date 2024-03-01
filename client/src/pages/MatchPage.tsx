@@ -15,6 +15,7 @@ export default function MatchPage() {
   const [tagLine, setTagLine] = useState('')
   const { matches, setMatches } = useContext(MatchContext)
   const [isLoading, setIsLoading] = useState(true)
+  const [openedMatchCard, setOpenedMatchCard] = useState<null | number>(null)
 
   useEffect(() => {
     if (
@@ -68,7 +69,7 @@ export default function MatchPage() {
       <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">
         <div className="flex justify-between mb-4">
           <Link className="p-2 w-fit h-fit mb-4 border" type="button" to="/">
-            กลับ
+            หน้าแรก
           </Link>
           <form className="flex flex-col w-[150px]" onSubmit={onSubmit}>
             <input
@@ -93,24 +94,42 @@ export default function MatchPage() {
         <div className="p-2 bg-gray-200">
           {paramGameName} #{paramTagLine}
         </div>
-        {matches.map((match, index) => (
-          <MatchCard match={match} key={`match-detail-${index}`} />
-        ))}
+        {matches.map((match, index) => {
+          const isOpen = openedMatchCard === index
+          const onToggle = () => {
+            setOpenedMatchCard(isOpen ? null : index)
+          }
+          return (
+            <MatchCard
+              match={match}
+              key={`match-detail-${index}`}
+              isOpen={isOpen}
+              onToggle={onToggle}
+            />
+          )
+        })}
       </div>
     </Layout>
   )
 }
 
-function MatchCard({ match }: { match: IMatch }) {
+function MatchCard({
+  match,
+  isOpen,
+  onToggle,
+}: {
+  match: IMatch
+  isOpen: boolean
+  onToggle: () => void
+}) {
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
-  const [isOpen, setIsOpen] = useState(false)
   return (
     <div className="mb-1">
       <div
         className={`p-2 ${backgroundColor} ${
           isOpen ? 'border-b border-b-gray-300' : ''
         }`}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={onToggle}
       >
         <div className="flex flex-row justify-between">
           <div className="flex">
@@ -138,7 +157,7 @@ function MatchCard({ match }: { match: IMatch }) {
         </div>
       </div>
       {isOpen && (
-        <div>
+        <div className="pr-2">
           {match.participantList.map((parti, index) => (
             <ParticipantCard parti={parti} key={`participant-${index}`} />
           ))}
