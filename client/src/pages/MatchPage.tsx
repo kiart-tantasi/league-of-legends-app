@@ -15,7 +15,6 @@ export default function MatchPage() {
   const [tagLine, setTagLine] = useState('')
   const { matches, setMatches } = useContext(MatchContext)
   const [isLoading, setIsLoading] = useState(true)
-  const [openedMatchCard, setOpenedMatchCard] = useState<null | number>(null)
 
   useEffect(() => {
     if (
@@ -94,42 +93,24 @@ export default function MatchPage() {
         <div className="p-2 bg-gray-200">
           {paramGameName} #{paramTagLine}
         </div>
-        {matches.map((match, index) => {
-          const isOpen = openedMatchCard === index
-          const onToggle = () => {
-            setOpenedMatchCard(isOpen ? null : index)
-          }
-          return (
-            <MatchCard
-              match={match}
-              key={`match-detail-${index}`}
-              isOpen={isOpen}
-              onToggle={onToggle}
-            />
-          )
-        })}
+        {matches.map((match, index) => (
+          <MatchCard match={match} key={`match-detail-${index}`} />
+        ))}
       </div>
     </Layout>
   )
 }
 
-function MatchCard({
-  match,
-  isOpen,
-  onToggle,
-}: {
-  match: IMatch
-  isOpen: boolean
-  onToggle: () => void
-}) {
+function MatchCard({ match }: { match: IMatch }) {
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <div className="mb-1">
       <div
         className={`p-2 ${backgroundColor} ${
           isOpen ? 'border-b border-b-gray-300' : ''
         }`}
-        onClick={onToggle}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex flex-row justify-between">
           <div className="flex">
