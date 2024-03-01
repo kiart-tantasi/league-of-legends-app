@@ -31,7 +31,11 @@ REACT_APP_IS_MOCK=true
 ## API
 ```
 # api/src/main/resources/application-local.properties
+# required
 riot.api.key=<api-key>
+
+# optional
+riot.api.key.secondary=<api-key>
 ```
 
 # Run app locally
