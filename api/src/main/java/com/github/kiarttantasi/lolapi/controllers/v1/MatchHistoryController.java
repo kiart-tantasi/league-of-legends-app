@@ -1,5 +1,6 @@
 package com.github.kiarttantasi.lolapi.controllers.v1;
 
+import com.github.kiarttantasi.lolapi.models.Response.MatchDetailV1;
 import com.github.kiarttantasi.lolapi.models.Response.MatchesResponseV1;
 import com.github.kiarttantasi.lolapi.services.MatchService;
 
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/matches")
@@ -25,9 +28,11 @@ public class MatchHistoryController {
     @GetMapping
     public ResponseEntity<MatchesResponseV1> getMatches(@RequestParam String gameName, @RequestParam String tagLine) {
         try {
-            return ResponseEntity.ok().body(
-                    new MatchesResponseV1(
-                            matchService.getMatches(gameName, tagLine)));
+            final List<MatchDetailV1> matches = matchService.getMatches(gameName, tagLine);
+            if (matches == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(new MatchesResponseV1(matches));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
