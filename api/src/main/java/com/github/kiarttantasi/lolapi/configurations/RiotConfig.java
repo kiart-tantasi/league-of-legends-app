@@ -1,11 +1,13 @@
 package com.github.kiarttantasi.lolapi.configurations;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
+@Slf4j
 public class RiotConfig {
     @Value("${riot.api.key}")
     private String riotApiKey;
@@ -22,8 +24,10 @@ public class RiotConfig {
     // simple load-balancer to select riot api key
     public String getRiotApiKey() {
         if (this.riotApiKeySecondary != null && Math.random() > 0.5) {
+            log.info("using secondary riot api key");
             return this.riotApiKeySecondary;
         }
+        log.info("using primary riot api key");
         return this.riotApiKey;
     }
 }
