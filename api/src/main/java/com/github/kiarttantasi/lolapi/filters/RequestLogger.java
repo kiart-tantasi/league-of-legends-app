@@ -17,8 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RequestLogger extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
             final long start = System.currentTimeMillis();
             filterChain.doFilter(request, response);

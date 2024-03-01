@@ -21,7 +21,7 @@ public class Cors {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList(clientDomain));
+        config.setAllowedOrigins(Collections.singletonList(this.clientDomain));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
         source.registerCorsConfiguration("/**", config);

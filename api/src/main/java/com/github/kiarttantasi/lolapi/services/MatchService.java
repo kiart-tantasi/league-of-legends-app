@@ -69,12 +69,13 @@ public class MatchService {
 
     private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName) {
         final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
+        final String consistentRiotApiKey = this.riotConfig.getRiotApiKey();
         for (final String matchId : matchIds) {
             URI uri;
             try {
                 uri = new URI(
                         String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s", riotConfig.getRegionMatch(), matchId));
-                final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotConfig.getRiotApiKey())
+                final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey)
                         .build();
                 completables.add(HttpClient.newHttpClient().sendAsync(request, BODYHANDLER));
             } catch (URISyntaxException e) {
@@ -84,6 +85,7 @@ public class MatchService {
         return mapMatchDetailList(completables, gameName);
     }
 
+    // TODO: break-down this method (especially at double-try-catch-scope) for less complexity
     private List<MatchDetailV1> mapMatchDetailList(List<CompletableFuture<HttpResponse<String>>> completables,
                                                    String gameName) {
         final List<MatchDetailV1> matchDetails = new ArrayList<>();
