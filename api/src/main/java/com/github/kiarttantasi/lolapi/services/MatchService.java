@@ -40,36 +40,36 @@ public class MatchService {
 
     public List<MatchDetailV1> getMatches(String gameName, String tagLine)
             throws URISyntaxException, IOException, InterruptedException {
-        final String puuid = getPuuid(gameName, tagLine);
-        final String[] matchIds = getMatchIds(puuid);
-        return getMatchDetailV1List(matchIds, gameName);
+        final String consistentRiotApiKey = this.riotConfig.getRiotApiKey(); // to use same key for all requests
+        final String puuid = getPuuid(gameName, tagLine, consistentRiotApiKey);
+        final String[] matchIds = getMatchIds(puuid, consistentRiotApiKey);
+        return getMatchDetailV1List(matchIds, gameName, consistentRiotApiKey);
     }
 
-    private String getPuuid(String gameName, String tagLine)
+    private String getPuuid(String gameName, String tagLine, String consistentRiotApiKey)
             throws URISyntaxException, IOException, InterruptedException {
         final String encodedGameName = URLEncoder.encode(gameName, ENCODING_CHARSET);
         final URI uriAccount = new URI(
                 String.format("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", riotConfig.getRegionAccount(),
                         encodedGameName, tagLine));
-        final HttpRequest request = HttpRequest.newBuilder().uri(uriAccount).header("X-Riot-Token", riotConfig.getRiotApiKey()).build();
+        final HttpRequest request = HttpRequest.newBuilder().uri(uriAccount).header("X-Riot-Token", consistentRiotApiKey).build();
         final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
         final String body = response.body();
         final AccountResponse accountResponse = new ObjectMapper().readValue(body, AccountResponse.class);
         return accountResponse.getPuuid();
     }
 
-    private String[] getMatchIds(String puuid) throws URISyntaxException, IOException, InterruptedException {
+    private String[] getMatchIds(String puuid, String consistentRiotApiKey) throws URISyntaxException, IOException, InterruptedException {
         final URI uri = new URI(
                 String.format("https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d",
                         riotConfig.getRegionMatch(), puuid, riotConfig.getMatchAmount()));
-        final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", riotConfig.getRiotApiKey()).build();
+        final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey).build();
         final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
         return new ObjectMapper().readValue(response.body(), String[].class);
     }
 
-    private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName) {
+    private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName, String consistentRiotApiKey) {
         final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
-        final String consistentRiotApiKey = this.riotConfig.getRiotApiKey();
         for (final String matchId : matchIds) {
             URI uri;
             try {
