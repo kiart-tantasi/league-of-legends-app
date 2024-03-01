@@ -46,9 +46,7 @@ export default function MatchPage() {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (
-      [gameName, tagLine].some((e) => typeof e !== 'string' || e.length === 0)
-    ) {
+    if ([gameName, tagLine].some((e) => !e)) {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
       return
     }
