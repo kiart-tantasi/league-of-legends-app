@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,6 +28,9 @@ public class UserFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            if (shouldSkipFilter(request)) {
+                return;
+            }
             final Map<String, String> cookiesMap = initCookiesMap(request);
             String userId = getCookie(cookiesMap, USER_ID_COOKIE_NAME);
             if (userId == null) {
@@ -67,5 +71,9 @@ public class UserFilter extends OncePerRequestFilter {
         expireMonth = Math.max(expireMonth, 1);
         cookie.setMaxAge(60 * 60 * 24 * 30 * expireMonth);
         return cookie;
+    }
+
+    private boolean shouldSkipFilter(HttpServletRequest request) {
+        return !Pattern.compile("^/api/v1/").matcher(request.getRequestURI()).find();
     }
 }
