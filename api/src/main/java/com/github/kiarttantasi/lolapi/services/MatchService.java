@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
@@ -28,19 +27,18 @@ import java.util.concurrent.*;
 @Service
 @Slf4j
 public class MatchService {
-
     private static final Charset ENCODING_CHARSET = StandardCharsets.UTF_8;
-    private static final HttpResponse.BodyHandler<String> BODYHANDLER = HttpResponse.BodyHandlers.ofString();
-
+    private final ApiService apiService;
     private final RiotConfig riotConfig;
 
-    public MatchService(RiotConfig riotConfig) {
+    public MatchService(RiotConfig riotConfig, ApiService apiService) {
         this.riotConfig = riotConfig;
+        this.apiService = apiService;
     }
 
     public List<MatchDetailV1> getMatches(String gameName, String tagLine)
             throws URISyntaxException, IOException, InterruptedException {
-        final String consistentRiotApiKey = this.riotConfig.getRiotApiKey(); // to use same key for all requests
+        final String consistentRiotApiKey = this.riotConfig.getRiotApiKey();
         final String puuid = getPuuid(gameName, tagLine, consistentRiotApiKey);
         final String[] matchIds = getMatchIds(puuid, consistentRiotApiKey);
         return getMatchDetailV1List(matchIds, gameName, consistentRiotApiKey);
@@ -53,9 +51,8 @@ public class MatchService {
                 String.format("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", riotConfig.getRegionAccount(),
                         encodedGameName, tagLine));
         final HttpRequest request = HttpRequest.newBuilder().uri(uriAccount).header("X-Riot-Token", consistentRiotApiKey).build();
-        final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
-        final String body = response.body();
-        final AccountResponse accountResponse = new ObjectMapper().readValue(body, AccountResponse.class);
+        final AccountResponse accountResponse = apiService.send(request, AccountResponse.class);
+
         return accountResponse.getPuuid();
     }
 
@@ -64,37 +61,32 @@ public class MatchService {
                 String.format("https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d",
                         riotConfig.getRegionMatch(), puuid, riotConfig.getMatchAmount()));
         final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey).build();
-        final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
-        return new ObjectMapper().readValue(response.body(), String[].class);
+        return apiService.send(request, String[].class);
     }
 
     private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName, String consistentRiotApiKey) {
         final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
         for (final String matchId : matchIds) {
-            URI uri;
             try {
-                uri = new URI(
+                final URI uri = new URI(
                         String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s", riotConfig.getRegionMatch(), matchId));
                 final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey)
                         .build();
-                completables.add(HttpClient.newHttpClient().sendAsync(request, BODYHANDLER));
+                completables.add(apiService.sendAsync(request));
             } catch (URISyntaxException e) {
                 log.error(e.getMessage());
             }
         }
-        return mapMatchDetailList(completables, gameName);
+        return getMatchDetailV1ListHelper(completables, gameName);
     }
 
-    // TODO: break-down this method (especially at double-try-catch-scope) for less complexity
-    private List<MatchDetailV1> mapMatchDetailList(List<CompletableFuture<HttpResponse<String>>> completables,
-                                                   String gameName) {
+    private List<MatchDetailV1> getMatchDetailV1ListHelper(List<CompletableFuture<HttpResponse<String>>> completables, String gameName) {
         final List<MatchDetailV1> matchDetails = new ArrayList<>();
         for (final CompletableFuture<HttpResponse<String>> completable : completables) {
             try {
-                final MatchDetailResponse response = new ObjectMapper().readValue(completable.get().body(),
-                        MatchDetailResponse.class);
+                final MatchDetailResponse response = new ObjectMapper().readValue(completable.get().body(), MatchDetailResponse.class);
                 final List<ParticipantV1> participants = new ArrayList<>();
-                ParticipantV1 user = null;
+                ParticipantV1 self = null;
                 for (Participant parti : response.getInfo().getParticipants()) {
                     try {
                         final ParticipantV1 newParti = ParticipantV1.builder().gameName(parti.getRiotIdGameName())
@@ -103,19 +95,18 @@ public class MatchService {
                                 .win(parti.getWin()).itemIds(parti.getItemIds()).build();
                         participants.add(newParti);
                         if (parti.getRiotIdGameName().equals(gameName)) {
-                            user = newParti;
+                            self = newParti;
                         }
                     } catch (Exception e) {
                         log.error(e.getMessage());
                     }
                 }
-                if (user == null) {
-                    continue;
+                if (self != null) {
+                    matchDetails.add(MatchDetailV1.builder().championName(self.getChampionName()).kills(self.getKills())
+                            .deaths(self.getDeaths()).assists(self.getAssists()).win(self.getWin())
+                            .gameMode(response.getInfo().getGameMode()).gameCreation(response.getInfo().getGameCreation())
+                            .participantList(participants).itemIds(self.getItemIds()).build());
                 }
-                matchDetails.add(MatchDetailV1.builder().championName(user.getChampionName()).kills(user.getKills())
-                        .deaths(user.getDeaths()).assists(user.getAssists()).win(user.getWin())
-                        .gameMode(response.getInfo().getGameMode()).gameCreation(response.getInfo().getGameCreation())
-                        .participantList(participants).itemIds(user.getItemIds()).build());
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
