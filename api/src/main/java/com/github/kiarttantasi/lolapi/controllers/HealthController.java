@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/health")
 public class HealthController {
-    @GetMapping
-    public ResponseEntity<Integer> getHealth() {
-        return ResponseEntity.ok().build();
-    }
+  @GetMapping
+  public ResponseEntity<Integer> getHealth() {
+    return ResponseEntity.ok().build();
+  }
 
-    @PostMapping
-    public ResponseEntity<String> postHealth() {
-        return ResponseEntity.badRequest().build();
-    }
+  @PostMapping
+  public ResponseEntity<String> postHealth() {
+    return ResponseEntity.badRequest().build();
+  }
 }
