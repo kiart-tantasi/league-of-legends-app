@@ -28,7 +28,7 @@ public class MatchHistoryControllerTest {
 
     @Test
     public void getMatchesOkNonEmptyList() throws Exception {
-        final List<MatchDetailV1> matchesMock = new ArrayList<>(Collections.singletonList(getMatchMock()));
+        final List<MatchDetailV1> matchesMock = new ArrayList<>(Collections.singletonList(mockMatch()));
         when(matchService.getMatches(any(), any())).thenReturn(matchesMock);
         mockMvc.perform(get("/api/v1/matches?gameName=foo&tagLine=bar")).andExpect(status().isOk());
     }
@@ -51,7 +51,7 @@ public class MatchHistoryControllerTest {
         mockMvc.perform(get("/api/v1/matches")).andExpect(status().isBadRequest());
     }
 
-    private MatchDetailV1 getMatchMock() {
+    private MatchDetailV1 mockMatch() {
         return MatchDetailV1.builder()
                 .championName("MOCK").
                 kills(1).
