@@ -1,7 +1,11 @@
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import MatchContext from '../contexts/MatchContext'
 import { Link, useSearchParams } from 'react-router-dom'
-import { validateSearchInputs, warnUser } from './../utils/search'
+import {
+  handleTagLine,
+  validateSearchInputs,
+  warnUser,
+} from './../utils/search'
 import Layout from '../components/Layout'
 import { IMatch, Participant } from '../models/match'
 import getMatchDetailList from '../api/getMatchDetailList'
@@ -52,7 +56,7 @@ export default function MatchPage() {
     }
     setSearchParams({
       gameName,
-      tagLine,
+      tagLine: handleTagLine({ tagLine }),
     })
   }
 

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { validateSearchInputs, warnUser } from '../utils/search'
+import { handleTagLine, validateSearchInputs, warnUser } from '../utils/search'
 import Layout from '../components/Layout'
 
 export default function SearchPage() {
@@ -14,7 +14,9 @@ export default function SearchPage() {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
       return
     }
-    navigate(`/match?gameName=${gameName}&tagLine=${tagLine.replace('#', '')}`)
+    navigate(
+      `/match?gameName=${gameName}&tagLine=${handleTagLine({ tagLine })}`,
+    )
   }
 
   return (
