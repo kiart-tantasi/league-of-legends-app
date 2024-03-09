@@ -35,13 +35,12 @@ public class MatchService {
 
   public List<MatchDetailV1> getMatches(String gameName, String tagLine)
       throws URISyntaxException, IOException, InterruptedException {
-    final String consistentRiotApiKey = this.riotConfig.getRiotApiKey();
-    final String puuid = getPuuid(gameName, tagLine, consistentRiotApiKey);
-    final String[] matchIds = getMatchIds(puuid, consistentRiotApiKey);
-    return getMatchDetailV1List(matchIds, gameName, consistentRiotApiKey);
+    final String puuid = getPuuid(gameName, tagLine);
+    final String[] matchIds = getMatchIds(puuid);
+    return getMatchDetailV1List(matchIds, gameName);
   }
 
-  private String getPuuid(String gameName, String tagLine, String consistentRiotApiKey)
+  private String getPuuid(String gameName, String tagLine)
       throws URISyntaxException, IOException, InterruptedException {
     final String encodedGameName = URLEncoder.encode(gameName, ENCODING_CHARSET);
     final URI uriAccount = new URI(
@@ -49,26 +48,27 @@ public class MatchService {
             riotConfig.getRegionAccount(),
             encodedGameName, tagLine));
     final HttpRequest request =
-        HttpRequest.newBuilder().uri(uriAccount).header("X-Riot-Token", consistentRiotApiKey)
+        HttpRequest.newBuilder().uri(uriAccount)
+            .header("X-Riot-Token", this.riotConfig.getRiotApiKey())
             .build();
     final AccountResponse accountResponse = apiService.send(request, AccountResponse.class);
 
     return accountResponse.getPuuid();
   }
 
-  private String[] getMatchIds(String puuid, String consistentRiotApiKey)
+  private String[] getMatchIds(String puuid)
       throws URISyntaxException, IOException, InterruptedException {
     final URI uri = new URI(
         String.format(
             "https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d",
             riotConfig.getRegionMatch(), puuid, riotConfig.getMatchAmount()));
     final HttpRequest request =
-        HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey).build();
+        HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", this.riotConfig.getRiotApiKey())
+            .build();
     return apiService.send(request, String[].class);
   }
 
-  private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName,
-                                                   String consistentRiotApiKey) {
+  private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName) {
     final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
     for (final String matchId : matchIds) {
       try {
@@ -76,7 +76,8 @@ public class MatchService {
             String.format("https://%s.api.riotgames.com/lol/match/v5/matches/%s",
                 riotConfig.getRegionMatch(), matchId));
         final HttpRequest request =
-            HttpRequest.newBuilder().uri(uri).header("X-Riot-Token", consistentRiotApiKey)
+            HttpRequest.newBuilder().uri(uri)
+                .header("X-Riot-Token", this.riotConfig.getRiotApiKey())
                 .build();
         completables.add(apiService.sendAsync(request));
       } catch (URISyntaxException e) {
