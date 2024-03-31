@@ -98,32 +98,47 @@ export default function MatchPage() {
           {paramGameName} #{paramTagLine}
         </div>
         {matches.map((match, index) => (
-          <MatchCard match={match} key={`match-detail-${index}`} />
+          <MatchCard
+            match={match}
+            key={`match-detail-${index}`}
+            shouldLazy={index > 3}
+          />
         ))}
       </div>
     </Layout>
   )
 }
 
-function MatchCard({ match }: { match: IMatch }) {
+function MatchCard({
+  match,
+  shouldLazy,
+}: {
+  match: IMatch
+  shouldLazy: boolean
+}) {
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className="mb-1">
+    <>
       <div
-        className={`p-2 ${backgroundColor} ${
+        className={`p-2 mb-1 ${backgroundColor} ${
           isOpen ? 'border-b border-b-gray-300' : ''
         }`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex flex-row justify-between">
           <div className="flex">
-            <ChampionImage championName={match.championName} size={Size.BIG} />
+            <ChampionImage
+              championName={match.championName}
+              size={Size.BIG}
+              shouldLazy={shouldLazy}
+            />
             <div className="flex ml-1">
               {match.itemIds.map((itemId) => (
                 <ItemImage
                   itemId={itemId}
                   size={Size.BIG}
+                  shouldLazy={shouldLazy}
                   key={`item-id-${itemId}-match-${match.gameCreation}`}
                 />
               ))}
@@ -131,7 +146,7 @@ function MatchCard({ match }: { match: IMatch }) {
           </div>
           <p>{`${match.kills}/${match.deaths}/${match.assists}`}</p>
         </div>
-        <p className="text-[0.7rem]">{match.gameMode}</p>
+        <p className="text-[0.7rem] mt-10">{match.gameMode}</p>
         <div className="flex justify-between">
           <p className="text-[0.55rem]">
             {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
@@ -148,7 +163,7 @@ function MatchCard({ match }: { match: IMatch }) {
           ))}
         </div>
       )}
-    </div>
+    </>
   )
 }
 
@@ -168,12 +183,14 @@ function ParticipantCard({ parti }: { parti: Participant }) {
             <ChampionImage
               championName={parti.championName}
               size={Size.SMALL}
+              shouldLazy={false}
             />
             <div className="flex ml-1">
               {parti.itemIds.map((itemId) => (
                 <ItemImage
                   itemId={itemId}
                   size={Size.SMALL}
+                  shouldLazy={false}
                   key={`item-id-${itemId}-match-${parti.tagLine}`}
                 />
               ))}
@@ -192,9 +209,11 @@ function ParticipantCard({ parti }: { parti: Participant }) {
 function ChampionImage({
   championName,
   size,
+  shouldLazy,
 }: {
   championName: string
   size: Size
+  shouldLazy: boolean
 }) {
   const [isError, setIsError] = useState(false)
   const widthHeightClass =
@@ -208,12 +227,20 @@ function ChampionImage({
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`}
       alt={`${championName}`}
       onError={() => setIsError(true)}
-      loading="lazy"
+      loading={shouldLazy ? 'lazy' : 'eager'}
     />
   )
 }
 
-function ItemImage({ itemId, size }: { itemId: number; size: Size }) {
+function ItemImage({
+  itemId,
+  size,
+  shouldLazy,
+}: {
+  itemId: number
+  size: Size
+  shouldLazy: boolean
+}) {
   const [isError, setIsError] = useState(false)
   const widthHeightClass =
     size === Size.BIG ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6 md:w-8 md:h-8'
@@ -226,7 +253,7 @@ function ItemImage({ itemId, size }: { itemId: number; size: Size }) {
       src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/item/${itemId}.png`}
       alt={`league of legends item id ${itemId}`}
       onError={() => setIsError(true)}
-      loading="lazy"
+      loading={shouldLazy ? 'lazy' : 'eager'}
     />
   )
 }
