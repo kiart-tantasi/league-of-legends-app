@@ -146,7 +146,7 @@ function MatchCard({
           </div>
           <p>{`${match.kills}/${match.deaths}/${match.assists}`}</p>
         </div>
-        <p className="text-[0.7rem] mt-10">{match.gameMode}</p>
+        <p className="text-[0.7rem] mt-6">{match.gameMode}</p>
         <div className="flex justify-between">
           <p className="text-[0.55rem]">
             {new Date(match.gameCreation).toLocaleDateString('pt-PT')}
@@ -157,7 +157,7 @@ function MatchCard({
         </div>
       </div>
       {isOpen && (
-        <div className="pr-2">
+        <div className="pr-4 mb-4">
           {match.participantList.map((parti, index) => (
             <ParticipantCard parti={parti} key={`participant-${index}`} />
           ))}
@@ -217,7 +217,7 @@ function ChampionImage({
 }) {
   const [isError, setIsError] = useState(false)
   const widthHeightClass =
-    size === Size.BIG ? `w-10 h-10 md:w-12 md:h-12` : 'w-7 h-7 md:w-9 md:h-9'
+    size === Size.BIG ? `w-12 h-12 md:w-12 md:h-12` : 'w-10 h-10 md:w-9 md:h-9'
   if (isError) {
     return <div className={widthHeightClass} />
   }
@@ -243,7 +243,7 @@ function ItemImage({
 }) {
   const [isError, setIsError] = useState(false)
   const widthHeightClass =
-    size === Size.BIG ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6 md:w-8 md:h-8'
+    size === Size.BIG ? 'w-9 h-9 md:w-10 md:h-10' : 'w-8 h-8 md:w-8 md:h-8'
   if (isError) {
     return <div className={widthHeightClass} />
   }
