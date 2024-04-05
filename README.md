@@ -22,7 +22,7 @@ REACT_APP_IS_MOCK=true # replace fetching api with mocks
 
 ## API
 
-`api/src/main/resources/application-local.properties`
+`api/src/main/resources/application*.properties`
 
 ```
 # required
