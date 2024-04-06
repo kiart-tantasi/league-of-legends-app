@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models.RiotResponse;
+package com.github.kiarttantasi.lolapi.models.riot;
 
 import lombok.Getter;
 import lombok.Setter;

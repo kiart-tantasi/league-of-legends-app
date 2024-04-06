@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.github.kiarttantasi.lolapi.configurations.RiotConfig;
-import com.github.kiarttantasi.lolapi.models.RiotResponse.AccountResponse;
+import com.github.kiarttantasi.lolapi.models.riot.AccountResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,9 +24,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-/**
- * MatchService Unit-testing.
- */
 @ExtendWith(MockitoExtension.class)
 public class MatchServiceTest {
 
@@ -39,9 +36,6 @@ public class MatchServiceTest {
   @Mock
   private ApiService apiService;
 
-  /**
-   * Set-up mocks.
-   */
   @BeforeEach
   public void beforeEach() {
     when(riotConfig.getRiotApiKey()).thenReturn("mock");
