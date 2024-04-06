@@ -2,11 +2,11 @@ package com.github.kiarttantasi.lolapi.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kiarttantasi.lolapi.configurations.RiotConfig;
-import com.github.kiarttantasi.lolapi.models.Response.MatchDetailV1;
-import com.github.kiarttantasi.lolapi.models.Response.ParticipantV1;
-import com.github.kiarttantasi.lolapi.models.RiotResponse.AccountResponse;
-import com.github.kiarttantasi.lolapi.models.RiotResponse.MatchDetailResponse;
-import com.github.kiarttantasi.lolapi.models.RiotResponse.Participant;
+import com.github.kiarttantasi.lolapi.models.response.MatchDetailV1;
+import com.github.kiarttantasi.lolapi.models.response.ParticipantV1;
+import com.github.kiarttantasi.lolapi.models.riot.AccountResponse;
+import com.github.kiarttantasi.lolapi.models.riot.MatchDetailResponse;
+import com.github.kiarttantasi.lolapi.models.riot.Participant;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
