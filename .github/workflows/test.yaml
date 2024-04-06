@@ -1,7 +1,6 @@
-name: Test
+name: Test on Push
 on:
   push:
-  pull_request:
 
 jobs:
   client:
@@ -10,22 +9,22 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: client
-      - name: Move files
-        run: mv ./client/* .
       - name: Set up Nodejs
         uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
         run: npm install
+        working-directory: client
       - name: Lint
         run: npm run lint
+        working-directory: client
       - name: Test
         run: npm test
+        working-directory: client
       - name: Build
         run: npm run build
+        working-directory: client
 
   api:
     name: API
@@ -33,14 +32,17 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: api
-      - name: Move files
-        run: mv ./api/* .
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: "corretto"
           java-version: "17"
+      - name: Run Checkstyle # TODO: install SpotBugs
+        run: ./gradlew check
+        working-directory: api
+      - name: Test
+        run: ./gradlew test
+        working-directory: api
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew clean assemble
+        working-directory: api
