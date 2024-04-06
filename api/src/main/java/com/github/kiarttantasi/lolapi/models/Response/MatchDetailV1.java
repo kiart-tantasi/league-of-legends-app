@@ -1,5 +1,6 @@
 package com.github.kiarttantasi.lolapi.models.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +17,11 @@ public class MatchDetailV1 {
   private final Long gameCreation;
   private final List<ParticipantV1> participantList;
   private final List<Integer> itemIds;
+
+  public List<ParticipantV1> getParticipantList() {
+    return new ArrayList<>(participantList);
+  }
+  public List<Integer> getItemIds() {
+    return new ArrayList<>(itemIds);
+  }
 }
