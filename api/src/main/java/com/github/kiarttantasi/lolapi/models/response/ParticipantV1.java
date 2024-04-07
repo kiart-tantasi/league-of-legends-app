@@ -32,7 +32,7 @@ public class ParticipantV1 {
     this.deaths = deaths;
     this.assists = assists;
     this.win = win;
-    this.itemIds = new ArrayList<>(this.getItemIds());
+    this.itemIds = new ArrayList<>(itemIds);
   }
 
   public List<Integer> getItemIds() {
