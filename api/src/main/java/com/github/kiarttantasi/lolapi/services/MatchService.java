@@ -35,7 +35,7 @@ public class MatchService {
 
   public List<MatchDetailV1> getMatches(String gameName, String tagLine)
       throws URISyntaxException, IOException, InterruptedException {
-    final String puuid = getPuuid(gameName, tagLine);
+    final String puuid = getPuuid(gameName, tagLine); // TODO: handle cannot find a user (404)
     final String[] matchIds = getMatchIds(puuid);
     return getMatchDetailV1List(matchIds, gameName);
   }
@@ -98,11 +98,16 @@ public class MatchService {
         ParticipantV1 self = null;
         for (Participant parti : response.getInfo().getParticipants()) {
           try {
-            final ParticipantV1 newParti =
-                ParticipantV1.builder().gameName(parti.getRiotIdGameName())
-                    .tagLine(parti.getRiotIdTagline()).championName(parti.getChampionName())
-                    .kills(parti.getKills()).deaths(parti.getDeaths()).assists(parti.getAssists())
-                    .win(parti.getWin()).itemIds(parti.getItemIds()).build();
+            final ParticipantV1 newParti = new ParticipantV1(
+                parti.getRiotIdGameName(),
+                parti.getRiotIdTagline(),
+                parti.getChampionName(),
+                parti.getKills(),
+                parti.getDeaths(),
+                parti.getAssists(),
+                parti.getWin(),
+                parti.getItemIds()
+            );
             participants.add(newParti);
             if (parti.getRiotIdGameName().equals(gameName)) {
               self = newParti;
@@ -113,11 +118,17 @@ public class MatchService {
         }
         if (self != null) {
           matchDetails.add(
-              MatchDetailV1.builder().championName(self.getChampionName()).kills(self.getKills())
-                  .deaths(self.getDeaths()).assists(self.getAssists()).win(self.getWin())
-                  .gameMode(response.getInfo().getGameMode())
-                  .gameCreation(response.getInfo().getGameCreation())
-                  .participantList(participants).itemIds(self.getItemIds()).build());
+              new MatchDetailV1(
+                  self.getChampionName(),
+                  self.getKills(),
+                  self.getDeaths(),
+                  self.getAssists(),
+                  self.getWin(),
+                  response.getInfo().getGameMode(),
+                  response.getInfo().getGameCreation(),
+                  participants,
+                  self.getItemIds()
+              ));
         }
       } catch (Exception e) {
         log.error(e.getMessage());

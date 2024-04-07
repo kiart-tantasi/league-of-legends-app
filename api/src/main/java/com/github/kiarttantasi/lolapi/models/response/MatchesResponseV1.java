@@ -1,11 +1,15 @@
 package com.github.kiarttantasi.lolapi.models.response;
 
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
-public class MatchesResponseV1 {
-  private final List<MatchDetailV1> matchDetailList;
+public record MatchesResponseV1(List<MatchDetailV1> matchDetailList) {
+  public MatchesResponseV1(List<MatchDetailV1> matchDetailList) {
+    this.matchDetailList = new ArrayList<>(matchDetailList);
+  }
+
+  @Override
+  public List<MatchDetailV1> matchDetailList() {
+    return new ArrayList<>(this.matchDetailList);
+  }
 }

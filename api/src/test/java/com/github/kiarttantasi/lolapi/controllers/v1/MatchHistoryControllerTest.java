@@ -52,8 +52,16 @@ public class MatchHistoryControllerTest {
   }
 
   private MatchDetailV1 mockMatch() {
-    return MatchDetailV1.builder().championName("MOCK").kills(1).assists(2).deaths(3).win(true)
-        .gameMode("MOCK").gameCreation(123L).participantList(new ArrayList<>())
-        .itemIds(new ArrayList<>()).build();
+    return new MatchDetailV1(
+        "MOCK",
+        1,
+        2,
+        3,
+        true,
+        "MOCK",
+        123L,
+        new ArrayList<>(),
+        new ArrayList<>()
+    );
   }
 }
