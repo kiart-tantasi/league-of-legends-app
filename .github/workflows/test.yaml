@@ -4,7 +4,6 @@ on:
 
 jobs:
   client:
-    name: Client
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
@@ -27,7 +26,6 @@ jobs:
         working-directory: client
 
   api:
-    name: API
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout

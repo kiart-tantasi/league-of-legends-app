@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models.RiotResponse;
+package com.github.kiarttantasi.lolapi.models.riot.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

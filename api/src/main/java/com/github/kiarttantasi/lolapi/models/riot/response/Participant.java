@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models.RiotResponse;
+package com.github.kiarttantasi.lolapi.models.riot.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ public class Participant {
   private Integer item4;
   private Integer item5;
   private Integer item6;
-  private String TestdaDoeNdsadas;
 
   public List<Integer> getItemIds() {
     final List<Integer> list = new ArrayList<>();

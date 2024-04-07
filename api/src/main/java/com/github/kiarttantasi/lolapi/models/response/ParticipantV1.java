@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models.Response;
+package com.github.kiarttantasi.lolapi.models.response;
 
 import java.util.List;
 import lombok.Builder;
