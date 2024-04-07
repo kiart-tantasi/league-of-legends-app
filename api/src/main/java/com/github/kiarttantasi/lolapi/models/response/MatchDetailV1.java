@@ -16,7 +16,6 @@ public class MatchDetailV1 {
   private final List<ParticipantV1> participantList;
   private final List<Integer> itemIds;
 
-  // not use builder and all-args annotation to prevent exposing internal rep
   public MatchDetailV1(
       String championName,
       Integer kills,

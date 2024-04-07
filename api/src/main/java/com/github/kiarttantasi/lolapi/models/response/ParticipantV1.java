@@ -15,7 +15,6 @@ public class ParticipantV1 {
   private final Boolean win;
   private final List<Integer> itemIds;
 
-  // prevent exposing internal rep
   public ParticipantV1(String gameName,
                        String tagLine,
                        String championName,
