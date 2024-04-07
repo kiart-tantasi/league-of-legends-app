@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -37,7 +38,9 @@ public class UserFilter extends OncePerRequestFilter {
         userId = UUID.randomUUID().toString();
         response.addCookie(createCookie(USER_ID_COOKIE_NAME, userId, true, true, 3));
       }
+      log.info("===================================================");
       log.info("user id: " + userId);
+      logHeaders(request);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     } finally {
@@ -77,5 +80,14 @@ public class UserFilter extends OncePerRequestFilter {
 
   private boolean shouldSkipFilter(HttpServletRequest request) {
     return !Pattern.compile("^/api/v1/").matcher(request.getRequestURI()).find();
+  }
+
+  private void logHeaders(HttpServletRequest request) {
+    if (request.getHeaderNames() == null) {
+      return;
+    }
+    Collections.list(request.getHeaderNames()).forEach(headerName -> {
+      log.info(headerName + ": " + request.getHeader(headerName));
+    });
   }
 }
