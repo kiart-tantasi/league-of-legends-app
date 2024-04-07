@@ -27,9 +27,6 @@ public class MatchHistoryController {
                                                       @RequestParam String tagLine) {
     try {
       final List<MatchDetailV1> matches = matchService.getMatches(gameName, tagLine);
-      if (matches == null) {
-        return ResponseEntity.notFound().build();
-      }
       return ResponseEntity.ok().body(new MatchesResponseV1(matches));
     } catch (Exception e) {
       log.error(e.getMessage(), e);

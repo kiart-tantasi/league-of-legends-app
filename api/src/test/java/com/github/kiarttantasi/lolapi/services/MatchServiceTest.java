@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.github.kiarttantasi.lolapi.configurations.RiotConfig;
-import com.github.kiarttantasi.lolapi.models.riot.AccountResponse;
+import com.github.kiarttantasi.lolapi.models.riot.response.AccountResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
