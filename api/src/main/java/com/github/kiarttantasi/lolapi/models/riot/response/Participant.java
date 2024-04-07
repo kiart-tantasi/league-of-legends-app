@@ -1,4 +1,4 @@
-package com.github.kiarttantasi.lolapi.models.riot;
+package com.github.kiarttantasi.lolapi.models.riot.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
