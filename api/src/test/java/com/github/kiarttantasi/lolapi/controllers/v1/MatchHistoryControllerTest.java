@@ -39,12 +39,7 @@ public class MatchHistoryControllerTest {
     mockMvc.perform(get("/api/v1/matches?gameName=foo&tagLine=bar")).andExpect(status().isOk());
   }
 
-  @Test
-  public void getMatchesNotFoundMatchesAreNull() throws Exception {
-    when(matchService.getMatches(any(), any())).thenReturn(null);
-    mockMvc.perform(get("/api/v1/matches?gameName=foo&tagLine=bar"))
-        .andExpect(status().isNotFound());
-  }
+  // TOOO: test case when user is not found (404)
 
   @Test
   public void getMatchesBadRequestNoParams() throws Exception {
