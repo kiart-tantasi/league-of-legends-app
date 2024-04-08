@@ -3,24 +3,19 @@ package com.github.kiarttantasi.lolapi.models.riot.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
-import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-@Setter
 public class MatchInfo {
   private Participant[] participants;
   private String gameMode;
   private Long gameCreation;
 
+  @SuppressFBWarnings // to suppress "M C NP: Read of unwritten field"
   public Participant[] getParticipants() {
     return this.participants.clone();
-  }
-
-  public void setParticipants(Participant[] participants) {
-    this.participants = Arrays.copyOf(participants, participants.length);
   }
 
   public MatchInfo deepClone() {
