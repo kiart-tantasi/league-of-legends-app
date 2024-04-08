@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { handleTagLine, validateSearchInputs, warnUser } from '../utils/search'
 import Layout from '../components/Layout'
+import { searchPlaceholder } from '../configs/placeholder'
 
 export default function SearchPage() {
   const [gameName, setGameName] = useState('')
@@ -31,7 +32,7 @@ export default function SearchPage() {
             onChange={(e) => setGameName(e.target.value)}
             type="text"
             name="gameName"
-            placeholder="ชื่อในเกม"
+            placeholder={searchPlaceholder.gameName}
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
           />
           <input
@@ -41,7 +42,7 @@ export default function SearchPage() {
             }}
             type="text"
             name="tagLine"
-            placeholder="#1234"
+            placeholder={searchPlaceholder.tagLine}
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
           />
           <button className="bg-white rounded p-1 text-[14px]" type="submit">

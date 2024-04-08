@@ -10,6 +10,7 @@ import Layout from '../components/Layout'
 import { IMatch, Participant } from '../models/match'
 import getMatchDetailList from '../api/getMatchDetailList'
 import { Size } from '../constants/common'
+import { searchPlaceholder } from '../configs/placeholder'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -78,14 +79,14 @@ export default function MatchPage() {
             <input
               value={gameName}
               onChange={(e) => setGameName(e.target.value)}
-              placeholder="ชื่อในเกม"
+              placeholder={searchPlaceholder.gameName}
               type="text"
               className="text-right mb-2"
             />
             <input
               value={tagLine}
               onChange={(e) => setTagLine(e.target.value)}
-              placeholder="#1234"
+              placeholder={searchPlaceholder.tagLine}
               type="text"
               className="text-right mb-2"
             />
