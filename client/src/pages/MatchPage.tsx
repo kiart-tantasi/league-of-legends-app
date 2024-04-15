@@ -11,6 +11,7 @@ import { IMatch, Participant } from '../models/match'
 import getMatchDetailList from '../api/getMatchDetailList'
 import { Size } from '../constants/common'
 import { searchPlaceholder } from '../configs/placeholder'
+import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay'
 
 const PRIORITIZED_CARD_AMOUNT = 4
 
@@ -222,15 +223,6 @@ function ParticipantCard({ parti }: { parti: Participant }) {
   )
 }
 
-function LoadingOverlay() {
-  return (
-    <div className="fixed top-0 left-0 h-full w-full bg-white">
-      <Layout>
-        <div className="text-center pt-[200px]">กำลังโหลด...</div>
-      </Layout>
-    </div>
-  )
-}
 function ChampionImage({
   championName,
   size,
