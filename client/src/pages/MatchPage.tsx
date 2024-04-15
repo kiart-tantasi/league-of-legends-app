@@ -247,10 +247,10 @@ function ChampionImage({
       alt={`${championName}`}
       onError={() => {
         setIsError(true)
-        onImageLoaded && onImageLoaded()
+        !shouldLazy && onImageLoaded && onImageLoaded()
       }}
       onLoad={() => {
-        onImageLoaded && onImageLoaded()
+        !shouldLazy && onImageLoaded && onImageLoaded()
       }}
       loading={shouldLazy ? 'lazy' : 'eager'}
     />
