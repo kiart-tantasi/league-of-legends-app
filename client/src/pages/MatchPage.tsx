@@ -11,6 +11,7 @@ import { IMatch, Participant } from '../models/match'
 import getMatchDetailList from '../api/getMatchDetailList'
 import { Size } from '../constants/common'
 import { searchPlaceholder } from '../configs/placeholder'
+import { handleChamionImageName as handleImageName } from '../utils/image'
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -225,7 +226,9 @@ function ChampionImage({
   return (
     <img
       className={widthHeightClass}
-      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`}
+      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${handleImageName(
+        championName,
+      )}.png`}
       alt={`${championName}`}
       onError={() => setIsError(true)}
       loading={shouldLazy ? 'lazy' : 'eager'}
