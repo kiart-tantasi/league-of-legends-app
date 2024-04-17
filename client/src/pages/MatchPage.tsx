@@ -12,6 +12,9 @@ import getMatchDetailList from '../api/getMatchDetailList'
 import { Size } from '../constants/common'
 import { searchPlaceholder } from '../configs/placeholder'
 import { handleChamionImageName as handleImageName } from '../utils/image'
+import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay'
+
+const PRIORITIZED_CARD_AMOUNT = 4
 
 export default function MatchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -21,6 +24,11 @@ export default function MatchPage() {
   const [tagLine, setTagLine] = useState('')
   const { matches, setMatches } = useContext(MatchContext)
   const [isLoading, setIsLoading] = useState(true)
+  const [imageLoadedCounter, setImageLoadedCounter] = useState(0)
+  // isLoadingV2 considers loading as done when 4 champion-images are also loaded
+  const isLoadingV2 =
+    isLoading ||
+    imageLoadedCounter < Math.min(PRIORITIZED_CARD_AMOUNT, matches.length)
 
   useEffect(() => {
     if (
@@ -34,6 +42,7 @@ export default function MatchPage() {
     ;(async () => {
       try {
         setIsLoading(true)
+        setImageLoadedCounter(0)
         const { matchDetailList, status } = await getMatchDetailList({
           paramGameName: paramGameName || '',
           paramTagLine: paramTagLine || '',
@@ -43,6 +52,7 @@ export default function MatchPage() {
         }
         setMatches(matchDetailList)
       } catch (e) {
+        setMatches([])
         console.error(e)
       } finally {
         setIsLoading(false)
@@ -62,61 +72,66 @@ export default function MatchPage() {
     })
   }
 
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="text-center pt-[200px]">กำลังโหลด...</div>
-      </Layout>
-    )
-  }
   return (
-    <Layout>
-      <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">
-        <div className="flex justify-between mb-4">
-          <Link className="p-2 w-fit h-fit mb-4 border" type="button" to="/">
-            หน้าแรก
-          </Link>
-          <form className="flex flex-col w-[150px]" onSubmit={onSubmit}>
-            <input
-              value={gameName}
-              onChange={(e) => setGameName(e.target.value)}
-              placeholder={searchPlaceholder.gameName}
-              type="text"
-              className="text-right mb-2"
-            />
-            <input
-              value={tagLine}
-              onChange={(e) => setTagLine(e.target.value)}
-              placeholder={searchPlaceholder.tagLine}
-              type="text"
-              className="text-right mb-2"
-            />
-            <button type="submit" className="border">
-              ดู match history
-            </button>
-          </form>
+    <>
+      {isLoadingV2 && <LoadingOverlay />}
+      <Layout>
+        <div className="flex flex-col justify-center pt-2 w-full max-w-[600px]">
+          <div className="flex justify-between mb-4">
+            <Link className="p-2 w-fit h-fit mb-4 border" type="button" to="/">
+              หน้าแรก
+            </Link>
+            <form className="flex flex-col w-[150px]" onSubmit={onSubmit}>
+              <input
+                value={gameName}
+                onChange={(e) => setGameName(e.target.value)}
+                placeholder={searchPlaceholder.gameName}
+                type="text"
+                className="text-right mb-2"
+              />
+              <input
+                value={tagLine}
+                onChange={(e) => setTagLine(e.target.value)}
+                placeholder={searchPlaceholder.tagLine}
+                type="text"
+                className="text-right mb-2"
+              />
+              <button type="submit" className="border">
+                ดู match history
+              </button>
+            </form>
+          </div>
+          <div className="p-2 bg-gray-200">
+            {paramGameName} #{paramTagLine}
+          </div>
+          {matches.map((match, index) => {
+            const shouldLazy = index > PRIORITIZED_CARD_AMOUNT - 1
+            const countImageLoaded = () => {
+              setImageLoadedCounter((prev) => prev + 1)
+            }
+            return (
+              <MatchCard
+                match={match}
+                key={`match-detail-${index}`}
+                shouldLazy={shouldLazy}
+                onImageLoaded={shouldLazy ? null : countImageLoaded}
+              />
+            )
+          })}
         </div>
-        <div className="p-2 bg-gray-200">
-          {paramGameName} #{paramTagLine}
-        </div>
-        {matches.map((match, index) => (
-          <MatchCard
-            match={match}
-            key={`match-detail-${index}`}
-            shouldLazy={index > 3}
-          />
-        ))}
-      </div>
-    </Layout>
+      </Layout>
+    </>
   )
 }
 
 function MatchCard({
   match,
   shouldLazy,
+  onImageLoaded,
 }: {
   match: IMatch
   shouldLazy: boolean
+  onImageLoaded: (() => void) | null
 }) {
   const backgroundColor = match.win ? 'bg-blue-100' : 'bg-red-100'
   const [isOpen, setIsOpen] = useState(false)
@@ -134,14 +149,15 @@ function MatchCard({
               championName={match.championName}
               size={Size.BIG}
               shouldLazy={shouldLazy}
+              onImageLoaded={onImageLoaded}
             />
             <div className="flex ml-1">
-              {match.itemIds.map((itemId) => (
+              {match.itemIds.map((itemId, index) => (
                 <ItemImage
                   itemId={itemId}
                   size={Size.BIG}
                   shouldLazy={shouldLazy}
-                  key={`item-id-${itemId}-match-${match.gameCreation}`}
+                  key={`match-card-item-id-${itemId}-${index}`}
                 />
               ))}
             </div>
@@ -188,12 +204,12 @@ function ParticipantCard({ parti }: { parti: Participant }) {
               shouldLazy={false}
             />
             <div className="flex ml-1">
-              {parti.itemIds.map((itemId) => (
+              {parti.itemIds.map((itemId, index) => (
                 <ItemImage
                   itemId={itemId}
                   size={Size.SMALL}
                   shouldLazy={false}
-                  key={`item-id-${itemId}-match-${parti.tagLine}`}
+                  key={`participant-card-${parti.gameName}-item-id-${itemId}-${index}`}
                 />
               ))}
             </div>
@@ -212,10 +228,12 @@ function ChampionImage({
   championName,
   size,
   shouldLazy,
+  onImageLoaded,
 }: {
   championName: string
   size: Size
   shouldLazy: boolean
+  onImageLoaded?: (() => void) | null
 }) {
   const [isError, setIsError] = useState(false)
   const widthHeightClass =
@@ -230,7 +248,13 @@ function ChampionImage({
         championName,
       )}.png`}
       alt={`${championName}`}
-      onError={() => setIsError(true)}
+      onError={() => {
+        setIsError(true)
+        !shouldLazy && onImageLoaded && onImageLoaded()
+      }}
+      onLoad={() => {
+        !shouldLazy && onImageLoaded && onImageLoaded()
+      }}
       loading={shouldLazy ? 'lazy' : 'eager'}
     />
   )

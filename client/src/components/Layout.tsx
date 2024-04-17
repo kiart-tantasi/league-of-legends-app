@@ -1,10 +1,12 @@
+import { ReactNode } from 'react'
+
 const TEMP_MAX_WIDTH = 'max-w-[600px]'
 
 export default function Layout({
   children,
   background,
 }: {
-  children: JSX.Element
+  children: ReactNode
   background?: 'BLUE' | 'WHITE'
 }) {
   const backgroundClass = background === 'BLUE' ? 'bg-blue-100' : 'bg-white'
