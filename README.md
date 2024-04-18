@@ -8,6 +8,12 @@
 - Client is made with React
 - API is made with Spring Boot
 
+# Roadmap
+
+- Search suggestion
+- Graph of damage done and recieved
+- Home page improvement
+
 # Environment variables
 
 ## Client
