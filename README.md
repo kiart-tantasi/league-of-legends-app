@@ -5,13 +5,13 @@
 # About project
 
 - This is a simple app to see League of Legends match history
-- Client is made with React
-- API is made with Spring Boot
+- Client is React and API is Spring Boot
 
 # Roadmap
 
+- Migrate spring to golang
 - Search suggestion
-- Graph of damage done and recieved
+- Graph of damage done and recieved (mvp)
 - Home page improvement
 
 # Environment variables
