@@ -1,4 +1,4 @@
-package controllers
+package v1
 
 import (
 	"go-api/services"
@@ -14,7 +14,6 @@ func (matchController *MatchController) GetMatches(w http.ResponseWriter, r *htt
 		http.Error(w, "", 400)
 		return
 	}
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/plain") // omittable
 	w.Write([]byte((&services.MatchService{}).GetMatches("GAME_NAME_MOCK", "TAG_LINE_MOCK")))
-	w.WriteHeader(http.StatusBadRequest)
 }
