@@ -5,6 +5,8 @@
 .idea
 .vscode
 
-# nginx-https
-certificates
-nohup.out
+# go
+
+## build
+go-api/go-api
+

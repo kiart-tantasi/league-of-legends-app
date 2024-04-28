@@ -70,3 +70,8 @@ You need to mark these settings
 # Prevent Builder and Constructor annotation
 
 This project prevents using `@Builder` and `@*Constructor` in some places to prevent exposing internal representation so you will see a lot of manually written constructor
+
+# Go project
+
+Now this project is in progress to migrate API codebase from Spring Boot to Go
+
