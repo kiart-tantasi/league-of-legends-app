@@ -1,34 +1,53 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
+	"go-api/configs"
+	"io"
 	"net/http"
-	"os"
-	"strconv"
 	"strings"
+	"time"
 )
+
+type MatchResponse struct {
+	Puuid string `json:"puuid"`
+}
 
 type MatchService struct{}
 
-func (matchService *MatchService) GetMatches(gameName, tagLine string) string {
-	puuid := getPuuid(gameName, tagLine)
+func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, error) {
+	puuid, err := getPuuid(gameName, tagLine)
+	if err != nil {
+		return "", err
+	}
+	fmt.Println("puuid:", puuid)
 	matchIds := getMatchIds(puuid)
 	matches := getMatches(matchIds)
-	return strings.Join(matches, "-")
+	return strings.Join(matches, "-"), nil
 }
 
-func getPuuid(gameName, tagLine string) string {
-	// TODO: handle config
-	var riotConfig *RiotConfig
-	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", riotConfig.getRegionAccount(), gameName, tagLine)
-	// TODO: add header "X-Riot-Token"
-	if res, err := http.Get(url); err != nil {
-		panic(err)
-	} else {
-		fmt.Println(res.Body)
-		// TODO: parse json
+func getPuuid(gameName, tagLine string) (string, error) {
+	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", (&configs.RiotConfig{}).GetRegionAccount(), gameName, tagLine)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
 	}
-	return ""
+	req.Header.Set("X-Riot-Token", (&configs.RiotConfig{}).GetRiotApiKey())
+	res, err := (getHttpClient()).Do(req)
+	if err != nil {
+		return "", err
+	}
+	jsonBytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+	var matchResponse MatchResponse
+	err = json.Unmarshal(jsonBytes, &matchResponse)
+	if err != nil {
+		return "", err
+	}
+	return matchResponse.Puuid, nil
 }
 
 func getMatchIds(puuid string) []string {
@@ -36,28 +55,12 @@ func getMatchIds(puuid string) []string {
 }
 
 func getMatches(matchIds []string) []string {
-	for matchId := range matchIds {
-		fmt.Println("matchId:", matchId)
-	}
 	return matchIds
 }
 
-// riot config
-type RiotConfig struct{}
-
-func (*RiotConfig) getRiotApiKey() string {
-	return os.Getenv("RIOT_API_KEY")
-}
-func (*RiotConfig) getRegionAccount() string {
-	return os.Getenv("RIOT_API_REGION_ACCOUNT")
-}
-func (*RiotConfig) getRegionMatch() string {
-	return os.Getenv("RIOT_API_REGION_MATCH")
-}
-func (*RiotConfig) getMatchAmount() int {
-	if matchAmount, err := strconv.Atoi(os.Getenv("RIOT_MATCH_AMOUNT")); err != nil {
-		panic("RIOT_MATCH_AMOUNT is not set properly")
-	} else {
-		return matchAmount
+func getHttpClient() *http.Client {
+	client := http.Client{
+		Timeout: time.Duration(5000 * time.Millisecond),
 	}
+	return &client
 }
