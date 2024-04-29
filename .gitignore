@@ -10,3 +10,5 @@
 ## build
 go-api/go-api
 
+## env
+.env.production
