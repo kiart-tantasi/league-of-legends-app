@@ -15,5 +15,9 @@ func (matchController *MatchController) GetMatches(w http.ResponseWriter, r *htt
 		return
 	}
 	w.Header().Set("Content-Type", "text/plain") // omittable
-	w.Write([]byte((&services.MatchService{}).GetMatches("GAME_NAME_MOCK", "TAG_LINE_MOCK")))
+	matches, err := (&services.MatchService{}).GetMatches(gameName, tagLine)
+	if err != nil {
+		http.Error(w, "", 400)
+	}
+	w.Write([]byte(matches))
 }
