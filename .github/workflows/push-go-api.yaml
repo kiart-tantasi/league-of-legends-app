@@ -1,7 +1,8 @@
 name: Test on Push (go-api)
 on:
   push:
-    - go-api/**
+    paths:
+      - go-api/**
 
 jobs:
   go-api:
