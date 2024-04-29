@@ -38,3 +38,5 @@ func setUpEnv() {
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }
+
+// foobar
