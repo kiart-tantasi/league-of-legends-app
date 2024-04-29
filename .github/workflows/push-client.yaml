@@ -1,6 +1,8 @@
-name: Test on Push
+name: Test on Push (client)
 on:
   push:
+    paths:
+      - "client/**"
 
 jobs:
   client:
@@ -27,17 +29,3 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: client
-
-  api:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git Checkout
-        uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "corretto"
-          java-version: "17"
-      - name: Check, Test and Build
-        run: ./gradlew clean build
-        working-directory: api

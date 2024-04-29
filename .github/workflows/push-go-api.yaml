@@ -1,0 +1,12 @@
+name: Test on Push (go-api)
+on:
+  push:
+    paths:
+      - "go-api/**"
+
+jobs:
+  go-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Draft
+        run: echo 'Hello World'

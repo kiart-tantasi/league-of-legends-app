@@ -12,14 +12,7 @@ import (
 
 func main() {
 	// env
-	env := os.Getenv("ENV")
-	if env == "production" {
-		godotenv.Load(".env.production")
-	} else {
-		env = "development"
-		godotenv.Load(".env")
-	}
-	fmt.Printf("running with profile \"%s\"\n", env)
+	setUpEnv()
 
 	// routing
 	healthController := &controllers.HealthController{}
@@ -33,4 +26,15 @@ func main() {
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
 		panic(err)
 	}
+}
+
+func setUpEnv() {
+	env := os.Getenv("ENV")
+	if env == "production" {
+		godotenv.Load(".env.production")
+	} else {
+		env = "development"
+		godotenv.Load(".env")
+	}
+	fmt.Printf("running with profile \"%s\"\n", env)
 }
