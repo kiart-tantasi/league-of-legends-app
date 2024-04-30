@@ -28,12 +28,12 @@ func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, 
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", (&configs.RiotConfig{}).GetRegionAccount(), gameName, tagLine)
+	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", configs.GetRegionAccount(), gameName, tagLine)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("X-Riot-Token", (&configs.RiotConfig{}).GetRiotApiKey())
+	req.Header.Set("X-Riot-Token", configs.GetRiotApiKey())
 	res, err := (getHttpClient()).Do(req)
 	if err != nil {
 		return "", err

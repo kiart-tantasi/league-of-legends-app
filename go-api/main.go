@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"go-api/controllers"
 	v1 "go-api/controllers/v1"
+	"go-api/utils"
 	"net/http"
-	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -21,7 +21,7 @@ func main() {
 	http.HandleFunc("/api/matches", matchController.GetMatches)
 
 	// start
-	port := os.Getenv("SERVER_PORT")
+	port := utils.GetEnv("SERVER_PORT", "8080")
 	fmt.Println("app is listening and serving on port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
 		panic(err)
@@ -29,12 +29,9 @@ func main() {
 }
 
 func setUpEnv() {
-	env := os.Getenv("ENV")
+	env := utils.GetEnv("ENV", "development")
 	if env == "production" {
 		godotenv.Load(".env.production")
-	} else {
-		env = "development"
-		godotenv.Load(".env")
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }

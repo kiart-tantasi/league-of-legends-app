@@ -1,23 +1,21 @@
 package configs
 
 import (
-	"os"
+	"go-api/utils"
 	"strconv"
 )
 
-type RiotConfig struct{}
-
-func (*RiotConfig) GetRiotApiKey() string {
-	return os.Getenv("RIOT_API_KEY")
+func GetRiotApiKey() string {
+	return utils.GetEnv("RIOT_API_KEY", "please retrieve api key from https://developer.riotgames.com/")
 }
-func (*RiotConfig) GetRegionAccount() string {
-	return os.Getenv("RIOT_API_REGION_ACCOUNT")
+func GetRegionAccount() string {
+	return utils.GetEnv("RIOT_API_REGION_ACCOUNT", "asia")
 }
-func (*RiotConfig) GetRegionMatch() string {
-	return os.Getenv("RIOT_API_REGION_MATCH")
+func GetRegionMatch() string {
+	return utils.GetEnv("RIOT_API_REGION_MATCH", "sea")
 }
-func (*RiotConfig) GetMatchAmount() (int, error) {
-	if matchAmount, err := strconv.Atoi(os.Getenv("RIOT_MATCH_AMOUNT")); err != nil {
+func GetMatchAmount() (int, error) {
+	if matchAmount, err := strconv.Atoi(utils.GetEnv("RIOT_MATCH_AMOUNT", "20")); err != nil {
 		return 0, err
 	} else {
 		return matchAmount, nil
