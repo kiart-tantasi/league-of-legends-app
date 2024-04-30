@@ -1,13 +1,12 @@
-package controllers
+package match
 
 import (
-	"go-api/services"
 	"net/http"
 )
 
-type MatchController struct{}
+type MatchHandler struct{}
 
-func (matchController *MatchController) GetMatches(w http.ResponseWriter, r *http.Request) {
+func (matchHandler *MatchHandler) GetMatches(w http.ResponseWriter, r *http.Request) {
 	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 	if gameName == "" || tagLine == "" {
@@ -15,7 +14,7 @@ func (matchController *MatchController) GetMatches(w http.ResponseWriter, r *htt
 		return
 	}
 	w.Header().Set("Content-Type", "text/plain") // omittable
-	matches, err := (&services.MatchService{}).GetMatches(gameName, tagLine)
+	matches, err := (&MatchService{}).GetMatches(gameName, tagLine)
 	if err != nil {
 		http.Error(w, "", 400)
 	}

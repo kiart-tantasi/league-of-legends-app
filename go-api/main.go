@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-api/controllers"
-	"go-api/utils"
+	"go-api/env"
+	"go-api/health"
+	"go-api/match"
 	"net/http"
 
 	"github.com/joho/godotenv"
@@ -14,13 +15,13 @@ func main() {
 	setUpEnv()
 
 	// routing
-	healthController := &controllers.HealthController{}
-	matchController := &controllers.MatchController{}
-	http.HandleFunc("/api/health", healthController.GetHealth)
-	http.HandleFunc("/api/matches", matchController.GetMatches)
+	healthHandler := &health.HealthHandler{}
+	matchHandler := &match.MatchHandler{}
+	http.HandleFunc("/api/health", healthHandler.GetHealth)
+	http.HandleFunc("/api/matches", matchHandler.GetMatches)
 
 	// start
-	port := utils.GetEnv("SERVER_PORT", "8080")
+	port := env.GetEnv("SERVER_PORT", "8080")
 	fmt.Println("app is listening and serving on port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
 		panic(err)
@@ -28,7 +29,7 @@ func main() {
 }
 
 func setUpEnv() {
-	env := utils.GetEnv("ENV", "development")
+	env := env.GetEnv("ENV", "development")
 	if env == "production" {
 		godotenv.Load(".env.production")
 	}
