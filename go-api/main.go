@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"go-api/controllers"
-	v1 "go-api/controllers/v1"
 	"go-api/utils"
 	"net/http"
 
@@ -16,7 +15,7 @@ func main() {
 
 	// routing
 	healthController := &controllers.HealthController{}
-	matchController := &v1.MatchController{}
+	matchController := &controllers.MatchController{}
 	http.HandleFunc("/api/health", healthController.GetHealth)
 	http.HandleFunc("/api/matches", matchController.GetMatches)
 
