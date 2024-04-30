@@ -71,7 +71,17 @@ You need to mark these settings
 
 This project prevents using `@Builder` and `@*Constructor` in some places to prevent exposing internal representation so you will see a lot of manually written constructor
 
+# API manual test
+
+## Get matches
+```
+curl "http://localhost:8080/api/matches?gameName=เพชร&tagLine=ARAM" -I
+```
+## Get health
+```
+curl "http://localhost:8080/api/health" -I
+```
+
 # Go project
 
 Now this project is in progress to migrate API codebase from Spring Boot to Go
-

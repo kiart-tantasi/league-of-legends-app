@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-api/controllers"
-	v1 "go-api/controllers/v1"
+	"go-api/internal/health"
+	"go-api/internal/match"
+	"go-api/pkg/env"
 	"net/http"
-	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -15,13 +15,13 @@ func main() {
 	setUpEnv()
 
 	// routing
-	healthController := &controllers.HealthController{}
-	matchController := &v1.MatchController{}
-	http.HandleFunc("/api/health", healthController.GetHealth)
-	http.HandleFunc("/api/matches", matchController.GetMatches)
+	healthHandler := &health.HealthHandler{}
+	matchHandler := &match.MatchHandler{}
+	http.HandleFunc("/api/health", healthHandler.GetHealth)
+	http.HandleFunc("/api/matches", matchHandler.GetMatches)
 
 	// start
-	port := os.Getenv("SERVER_PORT")
+	port := env.GetEnv("SERVER_PORT", "8080")
 	fmt.Println("app is listening and serving on port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
 		panic(err)
@@ -29,12 +29,9 @@ func main() {
 }
 
 func setUpEnv() {
-	env := os.Getenv("ENV")
+	env := env.GetEnv("ENV", "development")
 	if env == "production" {
 		godotenv.Load(".env.production")
-	} else {
-		env = "development"
-		godotenv.Load(".env")
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }
