@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-api/env"
-	"go-api/health"
-	"go-api/match"
+	"go-api/internal/health"
+	"go-api/internal/match"
+	"go-api/pkg/env"
 	"net/http"
 
 	"github.com/joho/godotenv"
