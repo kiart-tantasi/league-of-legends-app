@@ -27,7 +27,7 @@ func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, 
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", GetRegionAccount(), gameName, tagLine)
+	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", GetRitoRegionAccount(), gameName, tagLine)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err

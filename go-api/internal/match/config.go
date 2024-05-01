@@ -8,13 +8,13 @@ import (
 func GetRiotApiKey() string {
 	return env.GetEnv("RIOT_API_KEY", "please retrieve api key from https://developer.riotgames.com/")
 }
-func GetRegionAccount() string {
+func GetRitoRegionAccount() string {
 	return env.GetEnv("RIOT_API_REGION_ACCOUNT", "asia")
 }
-func GetRegionMatch() string {
+func GetRiotRegionMatch() string {
 	return env.GetEnv("RIOT_API_REGION_MATCH", "sea")
 }
-func GetMatchAmount() (int, error) {
+func GetRiotMatchAmount() (int, error) {
 	if matchAmount, err := strconv.Atoi(env.GetEnv("RIOT_MATCH_AMOUNT", "20")); err != nil {
 		return 0, err
 	} else {
