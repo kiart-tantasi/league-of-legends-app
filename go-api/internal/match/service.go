@@ -3,10 +3,10 @@ package match
 import (
 	"encoding/json"
 	"fmt"
+	"go-api/pkg/api"
 	"io"
 	"net/http"
 	"strings"
-	"time"
 )
 
 type MatchResponse struct {
@@ -33,7 +33,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 		return "", err
 	}
 	req.Header.Set("X-Riot-Token", GetRiotApiKey())
-	res, err := (getHttpClient()).Do(req)
+	res, err := (api.NewHttpClient()).Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -55,11 +55,4 @@ func getMatchIds(puuid string) []string {
 
 func getMatches(matchIds []string) []string {
 	return matchIds
-}
-
-func getHttpClient() *http.Client {
-	client := http.Client{
-		Timeout: time.Duration(5000 * time.Millisecond),
-	}
-	return &client
 }
