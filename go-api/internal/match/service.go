@@ -39,8 +39,6 @@ type Participant struct {
 	Item6          int    `json:"item6"`
 }
 
-type MatchService struct{}
-
 func getMatches(gameName, tagLine string) (string, error) {
 	puuid, err := getPuuid(gameName, tagLine)
 	if err != nil {
