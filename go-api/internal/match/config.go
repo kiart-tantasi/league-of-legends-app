@@ -14,10 +14,8 @@ func GetRitoRegionAccount() string {
 func GetRiotRegionMatch() string {
 	return env.GetEnv("RIOT_API_REGION_MATCH", "sea")
 }
-func GetRiotMatchAmount() (int, error) {
-	if matchAmount, err := strconv.Atoi(env.GetEnv("RIOT_MATCH_AMOUNT", "20")); err != nil {
-		return 0, err
-	} else {
-		return matchAmount, nil
-	}
+func GetRiotMatchAmount() int {
+	// when RIOT_MATCH_AMOUNT is set correctly, we can assume there is no error
+	matchAmount, _ := strconv.Atoi(env.GetEnv("RIOT_MATCH_AMOUNT", "5"))
+	return matchAmount
 }
