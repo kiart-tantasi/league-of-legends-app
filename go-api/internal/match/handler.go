@@ -14,7 +14,7 @@ func (matchHandler *MatchHandler) GetMatches(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	w.Header().Set("Content-Type", "text/plain") // omittable
-	matches, err := (&MatchService{}).GetMatches(gameName, tagLine)
+	matches, err := getMatches(gameName, tagLine)
 	if err != nil {
 		http.Error(w, "", 400)
 	}
