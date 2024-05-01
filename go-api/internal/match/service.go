@@ -39,9 +39,7 @@ type Participant struct {
 	Item6          int    `json:"item6"`
 }
 
-type MatchService struct{}
-
-func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, error) {
+func getMatches(gameName, tagLine string) (string, error) {
 	puuid, err := getPuuid(gameName, tagLine)
 	if err != nil {
 		return "", err
@@ -50,7 +48,7 @@ func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, 
 	if err != nil {
 		return "", err
 	}
-	matches, err := getMatches(matchIds)
+	matches, err := getMatchDetails(matchIds)
 	if err != nil {
 		return "", nil
 	}
@@ -58,12 +56,12 @@ func (matchService *MatchService) GetMatches(gameName, tagLine string) (string, 
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", GetRitoRegionAccount(), gameName, tagLine)
+	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", getRitoRegionAccount(), gameName, tagLine)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("X-Riot-Token", GetRiotApiKey())
+	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
 	if err != nil {
 		return "", err
@@ -83,12 +81,12 @@ func getPuuid(gameName, tagLine string) (string, error) {
 
 func getMatchIds(puuid string) ([]string, error) {
 	url := fmt.Sprintf(
-		"https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d", GetRiotRegionMatch(), puuid, GetRiotMatchAmount())
+		"https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d", getRiotRegionMatch(), puuid, getRiotMatchAmount())
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-Riot-Token", GetRiotApiKey())
+	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
 	if err != nil {
 		return nil, err
@@ -103,7 +101,7 @@ func getMatchIds(puuid string) ([]string, error) {
 	return matchIds, nil
 }
 
-func getMatches(matchIds []string) ([]string, error) {
+func getMatchDetails(matchIds []string) ([]string, error) {
 	// TODO: use goroutine to run asynchronously
 	for _, matchId := range matchIds {
 		getMatch(matchId)
@@ -112,12 +110,12 @@ func getMatches(matchIds []string) ([]string, error) {
 }
 
 func getMatch(matchId string) ([]string, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", GetRiotRegionMatch(), matchId)
+	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-Riot-Token", GetRiotApiKey())
+	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
 	if err != nil {
 		return nil, err
