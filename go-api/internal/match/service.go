@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 type MatchResponse struct {
@@ -79,7 +80,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 	return matchResponse.Puuid, nil
 }
 
-func getMatchIds(puuid string) ([]string, error) {
+func getMatchIds(puuid string) (*[]string, error) {
 	url := fmt.Sprintf(
 		"https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d", getRiotRegionMatch(), puuid, getRiotMatchAmount())
 	req, err := http.NewRequest("GET", url, nil)
@@ -98,36 +99,57 @@ func getMatchIds(puuid string) ([]string, error) {
 	}
 	var matchIds []string
 	json.Unmarshal(bytes, &matchIds)
-	return matchIds, nil
+	return &matchIds, nil
 }
 
-func getMatchDetails(matchIds []string) ([]string, error) {
-	// TODO: use goroutine to run asynchronously
-	for _, matchId := range matchIds {
-		getMatch(matchId)
+func getMatchDetails(matchIds *[]string) ([]string, error) {
+	responses := make([]*MatchDetailResponse, len(*matchIds))
+	limitChannel := make(chan int, 20)
+	var wg sync.WaitGroup
+	wg.Add(len(*matchIds))
+	for i, matchId := range *matchIds {
+		limitChannel <- 0
+		go func(matchId string, responses []*MatchDetailResponse, i int) {
+			defer wg.Done()
+			err := getMatchDetail(matchId, responses, i)
+			if err != nil {
+				fmt.Println("getMatchDetail error:", err)
+			}
+			<-limitChannel
+		}(matchId, responses, i)
 	}
+	wg.Wait()
+
+	// TODO: remodel
+
 	return nil, errors.New("not implemented")
 }
 
-func getMatch(matchId string) ([]string, error) {
+func getMatchDetail(matchId string, responses []*MatchDetailResponse, index int) error {
 	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
+	// why check error before defer: https://stackoverflow.com/a/16280362/21331113
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		return errors.New("response status code is not 200")
+	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	var matchDetailResponse MatchDetailResponse
-	json.Unmarshal(bytes, &matchDetailResponse)
-	// TODO: map to customized response model
-	fmt.Println("game mode:", matchDetailResponse.Info.GameMode)
-	return nil, nil
+	err = json.Unmarshal(bytes, &matchDetailResponse)
+	if err != nil {
+		return err
+	}
+	responses[index] = &matchDetailResponse
+	return nil
 }

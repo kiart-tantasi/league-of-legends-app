@@ -1,6 +1,7 @@
 package match
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -16,6 +17,7 @@ func (matchHandler *MatchHandler) GetMatches(w http.ResponseWriter, r *http.Requ
 	w.Header().Set("Content-Type", "text/plain") // omittable
 	matches, err := getMatches(gameName, tagLine)
 	if err != nil {
+		fmt.Println("GetMatches error:", err)
 		http.Error(w, "", 400)
 	}
 	w.Write([]byte(matches))
