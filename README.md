@@ -85,7 +85,7 @@ cd api
   ```
   curl "http://localhost:8080/api/health" -I
   ```
-- Matches API endpoint (or with Makefile, `make runtest`)
+- Matches API endpoint (or with Makefile `make test`)
   ```
   curl "http://localhost:8080/api/v1/matches?gameName=เพชร&tagLine=ARAM" -I
   ```

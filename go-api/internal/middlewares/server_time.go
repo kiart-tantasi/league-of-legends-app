@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ServerTime(next http.Handler) http.Handler {
+func serverTime(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
