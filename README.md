@@ -63,7 +63,7 @@ cd api
   ```
 - Matches API endpoint
   ```
-  curl "http://localhost:8080/api/matches?gameName=เพชร&tagLine=ARAM" -I
+  curl "http://localhost:8080/api/v1/matches?gameName=เพชร&tagLine=ARAM" -I
   ```
 
 ### Hot-reload on Intellij with `spring-boot-devtools`

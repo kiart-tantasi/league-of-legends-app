@@ -7,23 +7,23 @@ import (
 	"go-api/pkg/api"
 	"io"
 	"net/http"
-	"strings"
 	"sync"
 )
 
-type MatchResponse struct {
+type RiotMatchResponse struct {
 	Puuid string `json:"puuid"`
 }
 
-type MatchDetailResponse struct {
-	Info MatchInfo `json:"info"`
+type RiotMatchDetailResponse struct {
+	Info RiotMatchInfo `json:"info"`
 }
-type MatchInfo struct {
-	Participants []Participant `json:"participants"`
-	GameMode     string        `json:"gameMode"`
-	GameCreation int           `json:"gameCreation"`
+type RiotMatchInfo struct {
+	Participants []RiotParticipant `json:"participants"`
+	GameMode     string            `json:"gameMode"`
+	GameCreation int               `json:"gameCreation"`
 }
-type Participant struct {
+
+type RiotParticipant struct {
 	RiotIdGameName string `json:"riotIdGameName"`
 	RiotIdtagLine  string `json:"riotIdTagLine"`
 	Kills          int    `json:"kills"`
@@ -38,22 +38,79 @@ type Participant struct {
 	Item4          int    `json:"item4"`
 	Item5          int    `json:"item5"`
 	Item6          int    `json:"item6"`
+	Puuid          string `json:"puuid"`
 }
 
-func getMatches(gameName, tagLine string) (string, error) {
+func (riotParticipant *RiotParticipant) getItemIds() *[]int {
+	itemIds := []int{}
+	if riotParticipant.Item0 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item0)
+	}
+	if riotParticipant.Item1 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item1)
+	}
+	if riotParticipant.Item2 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item2)
+	}
+	if riotParticipant.Item3 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item3)
+	}
+	if riotParticipant.Item4 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item4)
+	}
+	if riotParticipant.Item5 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item5)
+	}
+	if riotParticipant.Item6 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item6)
+	}
+	return &itemIds
+}
+
+type MatcesResponseV1 struct {
+	MatchDetailList []MatchDetailV1 `json:"matchDetailList"`
+}
+type MatchDetailV1 struct {
+	ChampionName    string           `json:"championName"`
+	Kills           int              `json:"kills"`
+	Deaths          int              `json:"deaths"`
+	Assists         int              `json:"assists"`
+	Win             bool             `json:"win"`
+	GameMode        string           `json:"gameMode"`
+	GameCreation    int              `json:"gameCreation"`
+	ParticipantList *[]ParticipantV1 `json:"participantList"`
+	ItemIds         []int            `json:"itemIds"`
+}
+
+type ParticipantV1 struct {
+	GameName     string `json:"gameName"`
+	TagLine      string `json:"tagLine"`
+	ChampionName string `json:"championName"`
+	Kills        int    `json:"kills"`
+	Deaths       int    `json:"deaths"`
+	Assists      int    `json:"assists"`
+	Win          bool   `json:"win"`
+	ItemIds      []int  `json:"itemIds"`
+}
+
+func getMatchesV1(gameName, tagLine string) ([]byte, error) {
 	puuid, err := getPuuid(gameName, tagLine)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	matchIds, err := getMatchIds(puuid)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	matches, err := getMatchDetails(matchIds)
+	matchesResponse, err := getMatchesResponse(matchIds, puuid)
 	if err != nil {
-		return "", nil
+		return nil, err
 	}
-	return strings.Join(matches, "-"), nil
+	bytes, err := json.Marshal(&matchesResponse)
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
@@ -72,7 +129,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	var matchResponse MatchResponse
+	var matchResponse RiotMatchResponse
 	err = json.Unmarshal(bytes, &matchResponse)
 	if err != nil {
 		return "", err
@@ -98,58 +155,99 @@ func getMatchIds(puuid string) (*[]string, error) {
 		return nil, err
 	}
 	var matchIds []string
-	json.Unmarshal(bytes, &matchIds)
+	err = json.Unmarshal(bytes, &matchIds)
+	if err != nil {
+		return nil, err
+	}
 	return &matchIds, nil
 }
 
-func getMatchDetails(matchIds *[]string) ([]string, error) {
-	responses := make([]*MatchDetailResponse, len(*matchIds))
+func getMatchesResponse(matchIds *[]string, puuid string) (*MatcesResponseV1, error) {
+	responses := make([]*RiotMatchDetailResponse, len(*matchIds))
 	limitChannel := make(chan int, 20)
 	var wg sync.WaitGroup
 	wg.Add(len(*matchIds))
 	for i, matchId := range *matchIds {
 		limitChannel <- 0
-		go func(matchId string, responses []*MatchDetailResponse, i int) {
+		go func(matchId string, responses []*RiotMatchDetailResponse, i int) {
 			defer wg.Done()
-			err := getMatchDetail(matchId, responses, i)
+			response, err := getMatchDetail(matchId)
 			if err != nil {
 				fmt.Println("getMatchDetail error:", err)
+			} else {
+				responses[i] = response
 			}
 			<-limitChannel
 		}(matchId, responses, i)
 	}
 	wg.Wait()
+	// ==================
+	// TODO: check default value of slice (json-decoded)
+	// TODO: create a separate func
+	list := []MatchDetailV1{}
+	for _, response := range responses {
+		if response == nil {
+			continue
+		}
 
-	// TODO: remodel
-
-	return nil, errors.New("not implemented")
+		matchDetail := &MatchDetailV1{}
+		participants := []ParticipantV1{}
+		for _, parti := range response.Info.Participants {
+			// all cases
+			participant := ParticipantV1{
+				GameName:     parti.RiotIdGameName,
+				TagLine:      parti.RiotIdtagLine,
+				ChampionName: parti.ChampionName,
+				Kills:        parti.Kills,
+				Assists:      parti.Assists,
+				Deaths:       parti.Deaths,
+				Win:          parti.Win,
+				ItemIds:      *parti.getItemIds(),
+			}
+			participants = append(participants, participant)
+			// id owner case
+			if parti.Puuid == puuid {
+				matchDetail.ChampionName = parti.ChampionName
+				matchDetail.Kills = parti.Kills
+				matchDetail.Assists = parti.Assists
+				matchDetail.Deaths = parti.Deaths
+				matchDetail.Win = parti.Win
+				matchDetail.GameMode = response.Info.GameMode
+				matchDetail.GameCreation = response.Info.GameCreation
+				matchDetail.ItemIds = *parti.getItemIds()
+			}
+		}
+		matchDetail.ParticipantList = &participants
+		list = append(list, *matchDetail)
+	}
+	// ==================
+	return &MatcesResponseV1{MatchDetailList: list}, nil
 }
 
-func getMatchDetail(matchId string, responses []*MatchDetailResponse, index int) error {
+func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
 	// why check error before defer: https://stackoverflow.com/a/16280362/21331113
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		return errors.New("response status code is not 200")
+		return nil, errors.New("response status code is not 200")
 	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	var matchDetailResponse MatchDetailResponse
+	var matchDetailResponse RiotMatchDetailResponse
 	err = json.Unmarshal(bytes, &matchDetailResponse)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	responses[index] = &matchDetailResponse
-	return nil
+	return &matchDetailResponse, nil
 }
