@@ -6,6 +6,6 @@ import (
 
 type HealthHandler struct{}
 
-func (hc *HealthHandler) GetHealth(w http.ResponseWriter, r *http.Request) {
+func (*HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
