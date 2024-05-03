@@ -35,7 +35,9 @@ func setUpEnv() {
 	env := env.GetEnv("ENV", "development")
 	if env == "production" {
 		projectRoot := os.Getenv("PROJECT_ROOT")
-		godotenv.Load(filepath.Join(projectRoot, ".env.production"))
+		envPath := filepath.Join(projectRoot, ".env.production")
+		fmt.Println("envPath:", envPath)
+		godotenv.Load(envPath)
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }
