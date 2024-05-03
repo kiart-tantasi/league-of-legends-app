@@ -1,5 +1,5 @@
 package contexts
 
-type AppContext string
+type ContextKey string
 
-var StatusCode = AppContext("STATUS_CODE")
+var StatusCode = ContextKey("STATUS_CODE")

@@ -126,7 +126,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		return "", errors.New("puuid response status code is not 200")
+		return "", fmt.Errorf("puuid response status code is not 200 for %s #%s", gameName, tagLine)
 	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -154,7 +154,7 @@ func getMatchIds(puuid string) (*[]string, error) {
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		return nil, errors.New("match ids response status code is not 200")
+		return nil, fmt.Errorf("match ids response status code is not 200 for %s", puuid)
 	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -179,7 +179,7 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, e
 			defer wg.Done()
 			response, err := getMatchDetail(matchId)
 			if err != nil {
-				fmt.Println("getMatchDetail error:", err)
+				fmt.Printf("getMatchDetail error for match id %s: %s\n", matchId, err)
 			} else {
 				responses[i] = response
 			}
