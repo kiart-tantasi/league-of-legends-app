@@ -43,9 +43,9 @@ RIOT_API_KEY=<riot-api-key>
 
 ### Production
 
-To use production env file, you need to provide:
+To use `.env.production`, you need to provide:
 
-- Export these env vars in your machine (with any method you prefer)
+- Export these env vars with any method you prefer e.g. profile file, inline command
   - `ENV=production`
   - `PROJECT_ROOT=<project-location>/go-api`
 - Put all other env vars in `<project-location>/go-api/.env.production`
