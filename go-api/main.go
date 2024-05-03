@@ -52,6 +52,6 @@ func serverTimeMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 		// TODO: implement context to store status code
 		statusMock := 0
-		fmt.Printf("%d, %s, %d ms", statusMock, r.URL, (time.Since(start).Milliseconds()))
+		fmt.Printf("%d, %s, %d ms\n", statusMock, r.URL, (time.Since(start).Milliseconds()))
 	})
 }
