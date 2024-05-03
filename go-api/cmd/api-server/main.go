@@ -18,7 +18,7 @@ func main() {
 	healthHandler := &health.HealthHandler{}
 	matchHandler := &match.MatchHandler{}
 	http.HandleFunc("/api/health", healthHandler.GetHealth)
-	http.HandleFunc("/api/matches", matchHandler.GetMatches)
+	http.HandleFunc("/api/v1/matches", matchHandler.GetMatchesV1)
 
 	// start
 	port := env.GetEnv("SERVER_PORT", "8080")
