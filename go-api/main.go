@@ -30,16 +30,12 @@ func main() {
 	}
 }
 
+// TODO: update README.md about go's env vars
 func setUpEnv() {
 	env := env.GetEnv("ENV", "development")
 	if env == "production" {
-		dir, err := os.Getwd()
-		if err != nil {
-			panic(err)
-		}
-		// TODO: delete after test
-		fmt.Println("dir:", dir)
-		godotenv.Load(filepath.Join(dir, ".env.production"))
+		projectRoot := os.Getenv("PROJECT_ROOT")
+		godotenv.Load(filepath.Join(projectRoot, ".env.production"))
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }
