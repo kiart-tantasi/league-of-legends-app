@@ -19,7 +19,7 @@ func main() {
 
 	// routing
 	http.Handle("/api/health", &health.HealthHandler{})
-	http.Handle("/api/v1/matches", middlewares.ServerTime((http.Handler(&match.MatchHandler{}))))
+	http.Handle("/api/v1/matches", middlewares.ApiMiddlewares((http.Handler(&match.MatchHandler{}))))
 
 	// start
 	port := env.GetEnv("SERVER_PORT", "8080")
