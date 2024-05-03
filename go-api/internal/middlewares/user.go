@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func User(next http.Handler) http.Handler {
+func user(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		// check if user-id exists
 		userId := ""
