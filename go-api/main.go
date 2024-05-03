@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"go-api/internal/health"
 	"go-api/internal/match"
+	"go-api/internal/middlewares"
 	"go-api/pkg/env"
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -19,7 +19,7 @@ func main() {
 
 	// routing
 	http.Handle("/api/health", &health.HealthHandler{})
-	http.Handle("/api/v1/matches", serverTimeMiddleware(http.Handler(&match.MatchHandler{})))
+	http.Handle("/api/v1/matches", middlewares.ServerTime((http.Handler(&match.MatchHandler{}))))
 
 	// start
 	port := env.GetEnv("SERVER_PORT", "8080")
@@ -41,15 +41,4 @@ func setUpEnv() {
 		panic(err)
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
-}
-
-// middlwares
-func serverTimeMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		next.ServeHTTP(w, r)
-		// TODO: implement context to store status code
-		statusMock := 0
-		fmt.Printf("%d, %s, %d ms\n", statusMock, r.URL, (time.Since(start).Milliseconds()))
-	})
 }
