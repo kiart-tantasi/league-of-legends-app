@@ -33,11 +33,14 @@ func main() {
 // TODO: update README.md about go's env vars
 func setUpEnv() {
 	env := env.GetEnv("ENV", "development")
+	envPath := ".env"
 	if env == "production" {
 		projectRoot := os.Getenv("PROJECT_ROOT")
-		envPath := filepath.Join(projectRoot, ".env.production")
-		fmt.Println("envPath:", envPath)
-		godotenv.Load(envPath)
+		envPath = filepath.Join(projectRoot, ".env.production")
+	}
+	err := godotenv.Load(envPath)
+	if err != nil {
+		panic(err)
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }

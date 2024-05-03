@@ -35,6 +35,29 @@ REACT_APP_IS_MOCK=true # replace fetching api with mocks
 riot.api.key=<api-key> # riot api key retrieved from https://developer.riotgames.com/
 ```
 
+## API (go-api)
+
+`go-api/.env`
+
+```
+# optional
+RIOT_API_REGION_ACCOUNT=<account-region>
+RIOT_API_REGION_MATCH=<match-region>
+RIOT_MATCH_AMOUNT=<match-amount>
+
+# required
+RIOT_API_KEY=<riot-api-key>
+```
+
+### Production
+
+To use production env file, you need to provide:
+
+- Export these env vars in your machine (with any method you prefer)
+  - `ENV=production`
+  - `PROJECT=ROOT=<project-location>/go-api`
+- Put all other env vars in `<project-location>/go-api/.env.production`
+
 # Run app locally
 
 ## Client
