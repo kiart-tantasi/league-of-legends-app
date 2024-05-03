@@ -6,6 +6,8 @@ import (
 	"go-api/internal/match"
 	"go-api/pkg/env"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
@@ -31,7 +33,13 @@ func main() {
 func setUpEnv() {
 	env := env.GetEnv("ENV", "development")
 	if env == "production" {
-		godotenv.Load(".env.production")
+		dir, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+		// TODO: delete after test
+		fmt.Println("dir:", dir)
+		godotenv.Load(filepath.Join(dir, ".env.production"))
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
 }
