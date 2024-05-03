@@ -67,7 +67,7 @@ func (riotParticipant *RiotParticipant) getItemIds() *[]int {
 	return &itemIds
 }
 
-type MatcesResponseV1 struct {
+type MatchesResponseV1 struct {
 	MatchDetailList []MatchDetailV1 `json:"matchDetailList"`
 }
 type MatchDetailV1 struct {
@@ -125,6 +125,9 @@ func getPuuid(gameName, tagLine string) (string, error) {
 		return "", err
 	}
 	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		return "", errors.New("puuid response status code is not 200")
+	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
@@ -150,6 +153,9 @@ func getMatchIds(puuid string) (*[]string, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		return nil, errors.New("match ids response status code is not 200")
+	}
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -162,7 +168,7 @@ func getMatchIds(puuid string) (*[]string, error) {
 	return &matchIds, nil
 }
 
-func getMatchesResponse(matchIds *[]string, puuid string) (*MatcesResponseV1, error) {
+func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, error) {
 	responses := make([]*RiotMatchDetailResponse, len(*matchIds))
 	limitChannel := make(chan int, 20)
 	var wg sync.WaitGroup
@@ -181,15 +187,44 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatcesResponseV1, er
 		}(matchId, responses, i)
 	}
 	wg.Wait()
-	// ==================
-	// TODO: check default value of slice (json-decoded)
-	// TODO: create a separate func
+	return mapToResponse(responses, puuid), nil
+}
+
+func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
+	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-Riot-Token", getRiotApiKey())
+	res, err := (api.NewHttpClient()).Do(req)
+	// why check error before defer: https://stackoverflow.com/a/16280362/21331113
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		return nil, errors.New("match detail response status code is not 200")
+	}
+
+	bytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	var matchDetailResponse RiotMatchDetailResponse
+	err = json.Unmarshal(bytes, &matchDetailResponse)
+	if err != nil {
+		return nil, err
+	}
+	return &matchDetailResponse, nil
+}
+
+func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesResponseV1 {
 	list := []MatchDetailV1{}
 	for _, response := range responses {
 		if response == nil {
 			continue
 		}
-
 		matchDetail := &MatchDetailV1{}
 		participants := []ParticipantV1{}
 		for _, parti := range response.Info.Participants {
@@ -220,34 +255,5 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatcesResponseV1, er
 		matchDetail.ParticipantList = &participants
 		list = append(list, *matchDetail)
 	}
-	// ==================
-	return &MatcesResponseV1{MatchDetailList: list}, nil
-}
-
-func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("X-Riot-Token", getRiotApiKey())
-	res, err := (api.NewHttpClient()).Do(req)
-	// why check error before defer: https://stackoverflow.com/a/16280362/21331113
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	if res.StatusCode != 200 {
-		return nil, errors.New("response status code is not 200")
-	}
-	bytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	var matchDetailResponse RiotMatchDetailResponse
-	err = json.Unmarshal(bytes, &matchDetailResponse)
-	if err != nil {
-		return nil, err
-	}
-	return &matchDetailResponse, nil
+	return &MatchesResponseV1{MatchDetailList: list}
 }
