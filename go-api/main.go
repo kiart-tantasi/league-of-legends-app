@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -20,7 +21,7 @@ func main() {
 	healthHandler := &health.HealthHandler{}
 	matchHandler := &match.MatchHandler{}
 	http.HandleFunc("/api/health", healthHandler.GetHealth)
-	http.HandleFunc("/api/v1/matches", matchHandler.GetMatchesV1)
+	http.Handle("/api/v1/matches", serverTimeMiddleware(http.HandlerFunc(matchHandler.GetMatchesV1)))
 
 	// start
 	port := env.GetEnv("SERVER_PORT", "8080")
@@ -30,7 +31,6 @@ func main() {
 	}
 }
 
-// TODO: update README.md about go's env vars
 func setUpEnv() {
 	env := env.GetEnv("ENV", "development")
 	envPath := ".env"
@@ -43,4 +43,15 @@ func setUpEnv() {
 		panic(err)
 	}
 	fmt.Printf("running with profile \"%s\"\n", env)
+}
+
+// middlwares
+func serverTimeMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		next.ServeHTTP(w, r)
+		// TODO: implement context to store status code
+		statusMock := 0
+		fmt.Printf("%d, %s, %d ms", statusMock, r.URL, (time.Since(start).Milliseconds()))
+	})
 }

@@ -7,7 +7,7 @@ import (
 
 type MatchHandler struct{}
 
-func (matchHandler *MatchHandler) GetMatchesV1(w http.ResponseWriter, r *http.Request) {
+func (*MatchHandler) GetMatchesV1(w http.ResponseWriter, r *http.Request) {
 	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 	if gameName == "" || tagLine == "" {
