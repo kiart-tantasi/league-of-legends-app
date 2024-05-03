@@ -18,10 +18,8 @@ func main() {
 	setUpEnv()
 
 	// routing
-	healthHandler := &health.HealthHandler{}
-	matchHandler := &match.MatchHandler{}
-	http.HandleFunc("/api/health", healthHandler.GetHealth)
-	http.Handle("/api/v1/matches", serverTimeMiddleware(http.HandlerFunc(matchHandler.GetMatchesV1)))
+	http.Handle("/api/health", &health.HealthHandler{})
+	http.Handle("/api/v1/matches", serverTimeMiddleware(http.Handler(&match.MatchHandler{})))
 
 	// start
 	port := env.GetEnv("SERVER_PORT", "8080")
