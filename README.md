@@ -47,7 +47,7 @@ To use production env file, you need to provide:
 
 - Export these env vars in your machine (with any method you prefer)
   - `ENV=production`
-  - `PROJECT=ROOT=<project-location>/go-api`
+  - `PROJECT_ROOT=<project-location>/go-api`
 - Put all other env vars in `<project-location>/go-api/.env.production`
 
 ## API (Spring)
@@ -71,7 +71,14 @@ npm start
 
 Then visit http://localhost:3000
 
-## API
+## API (Go)
+
+```
+cd go-api
+go run main.go
+```
+
+## API (Spring)
 
 ```
 cd api
