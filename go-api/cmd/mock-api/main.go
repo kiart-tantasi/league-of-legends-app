@@ -24,14 +24,10 @@ func main() {
 
 // handlers
 func accountHandleFn(w http.ResponseWriter, r *http.Request) {
-	file, err := os.Open("../../internal/mock/accountResponse.json")
+	err := sendJson(&w, "../../internal/mock/accountResponse.json")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		http.Error(w, fmt.Sprintf("%s", err), 500)
 	}
-	defer file.Close()
-	w.Header().Set("Content-Type", "application/json")
-	http.ServeContent(w, r, "", time.Now(), file)
 }
 func matchIdsHandleFn(w http.ResponseWriter, r *http.Request) {
 	countStr := r.URL.Query().Get("count")
@@ -45,20 +41,30 @@ func matchIdsHandleFn(w http.ResponseWriter, r *http.Request) {
 	}
 	bytes, err := json.Marshal(matchIdsMock)
 	if err != nil {
-		w.WriteHeader(500)
+		http.Error(w, fmt.Sprintf("%s", err), 500)
 	} else {
 		w.Write(bytes)
 	}
 }
 func matchDetailHandleFn(w http.ResponseWriter, r *http.Request) {
-	file, err := os.Open("../../internal/mock/matchDetailResponse.json")
+	err := sendJson(&w, "../../internal/mock/matchDetailResponse.json")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		http.Error(w, fmt.Sprintf("%s", err), 500)
 	}
-	defer file.Close()
-	w.Header().Set("Content-Type", "application/json")
-	http.ServeContent(w, r, "", time.Now(), file)
+}
+
+func sendJson(w *http.ResponseWriter, filepath string) error {
+	bytes, err := os.ReadFile(filepath)
+	if err != nil {
+		return err
+	}
+	(*w).Header().Set("Content-Type", "application/json")
+	_, err = (*w).Write(bytes)
+	if err != nil {
+		http.Error((*w), fmt.Sprintf("%s", err), 500)
+		return err
+	}
+	return nil
 }
 
 // middleware
