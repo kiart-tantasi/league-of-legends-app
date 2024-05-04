@@ -5,8 +5,8 @@
 # About project
 
 - This is a simple app to see League of Legends match history
-- Client is React and API is Spring Boot
-- API is being replaced by Go (`./go-api`)
+- Client is React and API is Go
+- Spring was fully replaced by Go (2024/05/05)
 
 # Roadmap
 
