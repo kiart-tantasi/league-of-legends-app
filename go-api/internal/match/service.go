@@ -137,13 +137,13 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 }
 
 func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesResponseV1 {
-	list := []MatchDetailV1{}
+	matchDetailList := []MatchDetailV1{}
 	for _, response := range responses {
 		if response == nil {
 			continue
 		}
 		matchDetail := &MatchDetailV1{}
-		participants := []ParticipantV1{}
+		participantList := []ParticipantV1{}
 		for _, parti := range response.Info.Participants {
 			// all cases
 			participant := ParticipantV1{
@@ -156,7 +156,7 @@ func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesR
 				Win:          parti.Win,
 				ItemIds:      *parti.getItemIds(),
 			}
-			participants = append(participants, participant)
+			participantList = append(participantList, participant)
 			// id owner case
 			if parti.Puuid == puuid {
 				matchDetail.ChampionName = parti.ChampionName
@@ -164,13 +164,13 @@ func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesR
 				matchDetail.Assists = parti.Assists
 				matchDetail.Deaths = parti.Deaths
 				matchDetail.Win = parti.Win
-				matchDetail.GameMode = response.Info.GameMode
-				matchDetail.GameCreation = response.Info.GameCreation
 				matchDetail.ItemIds = *parti.getItemIds()
 			}
 		}
-		matchDetail.ParticipantList = &participants
-		list = append(list, *matchDetail)
+		matchDetail.ParticipantList = &participantList
+		matchDetail.GameMode = response.Info.GameMode
+		matchDetail.GameCreation = response.Info.GameCreation
+		matchDetailList = append(matchDetailList, *matchDetail)
 	}
-	return &MatchesResponseV1{MatchDetailList: list}
+	return &MatchesResponseV1{MatchDetailList: matchDetailList}
 }

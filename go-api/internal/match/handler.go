@@ -19,7 +19,7 @@ func (*MatchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// get matches from riot api
 	matches, err := getMatchesV1(gameName, tagLine)
 	if err != nil {
-		fmt.Println("GetMatches error:", err)
+		fmt.Println("getMatchesV1 error:", err)
 		contexts.WriteHeaderAndContext(w, http.StatusBadRequest, r)
 		return
 	}
