@@ -11,9 +11,9 @@ import (
 
 func main() {
 	// routing
-	http.Handle("/riot/account/v1/accounts/by-riot-id/", middleware(http.HandlerFunc(accountHandleFn)))
-	http.Handle("/lol/match/v5/matches/by-puuid/", middleware(http.HandlerFunc(matchIdsHandleFn)))
-	http.Handle("/lol/match/v5/matches/", middleware(http.HandlerFunc(matchDetailHandleFn)))
+	http.Handle("/riot/account/v1/accounts/by-riot-id/", loggingMiddleware(http.HandlerFunc(accountHandleFn)))
+	http.Handle("/lol/match/v5/matches/by-puuid/", loggingMiddleware(http.HandlerFunc(matchIdsHandleFn)))
+	http.Handle("/lol/match/v5/matches/", loggingMiddleware(http.HandlerFunc(matchDetailHandleFn)))
 	// start
 	port := "8090"
 	fmt.Println("app is listening and serving on port", port)
@@ -62,11 +62,11 @@ func matchDetailHandleFn(w http.ResponseWriter, r *http.Request) {
 }
 
 // middleware
-func middleware(next http.Handler) http.Handler {
+func loggingMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
-		fmt.Printf("%s, %dms\n", r.URL, time.Since(start).Milliseconds())
+		fmt.Printf("%s, %d ms\n", r.URL, time.Since(start).Milliseconds())
 	}
 	return http.HandlerFunc(fn)
 }
