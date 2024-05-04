@@ -33,7 +33,7 @@ REACT_APP_IS_MOCK=true # replace fetching api with mocks
 - `go-api/.env.production`
 
 ```
-# optional (real urls and api key are required for production)
+# optional (actual api urls and api key are required for production)
 RIOT_API_REGION_ACCOUNT=<account-region>
 RIOT_API_REGION_MATCH=<match-region>
 RIOT_MATCH_AMOUNT=<match-amount>
