@@ -29,16 +29,18 @@ REACT_APP_IS_MOCK=true # replace fetching api with mocks
 
 ## API (Go)
 
-`go-api/.env`
+- `go-api/.env`
+- `go-api/.env.production`
 
 ```
-# optional
+# optional (actual api urls and api key are required for production)
 RIOT_API_REGION_ACCOUNT=<account-region>
 RIOT_API_REGION_MATCH=<match-region>
 RIOT_MATCH_AMOUNT=<match-amount>
-
-# required
-RIOT_API_KEY=<riot-api-key>
+RIOT_ACCOUNT_API_URL=<retrived-from-https://developer.riotgames.com/>
+RIOT_MATCH_IDS_API_URL=<retrived-from-https://developer.riotgames.com/>
+RIOT_MATCH_DETAIL_API_URL=<retrived-from-https://developer.riotgames.com/>
+RIOT_API_KEY=<retrived-from-https://developer.riotgames.com/>
 ```
 
 ### Production
@@ -73,6 +75,13 @@ Then visit http://localhost:3000
 
 ## API (Go)
 
+### First, Run mock-api (mocking Riot API)
+```
+cd go-api/cmd/mock-api
+go run main.go
+```
+
+### Seond, Run go-api
 ```
 cd go-api
 go run main.go

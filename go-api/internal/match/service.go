@@ -31,7 +31,7 @@ func getMatchesV1(gameName, tagLine string) ([]byte, error) {
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s", getRitoRegionAccount(), gameName, tagLine)
+	url := getRiotAccountApiUrl(gameName, tagLine)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
@@ -58,8 +58,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 }
 
 func getMatchIds(puuid string) (*[]string, error) {
-	url := fmt.Sprintf(
-		"https://%s.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d", getRiotRegionMatch(), puuid, getRiotMatchAmount())
+	url := getRiotMatchIdsApiUrl(puuid)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -108,7 +107,7 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, e
 }
 
 func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
-	url := fmt.Sprintf("https://%s.api.riotgames.com/lol/match/v5/matches/%s", getRiotRegionMatch(), matchId)
+	url := getRiotMatchDetailApiUrl(matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
