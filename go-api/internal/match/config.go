@@ -8,7 +8,7 @@ import (
 func getRiotApiKey() string {
 	return env.GetEnv("RIOT_API_KEY", "please retrieve api key from https://developer.riotgames.com/")
 }
-func getRitoRegionAccount() string {
+func getRiotRegionAccount() string {
 	return env.GetEnv("RIOT_API_REGION_ACCOUNT", "asia")
 }
 func getRiotRegionMatch() string {
