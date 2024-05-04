@@ -31,7 +31,7 @@ func getMatchesV1(gameName, tagLine string) ([]byte, error) {
 }
 
 func getPuuid(gameName, tagLine string) (string, error) {
-	url := newRiotAccountApiUrl(gameName, tagLine)
+	url := getRiotAccountApiUrl(gameName, tagLine)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
@@ -58,7 +58,7 @@ func getPuuid(gameName, tagLine string) (string, error) {
 }
 
 func getMatchIds(puuid string) (*[]string, error) {
-	url := newRiotMatchIdsApiUrl(puuid)
+	url := getRiotMatchIdsApiUrl(puuid)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, e
 }
 
 func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
-	url := newRiotMatchDetailApiUrl(matchId)
+	url := getRiotMatchDetailApiUrl(matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
