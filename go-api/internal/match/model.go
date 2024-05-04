@@ -31,32 +31,6 @@ type RiotParticipant struct {
 	Puuid          string `json:"puuid"`
 }
 
-func (riotParticipant *RiotParticipant) getItemIds() *[]int {
-	itemIds := []int{}
-	if riotParticipant.Item0 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item0)
-	}
-	if riotParticipant.Item1 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item1)
-	}
-	if riotParticipant.Item2 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item2)
-	}
-	if riotParticipant.Item3 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item3)
-	}
-	if riotParticipant.Item4 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item4)
-	}
-	if riotParticipant.Item5 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item5)
-	}
-	if riotParticipant.Item6 != 0 {
-		itemIds = append(itemIds, riotParticipant.Item6)
-	}
-	return &itemIds
-}
-
 type MatchesResponseV1 struct {
 	MatchDetailList []MatchDetailV1 `json:"matchDetailList"`
 }
@@ -81,4 +55,31 @@ type ParticipantV1 struct {
 	Assists      int    `json:"assists"`
 	Win          bool   `json:"win"`
 	ItemIds      []int  `json:"itemIds"`
+}
+
+// sadly, this code will look ugly
+func (riotParticipant *RiotParticipant) getItemIds() *[]int {
+	itemIds := []int{}
+	if riotParticipant.Item0 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item0)
+	}
+	if riotParticipant.Item1 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item1)
+	}
+	if riotParticipant.Item2 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item2)
+	}
+	if riotParticipant.Item3 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item3)
+	}
+	if riotParticipant.Item4 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item4)
+	}
+	if riotParticipant.Item5 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item5)
+	}
+	if riotParticipant.Item6 != 0 {
+		itemIds = append(itemIds, riotParticipant.Item6)
+	}
+	return &itemIds
 }

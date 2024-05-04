@@ -10,12 +10,10 @@ import (
 
 func user(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
-		// check if user-id exists
 		userId := ""
 		userIdCookieName := "user_id"
 		existingCookie, err := r.Cookie(userIdCookieName)
 		if err != nil || existingCookie == nil {
-			// if not, set one
 			userId = uuid.New().String()
 			ninetyDays := 90 * 24 * time.Hour
 			cookie := http.Cookie{

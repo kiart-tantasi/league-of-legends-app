@@ -10,10 +10,10 @@
 
 # Roadmap
 
-- Migrate spring to golang
+- Migrate spring to golang (only testing)
 - Search suggestion
+- Migrate React to Nextjs and deployment from EC2 to Vercel
 - Graph of damage done and recieved (mvp)
-- Home page improvement
 
 # Environment variables
 
@@ -94,5 +94,5 @@ cd api
   ```
 - Matches API endpoint (or with Makefile `make test`)
   ```
-  curl "http://localhost:8080/api/v1/matches?gameName=เพชร&tagLine=ARAM" -I
+  curl "http://localhost:8080/api/v1/matches?gameName=%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3&tagLine=ARAM" -I
   ```
