@@ -1,5 +1,23 @@
 # Spring project's README.md
 
+**NOTE:** Spring project is now deprecated and is replaced by Go (./go-api), sadly
+
+## Environment variables
+
+`api/src/main/resources/application*.properties`
+
+```
+# required
+riot.api.key=<api-key> # riot api key retrieved from https://developer.riotgames.com/
+```
+
+## Run app locally
+
+```
+./gradlew bootRun
+# you can also use your IDE to run app and that method is signicantly faster
+```
+
 ## Hot-reload on Intellij with `spring-boot-devtools`
 
 You need to mark these settings

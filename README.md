@@ -6,11 +6,12 @@
 
 - This is a simple app to see League of Legends match history
 - Client is React and API is Go
-- Spring was fully replaced by Go (2024/05/05)
+- Spring was written with Spring and got fully replaced by Go (2024/05/05)
 
 # Roadmap
 
-- Migrate spring to golang (only testing)
+- Compare net/http and gin
+- Write tests for Go (either net/http or gin)
 - Search suggestion
 - Migrate React to Nextjs and deployment from EC2 to Vercel
 - Graph of damage done and recieved (mvp)
@@ -57,15 +58,6 @@ To use `.env.production`, you need to:
     ENV=production PROJECT_ROOT=/league-of-legends-app/go-api ./go-api
     ```
 
-## API (Spring)
-
-`api/src/main/resources/application*.properties`
-
-```
-# required
-riot.api.key=<api-key> # riot api key retrieved from https://developer.riotgames.com/
-```
-
 # Run app locally
 
 ## Client
@@ -81,23 +73,17 @@ Then visit http://localhost:3000
 ## API (Go)
 
 ### First, Run mock-api (mocking Riot API)
+
 ```
 cd go-api/cmd/mock-api
 go run main.go
 ```
 
 ### Seond, Run go-api
+
 ```
 cd go-api
 go run main.go
-```
-
-## API (Spring)
-
-```
-cd api
-./gradlew bootRun
-# you can also use your IDE to run app and that method is signicantly faster
 ```
 
 ### Test API manually
