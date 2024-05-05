@@ -24,7 +24,7 @@ func main() {
 
 // handlers
 func accountHandleFn(w http.ResponseWriter, r *http.Request) {
-	err := sendJson(&w, "../../internal/mock/accountResponse.json")
+	err := sendJson(&w, "./internal/mock/accountResponse.json")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), 500)
 	}
@@ -47,7 +47,7 @@ func matchIdsHandleFn(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func matchDetailHandleFn(w http.ResponseWriter, r *http.Request) {
-	err := sendJson(&w, "../../internal/mock/matchDetailResponse.json")
+	err := sendJson(&w, "./internal/mock/matchDetailResponse.json")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), 500)
 	}
