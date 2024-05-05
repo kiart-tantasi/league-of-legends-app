@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"go-api/internal/env"
 	"go-api/internal/health"
 	"go-api/internal/match"
 	"go-api/internal/middlewares"
-	"go-api/pkg/env"
 	"net/http"
 	"os"
 )
