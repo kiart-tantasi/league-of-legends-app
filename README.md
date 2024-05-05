@@ -49,13 +49,14 @@ RIOT_API_KEY=<retrived-from-https://developer.riotgames.com/>
 To use `.env.production`, you need to:
 
 - Export these env vars with any method you prefer e.g. profile file, inline command
-  - env vars
+  - Env vars
     - `ENV=production`
     - `PROJECT_ROOT=<project-location>/go-api`
-  - example (inline command)
+  - Example (inline command)
     ```
+    cd go-api/cmd/go-api
     go build
-    ENV=production PROJECT_ROOT=/league-of-legends-app/go-api ./go-api
+    ENV=production PROJECT_ROOT=/home/league-of-legends-app/go-api ./go-api
     ```
 
 # Run app locally
