@@ -10,8 +10,9 @@
 
 # Roadmap
 
-- Compare net/http and gin
-- Write tests for Go (either net/http or gin)
+- Implement API with `github.com/gin-gonic/gin`
+- Load-test `net/http` against `github.com/gin-gonic/gin`
+- Write tests for Go (after choosing library)
 - Search suggestion
 - Migrate React to Nextjs and deployment from EC2 to Vercel
 - Graph of damage done and recieved (mvp)
