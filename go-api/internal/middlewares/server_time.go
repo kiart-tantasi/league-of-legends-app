@@ -12,7 +12,7 @@ func serverTime(next http.Handler) http.Handler {
 		start := time.Now()
 		next.ServeHTTP(w, r)
 		statusCode := r.Context().Value(contexts.StatusCode)
-		fmt.Printf("%d, %s, %d ms\n", statusCode, r.URL, (time.Since(start).Milliseconds()))
+		fmt.Printf("%s %s, %d ms, %d\n", r.Method, r.URL, time.Since(start).Milliseconds(), statusCode)
 	}
 	return http.HandlerFunc(handlerFn)
 }
