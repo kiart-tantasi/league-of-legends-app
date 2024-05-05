@@ -75,15 +75,15 @@ Then visit http://localhost:3000
 ### First, Run mock-api (mocking Riot API)
 
 ```
-cd go-api/cmd/mock-api
-go run main.go
+cd go-api
+go run cmd/mock-api/main.go
 ```
 
 ### Seond, Run go-api
 
 ```
 cd go-api
-go run main.go
+go run cmd/go-api/main.go
 ```
 
 ### Test API manually
