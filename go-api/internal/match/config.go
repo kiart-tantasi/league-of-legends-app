@@ -1,21 +1,23 @@
 package match
 
 import (
-	"go-api/pkg/env"
+	"os"
 	"strconv"
 )
 
 func getRiotApiKey() string {
-	return env.GetEnv("RIOT_API_KEY", "please retrieve api key from https://developer.riotgames.com/")
+	return os.Getenv("RIOT_API_KEY")
 }
 func getRiotAccountRegion() string {
-	return env.GetEnv("RIOT_API_REGION_ACCOUNT", "asia")
+	return os.Getenv("RIOT_API_REGION_ACCOUNT")
 }
 func getRiotMatchRegion() string {
-	return env.GetEnv("RIOT_API_REGION_MATCH", "sea")
+	return os.Getenv("RIOT_API_REGION_MATCH")
 }
 func getRiotMatchAmount() int {
-	// when RIOT_MATCH_AMOUNT is set correctly, we can assume there is no error
-	matchAmount, _ := strconv.Atoi(env.GetEnv("RIOT_MATCH_AMOUNT", "5"))
+	matchAmount, err := strconv.Atoi(os.Getenv("RIOT_MATCH_AMOUNT"))
+	if err != nil {
+		panic(err)
+	}
 	return matchAmount
 }

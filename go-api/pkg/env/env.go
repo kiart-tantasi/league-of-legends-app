@@ -1,11 +1,27 @@
 package env
 
-import "os"
+import (
+	"fmt"
+	"os"
+	"path/filepath"
 
-func GetEnv(env, defaultValue string) string {
-	value := os.Getenv(env)
-	if value == "" {
-		return defaultValue
+	"github.com/joho/godotenv"
+)
+
+func LoadEnvFile() {
+	env := os.Getenv("ENV")
+	path := ""
+	if env == "production" {
+		// production
+		path = filepath.Join(os.Getenv("PROJECT_ROOT"), ".env.production")
+	} else {
+		// development and others
+		env = "development"
+		path = ".env"
 	}
-	return value
+	err := godotenv.Load(path)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("loaded env file for environment \"%s\"\n", env)
 }

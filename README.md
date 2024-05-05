@@ -43,14 +43,19 @@ RIOT_MATCH_DETAIL_API_URL=<retrived-from-https://developer.riotgames.com/>
 RIOT_API_KEY=<retrived-from-https://developer.riotgames.com/>
 ```
 
-### Production
+### Production env file (`.env.production`)
 
-To use `.env.production`, you need to provide:
+To use `.env.production`, you need to:
 
 - Export these env vars with any method you prefer e.g. profile file, inline command
-  - `ENV=production`
-  - `PROJECT_ROOT=<project-location>/go-api`
-- Put all other env vars in `<project-location>/go-api/.env.production`
+  - env vars
+    - `ENV=production`
+    - `PROJECT_ROOT=<project-location>/go-api`
+  - example (inline command)
+    ```
+    go build
+    ENV=production PROJECT_ROOT=/league-of-legends-app/go-api ./go-api
+    ```
 
 ## API (Spring)
 
