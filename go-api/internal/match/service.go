@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"go-api/pkg/api"
+	"go-api/internal/api"
 	"io"
 	"net/http"
 	"sync"

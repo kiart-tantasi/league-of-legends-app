@@ -6,11 +6,12 @@
 
 - This is a simple app to see League of Legends match history
 - Client is React and API is Go
-- Spring was fully replaced by Go (2024/05/05)
+- Spring was written with Spring and got fully replaced by Go (2024/05/05)
 
 # Roadmap
 
-- Migrate spring to golang (only testing)
+- Compare net/http and gin
+- Write tests for Go (either net/http or gin)
 - Search suggestion
 - Migrate React to Nextjs and deployment from EC2 to Vercel
 - Graph of damage done and recieved (mvp)
@@ -43,23 +44,19 @@ RIOT_MATCH_DETAIL_API_URL=<retrived-from-https://developer.riotgames.com/>
 RIOT_API_KEY=<retrived-from-https://developer.riotgames.com/>
 ```
 
-### Production
+### Production env file (`.env.production`)
 
-To use `.env.production`, you need to provide:
+To use `.env.production`, you need to:
 
 - Export these env vars with any method you prefer e.g. profile file, inline command
-  - `ENV=production`
-  - `PROJECT_ROOT=<project-location>/go-api`
-- Put all other env vars in `<project-location>/go-api/.env.production`
-
-## API (Spring)
-
-`api/src/main/resources/application*.properties`
-
-```
-# required
-riot.api.key=<api-key> # riot api key retrieved from https://developer.riotgames.com/
-```
+  - env vars
+    - `ENV=production`
+    - `PROJECT_ROOT=<project-location>/go-api`
+  - example (inline command)
+    ```
+    go build
+    ENV=production PROJECT_ROOT=/league-of-legends-app/go-api ./go-api
+    ```
 
 # Run app locally
 
@@ -76,23 +73,17 @@ Then visit http://localhost:3000
 ## API (Go)
 
 ### First, Run mock-api (mocking Riot API)
+
 ```
 cd go-api/cmd/mock-api
 go run main.go
 ```
 
 ### Seond, Run go-api
+
 ```
 cd go-api
 go run main.go
-```
-
-## API (Spring)
-
-```
-cd api
-./gradlew bootRun
-# you can also use your IDE to run app and that method is signicantly faster
 ```
 
 ### Test API manually

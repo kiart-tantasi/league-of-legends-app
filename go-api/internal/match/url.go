@@ -2,7 +2,7 @@ package match
 
 import (
 	"fmt"
-	"go-api/pkg/env"
+	"os"
 )
 
 // different between actual api urls and mock-api urls is that
@@ -10,7 +10,7 @@ import (
 
 func getRiotAccountApiUrl(gameName, tagLine string) string {
 	defaultUrl := "http://localhost:8090/riot/account/v1/accounts/by-riot-id/%s/%s"
-	url := env.GetEnv("RIOT_ACCOUNT_API_URL", defaultUrl)
+	url := os.Getenv("RIOT_ACCOUNT_API_URL")
 	if url != defaultUrl {
 		return fmt.Sprintf(url, getRiotAccountRegion(), gameName, tagLine)
 	}
@@ -19,7 +19,7 @@ func getRiotAccountApiUrl(gameName, tagLine string) string {
 
 func getRiotMatchIdsApiUrl(puuid string) string {
 	defaultUrl := "http://localhost:8090/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=%d"
-	url := env.GetEnv("RIOT_MATCH_IDS_API_URL", defaultUrl)
+	url := os.Getenv("RIOT_MATCH_IDS_API_URL")
 	if url != defaultUrl {
 		return fmt.Sprintf(url, getRiotMatchRegion(), puuid, getRiotMatchAmount())
 	}
@@ -28,7 +28,7 @@ func getRiotMatchIdsApiUrl(puuid string) string {
 
 func getRiotMatchDetailApiUrl(matchId string) string {
 	defaultUrl := "http://localhost:8090/lol/match/v5/matches/%s"
-	url := env.GetEnv("RIOT_MATCH_DETAIL_API_URL", defaultUrl)
+	url := os.Getenv("RIOT_MATCH_DETAIL_API_URL")
 	if url != defaultUrl {
 		return fmt.Sprintf(url, getRiotMatchRegion(), matchId)
 	}
