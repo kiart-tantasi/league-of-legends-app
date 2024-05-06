@@ -10,9 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
-      - run: nohup go run cmd/mock-api/main.go > /dev/null & echo 'started mock-api'
+      - name: Run mock-api
+        run: nohup go run cmd/mock-api/main.go > /dev/null & echo 'started mock-api'
         working-directory: go-api
-      - run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
+      - name: Run go-api
+        run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
         working-directory: go-api
-      - run: curl http://localhost:8080/noppppppppppe/api/v1/matches?gameName=GAMENAME&tagLine=TAGLINE
-  
+      - name: Curl endpoint /api/v1/matches
+        run: curl http://localhost:8080/noppppppppppe/api/v1/matches?gameName=GAMENAME&tagLine=TAGLINE -I
