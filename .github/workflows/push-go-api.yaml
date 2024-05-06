@@ -1,0 +1,21 @@
+name: Test on Push (go-api)
+on:
+  push:
+    paths:
+      - "go-api/**"
+      - "scripts/go-api-test/**"
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      - name: Run mock-api
+        run: nohup go run cmd/mock-api/main.go > /dev/null & echo 'started mock-api'
+        working-directory: go-api
+      - name: Run go-api
+        run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
+        working-directory: go-api
+      - name: Run script
+        run: go run scripts/go-api-test/main.go
