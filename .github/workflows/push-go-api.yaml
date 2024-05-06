@@ -16,7 +16,6 @@ jobs:
       - name: Run go-api
         run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
         working-directory: go-api
-      - name: Curl endpoint /api/health
-        run: curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:8080/api/health -I
-      - name: Curl endpoint /api/v1/matches
-        run: curl --retry 0 http://localhost:8080/api/v1/matches?gameName=GAMENAME&tagLine=TAGLINE -I
+      - name: Run testing script
+        run: go run main.go
+        working-directory: scripts/go-api-test
