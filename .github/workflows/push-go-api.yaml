@@ -10,8 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
-      - run: cd go-api
       - run: nohup go run cmd/mock-api/main.go > /dev/null & sleep 2
+        working-directory: go-api
       - run: nohup go run cmd/go-api/main.go > /dev/null & sleep 5
+        working-directory: go-api
       - run: curl http://localhost:8080/api/v1/matches?gameName=GAMENAME&tagLine=TAGLINE
   
