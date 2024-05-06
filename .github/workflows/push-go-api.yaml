@@ -18,5 +18,4 @@ jobs:
         run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
         working-directory: go-api
       - name: Run script
-        run: go run main.go
-        working-directory: scripts/go-api-test
+        run: go run scripts/go-api-test/main.go
