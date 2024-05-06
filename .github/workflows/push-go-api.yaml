@@ -1,8 +1,9 @@
 name: Test on Push (go-api)
 on:
   push:
-    # paths:
-      # - "go-api/**"
+    paths:
+      - "go-api/**"
+      - "scripts/go-api-test/**"
 
 jobs:
   integration-test:
@@ -16,6 +17,6 @@ jobs:
       - name: Run go-api
         run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
         working-directory: go-api
-      - name: Run testing script
+      - name: Run script
         run: go run main.go
         working-directory: scripts/go-api-test
