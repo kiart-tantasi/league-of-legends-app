@@ -19,6 +19,7 @@ func main() {
 func checkHealthEndpoint(client *http.Client) {
 	isSuccess := false
 	for i := 0; i < 5; i++ {
+		fmt.Println("round", i+1)
 		isSuccessChannel := make(chan bool)
 		go func() {
 			res, err := client.Get("http://localhost:8080/api/health")
@@ -41,10 +42,13 @@ func checkHealthEndpoint(client *http.Client) {
 
 func checkMatchesEndpoint(client *http.Client) {
 	res, err := client.Get("http://localhost:8080/api/v1/matches?gameName=GAMENAME&tagLine=TAGLINE")
-	if err != nil || res.StatusCode != 200 {
+	if err != nil || res.StatusCode != 200 || res.Body == nil {
 		panic("matches failed")
 	}
 	defer res.Body.Close()
 	bytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		panic("matches failed")
+	}
 	fmt.Println(string(bytes))
 }
