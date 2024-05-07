@@ -2,17 +2,20 @@ package main
 
 import (
 	"fmt"
-	"go-api/internal/env"
 	"go-api/internal/health"
 	"go-api/internal/match"
 	"go-api/internal/middlewares"
 	"net/http"
 	"os"
+
+	"github.com/kiart-tantasi/env"
 )
 
 func main() {
 	// env
-	env.LoadEnvFile()
+	environment := os.Getenv("ENV")
+	projectRoot := os.Getenv("PROJECT_ROOT")
+	env.LoadEnvFile(environment, projectRoot)
 	// routing
 	http.Handle("/api/health", &health.HealthHandler{})
 	http.Handle("/api/v1/matches", middlewares.ApiMiddlewares((http.Handler(&match.MatchHandler{}))))
