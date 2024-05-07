@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"go-api/internal/env"
 	"go-api/internal/health"
 	"go-api/internal/match"
 	"go-api/internal/middlewares"
 	"net/http"
 	"os"
+
+	"github.com/kiart-tantasi/env"
 )
 
 func main() {
