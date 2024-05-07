@@ -6,7 +6,7 @@ on:
       - "scripts/go-api-test/**"
 
 jobs:
-  integration-test:
+  api-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
