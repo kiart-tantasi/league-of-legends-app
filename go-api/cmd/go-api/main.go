@@ -13,7 +13,9 @@ import (
 
 func main() {
 	// env
-	env.LoadEnvFile()
+	environment := os.Getenv("ENV")
+	projectRoot := os.Getenv("PROJECT_ROOT")
+	env.LoadEnvFile(environment, projectRoot)
 	// routing
 	http.Handle("/api/health", &health.HealthHandler{})
 	http.Handle("/api/v1/matches", middlewares.ApiMiddlewares((http.Handler(&match.MatchHandler{}))))

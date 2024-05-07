@@ -11,7 +11,9 @@ import (
 
 func main() {
 	// env
-	env.LoadEnvFile()
+	environment := os.Getenv("ENV")
+	projectRoot := os.Getenv("PROJECT_ROOT")
+	env.LoadEnvFile(environment, projectRoot)
 	// test github.com/kiart-tantasi/env
 	fmt.Println("...FOO env:", os.Getenv("FOO"), "...")
 	//routing
