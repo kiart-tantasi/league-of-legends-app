@@ -39,16 +39,17 @@ export function populateDate({
     const data: PopulateData = JSON.parse(str || '')
     if (!!data) {
       setGameName(data.gameName || '')
-      // prefix #
-      if (
-        typeof data.tagLine === 'string' &&
-        data.tagLine.length !== 0 &&
-        !data.tagLine.includes('#')
-      ) {
-        setTagLine(`#${data.tagLine}`)
-      }
+      setTagLine(handleTagLine(data.tagLine))
     }
   } catch (err) {
     console.error(err)
   }
+}
+
+// prefix hashtag if not already included
+function handleTagLine(tagLine: string | undefined): string {
+  if (typeof tagLine === 'string' && tagLine.length !== 0) {
+    return `${tagLine.includes('#') ? '' : '#'}${tagLine}`
+  }
+  return ''
 }
