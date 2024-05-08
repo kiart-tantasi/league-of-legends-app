@@ -13,6 +13,7 @@ import { Size } from '../constants/common'
 import { searchPlaceholder } from '../configs/placeholder'
 import { handleChamionImageName as handleImageName } from '../utils/image'
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay'
+import { savePopulateData } from '../utils/populate'
 
 const PRIORITIZED_CARD_AMOUNT = 4
 
@@ -51,6 +52,10 @@ export default function MatchPage() {
           warnUser('ไม่พบผู้เล่น/เซิร์ฟเวอร์กำลังทำงานหนัก กรุณาลองใหม่')
         }
         setMatches(matchDetailList)
+        savePopulateData({
+          gameName: paramGameName || '',
+          tagLine: paramTagLine || '',
+        })
       } catch (e) {
         setMatches([])
         console.error(e)
@@ -64,6 +69,11 @@ export default function MatchPage() {
     e.preventDefault()
     if ([gameName, tagLine].some((e) => !e)) {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
+      return
+    }
+    // reload the page if gameName and tagLine are the same as current ones
+    if (paramGameName === gameName && paramTagLine === tagLine) {
+      window.location.reload()
       return
     }
     setSearchParams({
