@@ -45,8 +45,21 @@ export default function SearchPage() {
             placeholder={searchPlaceholder.tagLine}
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
           />
-          <button className="bg-white rounded p-1 text-[14px]" type="submit">
+          <button
+            className="w-[250px] bg-white rounded p-1 text-[14px] font-bold
+                      hover:bg-black hover:text-white"
+            type="submit"
+          >
             ดูประวัติการเล่น
+          </button>
+          <button
+            onClick={() => {
+              navigate('/match?gameName=เพชร&tagLine=ARAM')
+            }}
+            className="mt-[70px] w-[250px] bg-white rounded p-1 text-[10px] font-bold
+                      hover:bg-black hover:text-white"
+          >
+            just want to try ?
           </button>
         </form>
         <div className="text-center mt-[200px]">

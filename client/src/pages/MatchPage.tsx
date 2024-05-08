@@ -66,6 +66,11 @@ export default function MatchPage() {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
       return
     }
+    // reload the page if gameName and tagLine are the same as current ones
+    if (paramGameName === gameName && paramTagLine === tagLine) {
+      window.location.reload()
+      return
+    }
     setSearchParams({
       gameName,
       tagLine: handleTagLine({ tagLine }),
