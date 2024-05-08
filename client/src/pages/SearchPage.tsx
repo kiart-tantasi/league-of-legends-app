@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { handleTagLine, validateSearchInputs, warnUser } from '../utils/search'
 import Layout from '../components/Layout'
 import { searchPlaceholder } from '../configs/placeholder'
-import { populateDate, savePopulateData } from '../utils/populate'
+import { populateData, savePopulateData } from '../utils/populate'
 
 export default function SearchPage() {
   const [gameName, setGameName] = useState('')
@@ -22,7 +22,7 @@ export default function SearchPage() {
   }
 
   useEffect(() => {
-    populateDate({ setGameName, setTagLine })
+    populateData({ setGameName, setTagLine })
   }, [])
 
   return (

@@ -27,7 +27,7 @@ export function savePopulateData({
   }
 }
 
-export function populateDate({
+export function populateData({
   setGameName,
   setTagLine,
 }: {
