@@ -39,7 +39,14 @@ export function populateDate({
     const data: PopulateData = JSON.parse(str || '')
     if (!!data) {
       setGameName(data.gameName || '')
-      setTagLine(data.tagLine || '')
+      // prefix #
+      if (
+        typeof data.tagLine === 'string' &&
+        data.tagLine.length !== 0 &&
+        !data.tagLine.includes('#')
+      ) {
+        setTagLine(`#${data.tagLine}`)
+      }
     }
   } catch (err) {
     console.error(err)
