@@ -2,8 +2,8 @@ import { handleTagLine, validateSearchInputs, warnUser } from './search'
 
 describe('handleTagLine', () => {
   test('Should remove hash symbol if has', () => {
-    expect(handleTagLine({ tagLine: '#123' })).toBe('123')
-    expect(handleTagLine({ tagLine: '123' })).toBe('123')
+    expect(handleTagLine('#123')).toBe('123')
+    expect(handleTagLine('123')).toBe('123')
   })
 })
 

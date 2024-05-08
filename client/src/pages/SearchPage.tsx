@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { handleTagLine, validateSearchInputs, warnUser } from '../utils/search'
 import Layout from '../components/Layout'
 import { searchPlaceholder } from '../configs/placeholder'
-import { populateDate } from '../utils/populate'
+import { populateData, savePopulateData } from '../utils/populate'
 
 export default function SearchPage() {
   const [gameName, setGameName] = useState('')
@@ -16,13 +16,13 @@ export default function SearchPage() {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
       return
     }
-    navigate(
-      `/match?gameName=${gameName}&tagLine=${handleTagLine({ tagLine })}`,
-    )
+    const handledTagLine = handleTagLine(tagLine)
+    savePopulateData({ gameName, tagLine: handledTagLine })
+    navigate(`/match?gameName=${gameName}&tagLine=${handledTagLine}`)
   }
 
   useEffect(() => {
-    populateDate({ setGameName, setTagLine })
+    populateData({ setGameName, setTagLine })
   }, [])
 
   return (
@@ -39,6 +39,7 @@ export default function SearchPage() {
             name="gameName"
             placeholder={searchPlaceholder.gameName}
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
+            autoFocus
           />
           <input
             value={tagLine}
