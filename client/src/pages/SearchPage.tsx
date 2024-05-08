@@ -16,7 +16,7 @@ export default function SearchPage() {
       warnUser('กรอกข้อมูลไม่ครบ/ไม่ถูกต้อง')
       return
     }
-    const handledTagLine = handleTagLine({ tagLine })
+    const handledTagLine = handleTagLine(tagLine)
     savePopulateData({ gameName, tagLine: handledTagLine })
     navigate(`/match?gameName=${gameName}&tagLine=${handledTagLine}`)
   }

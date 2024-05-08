@@ -1,4 +1,4 @@
-export function handleTagLine({ tagLine }: { tagLine: string }) {
+export function handleTagLine(tagLine: string) {
   return tagLine.replace('#', '')
 }
 

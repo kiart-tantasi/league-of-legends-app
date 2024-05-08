@@ -73,7 +73,7 @@ export default function MatchPage() {
     }
     setSearchParams({
       gameName,
-      tagLine: handleTagLine({ tagLine }),
+      tagLine: handleTagLine(tagLine),
     })
   }
 

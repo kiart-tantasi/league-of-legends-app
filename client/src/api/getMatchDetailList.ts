@@ -18,9 +18,9 @@ export default async function getMatchDetailList({
   // ========= DEV ========= //
 
   const response = await fetch(
-    `/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine({
-      tagLine: paramTagLine ?? '',
-    })}`,
+    `/api/v1/matches?gameName=${paramGameName}&tagLine=${handleTagLine(
+      paramTagLine,
+    )}`,
   )
   let matchDetailList = []
   if (response.status === 200) {
