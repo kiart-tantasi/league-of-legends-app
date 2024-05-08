@@ -39,6 +39,7 @@ export default function SearchPage() {
             name="gameName"
             placeholder={searchPlaceholder.gameName}
             className="w-[250px] mb-4 placeholder:text-[0.75rem]"
+            autoFocus
           />
           <input
             value={tagLine}
