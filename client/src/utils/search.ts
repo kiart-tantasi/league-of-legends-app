@@ -1,5 +1,5 @@
 export function handleTagLine(tagLine: string) {
-  return tagLine.replace('#', '')
+  return tagLine.replaceAll('#', '')
 }
 
 export function validateSearchInputs({
