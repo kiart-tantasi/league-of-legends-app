@@ -1,13 +1,13 @@
+// normally, I don't use try-catch inside a util function
+// but I use it here because this one is an additional feature
+// and I don't want to put several lines of code in main files
+
 interface PopulateData {
   gameName: string
   tagLine: string
 }
 
 const POPULATE_DATA_STORAGE_KEY = 'populate'
-
-// normally, I don't use try-catch inside a util function
-// but I use it here because this one is an additional feature
-// and I don't want to put several lines of code in main files
 
 export function savePopulateData({
   gameName,
@@ -39,7 +39,7 @@ export function populateData({
     const data: PopulateData = JSON.parse(str || '')
     if (!!data) {
       setGameName(data.gameName || '')
-      setTagLine(handleTagLine(data.tagLine))
+      setTagLine(withHashtag(data.tagLine))
     }
   } catch (err) {
     console.error(err)
@@ -47,7 +47,7 @@ export function populateData({
 }
 
 // prefix hashtag if not already included
-function handleTagLine(tagLine: string | undefined): string {
+function withHashtag(tagLine: string | undefined): string {
   if (typeof tagLine === 'string' && tagLine.length !== 0) {
     return `${tagLine.includes('#') ? '' : '#'}${tagLine}`
   }
