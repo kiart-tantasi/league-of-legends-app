@@ -19,7 +19,9 @@ func main() {
 func checkHealthEndpoint(client *http.Client) {
 	isSuccess := false
 	for i := 0; i < 5; i++ {
-		fmt.Println("health endpoint round", i+1)
+		if i != 0 {
+			fmt.Println("health endpoint retry round", i)
+		}
 		res, err := client.Get("http://localhost:8080/api/health")
 		if err == nil && res.StatusCode == 200 {
 			isSuccess = true
