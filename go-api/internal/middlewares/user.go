@@ -38,7 +38,7 @@ func user(next http.Handler) http.Handler {
 func getHeaderValues(r *http.Request) string {
 	s := []string{}
 	for k, v := range r.Header {
-		if v[0] != "" {
+		if len(v) > 0 && v[0] != "" {
 			s = append(s, fmt.Sprintf("%s:%s", k, v[0]))
 		}
 	}
