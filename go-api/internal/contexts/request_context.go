@@ -5,7 +5,7 @@ import (
 )
 
 type RequestContext struct {
-	StatusCode *int
+	StatusCode int
 }
 
 // https://stackoverflow.com/a/74972993/21331113
@@ -13,8 +13,8 @@ type RequestContext struct {
 func WriteStatus(w http.ResponseWriter, statusCode int, r *http.Request) {
 	w.WriteHeader(statusCode)
 	// retrieve request context and write status code
-	var requestContext *RequestContext = r.Context().Value(RequestContextKey).(*RequestContext)
-	if requestContext != nil {
-		requestContext.StatusCode = &statusCode
+	ctx, ok := r.Context().Value(RequestContextKey).(*RequestContext)
+	if ok && ctx != nil {
+		ctx.StatusCode = statusCode
 	}
 }
