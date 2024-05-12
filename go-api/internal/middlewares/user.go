@@ -3,6 +3,7 @@ package middlewares
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -27,18 +28,19 @@ func user(next http.Handler) http.Handler {
 		} else {
 			userId = existingCookie.Value
 		}
-		fmt.Println("===================================================")
-		fmt.Println("user id: " + userId)
-		logHeaders(r)
+		message := fmt.Sprintf("user id: %s, %s", userId, getHeaderValues(r))
+		fmt.Println(message)
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(handlerFn)
 }
 
-func logHeaders(r *http.Request) {
+func getHeaderValues(r *http.Request) string {
+	s := []string{}
 	for k, v := range r.Header {
 		if v[0] != "" {
-			fmt.Printf("%s: %s\n", k, v[0])
+			s = append(s, fmt.Sprintf("%s:%s", k, v[0]))
 		}
 	}
+	return strings.Join(s, ";")
 }
