@@ -15,6 +15,6 @@ func WriteStatus(w http.ResponseWriter, statusCode int, r *http.Request) {
 	// retrieve request context and write status code
 	var requestContext *RequestContext = r.Context().Value(RequestContextKey).(*RequestContext)
 	if requestContext != nil {
-		*requestContext.StatusCode = statusCode
+		requestContext.StatusCode = &statusCode
 	}
 }
