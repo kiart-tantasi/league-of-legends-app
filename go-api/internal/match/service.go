@@ -179,12 +179,12 @@ func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesR
 			participantList = append(participantList, participant)
 			// id owner case
 			if parti.Puuid == puuid {
+				matchDetail.ItemIds = *parti.getItemIds()
 				matchDetail.ChampionName = parti.ChampionName
 				matchDetail.Kills = parti.Kills
 				matchDetail.Assists = parti.Assists
 				matchDetail.Deaths = parti.Deaths
 				matchDetail.Win = parti.Win
-				matchDetail.ItemIds = *parti.getItemIds()
 			}
 		}
 		matchDetail.ParticipantList = &participantList
