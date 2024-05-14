@@ -142,10 +142,11 @@ func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesR
 			continue
 		}
 		matchDetail := &MatchDetailV1{}
-		participantList := []ParticipantV1{}
+		participantList := []ParticipantV2{}
 		for _, parti := range response.Info.Participants {
 			// all cases
-			participant := ParticipantV1{
+			participant := ParticipantV2{
+				ItemIds:      *parti.getItemIds(),
 				GameName:     parti.RiotIdGameName,
 				TagLine:      parti.RiotIdtagLine,
 				ChampionName: parti.ChampionName,
@@ -153,7 +154,27 @@ func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesR
 				Assists:      parti.Assists,
 				Deaths:       parti.Deaths,
 				Win:          parti.Win,
-				ItemIds:      *parti.getItemIds(),
+				// newly added (feat/participant-v2)
+				ChampLevel:                     parti.ChampLevel,
+				GoldEarned:                     parti.GoldEarned,
+				DamageDealtToTurrets:           parti.DamageDealtToTurrets,
+				DamageSelfMitigated:            parti.DamageSelfMitigated,
+				MagicDamageDealt:               parti.MagicDamageDealt,
+				MagicDamageDealtToChampions:    parti.MagicDamageDealtToChampions,
+				MagicDamageTaken:               parti.MagicDamageTaken,
+				PhysicalDamageDealt:            parti.PhysicalDamageDealt,
+				PhysicalDamageDealtToChampions: parti.PhysicalDamageDealtToChampions,
+				PhysicalDamageTaken:            parti.PhysicalDamageTaken,
+				TotalDamageDealt:               parti.TotalDamageDealt,
+				TotalDamageDealtToChampions:    parti.TotalDamageDealtToChampions,
+				TotalDamageShieldedOnTeammates: parti.TotalDamageShieldedOnTeammates,
+				TotalDamageTaken:               parti.TotalDamageTaken,
+				TotalHeal:                      parti.TotalHeal,
+				TotalHealsOnTeammates:          parti.TotalHealsOnTeammates,
+				TotalMinionsKilled:             parti.TotalMinionsKilled,
+				TrueDamageDealt:                parti.TrueDamageDealt,
+				TrueDamageDealtToChampions:     parti.TrueDamageDealtToChampions,
+				TrueDamageTaken:                parti.TrueDamageTaken,
 			}
 			participantList = append(participantList, participant)
 			// id owner case
