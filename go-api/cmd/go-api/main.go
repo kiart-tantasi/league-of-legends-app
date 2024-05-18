@@ -22,7 +22,7 @@ func main() {
 	env.LoadEnvFile(environment, projectRoot)
 
 	// === DEBUGGING === //
-	// testMongoDB()
+	initMongoDB(os.Getenv("MONGODB_URI"))
 	// === DEBUGGING === //
 
 	// routing
@@ -36,9 +36,11 @@ func main() {
 	}
 }
 
-func testMongoDB() {
+// move to separate package
+// declare Client as public var
+func initMongoDB(uri string) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(os.Getenv("MONGODB_URI")).SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 	// Create a new client and connect to the server
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
