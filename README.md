@@ -10,11 +10,10 @@
 
 # Roadmap
 
-- Implement API with `github.com/gin-gonic/gin`
-- Load-test `net/http` against `github.com/gin-gonic/gin`
-- Write tests for Go (after choosing library)
+- MongoDB for caching match details
 - Search suggestion
 - Migrate React to Nextjs and deployment from EC2 to Vercel
+- CSRF token
 - Graph of damage done and recieved (mvp)
 
 # Environment variables
