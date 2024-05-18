@@ -22,7 +22,7 @@ func main() {
 	env.LoadEnvFile(environment, projectRoot)
 
 	// === DEBUGGING === //
-	testMongoDB()
+	// testMongoDB()
 	// === DEBUGGING === //
 
 	// routing
