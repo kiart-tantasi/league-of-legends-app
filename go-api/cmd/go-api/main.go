@@ -19,7 +19,7 @@ func main() {
 	env.LoadEnvFile(environment, projectRoot)
 	// cache
 	if cache.IsEnabled() {
-		cache.InitMongoClient(os.Getenv("MONGODB_URI"))
+		cache.InitMongoClient(os.Getenv("CACHE_MONGODB_URI"))
 	}
 	// routing
 	http.Handle("/api/health", &health.HealthHandler{})
