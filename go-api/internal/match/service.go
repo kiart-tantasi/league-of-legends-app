@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go-api/internal/api"
+	"go-api/internal/cache"
 	"io"
 	"net/http"
 	"sync"
@@ -122,10 +123,16 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	if res.StatusCode != 200 {
 		return nil, errors.New("match detail response status code is not 200")
 	}
-
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
+	}
+	// cache
+	if cache.IsEnabled() {
+		err := cache.CacheMatchDetail(matchId, string(bytes))
+		if err != nil {
+			fmt.Println("CacheMatchDetail error:", err)
+		}
 	}
 	var matchDetailResponse RiotMatchDetailResponse
 	err = json.Unmarshal(bytes, &matchDetailResponse)
