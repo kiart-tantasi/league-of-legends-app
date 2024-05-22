@@ -9,7 +9,6 @@ import (
 	"io"
 	"net/http"
 	"sync"
-	"time"
 )
 
 func getMatchesV1(gameName, tagLine string) ([]byte, error) {
@@ -128,13 +127,13 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	// TODO: optimize and increase match amount back to 20
-	start := time.Now()
+	// cache
 	if cache.IsEnabled() {
-		cache.CacheMatchDetail(matchId, string(bytes))
+		err := cache.CacheMatchDetail(matchId, string(bytes))
+		if err != nil {
+			fmt.Println("CacheMatchDetail error:", err)
+		}
 	}
-	fmt.Println("taken:", time.Since(start))
-	// END OF TODO
 	var matchDetailResponse RiotMatchDetailResponse
 	err = json.Unmarshal(bytes, &matchDetailResponse)
 	if err != nil {
