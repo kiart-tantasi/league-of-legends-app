@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"go-api/internal/api"
+	"go-api/internal/cache"
 	"io"
 	"net/http"
 	"sync"
+	"time"
 )
 
 func getMatchesV1(gameName, tagLine string) ([]byte, error) {
@@ -122,11 +124,17 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	if res.StatusCode != 200 {
 		return nil, errors.New("match detail response status code is not 200")
 	}
-
 	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
+	// TODO: optimize and increase match amount back to 20
+	start := time.Now()
+	if cache.IsEnabled() {
+		cache.CacheMatchDetail(matchId, string(bytes))
+	}
+	fmt.Println("taken:", time.Since(start))
+	// END OF TODO
 	var matchDetailResponse RiotMatchDetailResponse
 	err = json.Unmarshal(bytes, &matchDetailResponse)
 	if err != nil {
