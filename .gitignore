@@ -8,8 +8,8 @@
 # go
 
 ## build
-go-api/go-api
-mock-api/mock-api
+go-api/cmd/go-api/go-api
+go-api/cmd/mock-api/mock-api
 
 ## env
 .env.production
