@@ -44,6 +44,7 @@ RIOT_MATCH_DETAIL_API_URL=<retrived-from-https://developer.riotgames.com/>
 RIOT_API_KEY=<retrived-from-https://developer.riotgames.com/>
 CACHE_ENABLED=<true|false>
 CACHE_MONGODB_URI=<uri>
+CACHE_MONGODB_DATABASE_NAME=<database-name>
 ```
 
 ### Production env file (`.env.production`)

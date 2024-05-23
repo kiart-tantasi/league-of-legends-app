@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,8 +11,7 @@ import (
 )
 
 var client *mongo.Client
-
-const databaseName string = "lol-caching"
+var databaseName string
 
 func InitMongoClient(uri string) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
@@ -22,6 +22,7 @@ func InitMongoClient(uri string) {
 		return
 	}
 	client = c
+	databaseName = os.Getenv("CACHE_MONGODB_DATABASE_NAME")
 	err = client.Database(databaseName).RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err()
 	if err != nil {
 		fmt.Println(err)
