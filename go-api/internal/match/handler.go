@@ -1,8 +1,8 @@
 package match
 
 import (
-	"fmt"
 	"go-api/internal/contexts"
+	"log"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ func (*MatchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// get matches from riot api
 	matches, err := getMatchesV1(gameName, tagLine)
 	if err != nil {
-		fmt.Println("getMatchesV1 error:", err)
+		log.Println("getMatchesV1 error:", err)
 		contexts.WriteStatus(w, http.StatusBadRequest, r)
 		return
 	}

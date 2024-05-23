@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"context"
-	"fmt"
 	"go-api/internal/contexts"
+	"log"
 	"net/http"
 	"time"
 )
@@ -21,7 +21,7 @@ func serverTime(next http.Handler) http.Handler {
 		// read request context after serving
 		requestContext, ok := r.Context().Value(contexts.RequestContextKey).(*contexts.RequestContext)
 		if ok && requestContext != nil {
-			fmt.Printf("%s %s, %d ms, %d\n", r.Method, r.URL, time.Since(start).Milliseconds(), requestContext.StatusCode)
+			log.Printf("%s %s, %d ms, %d\n", r.Method, r.URL, time.Since(start).Milliseconds(), requestContext.StatusCode)
 		}
 	}
 	return http.HandlerFunc(handlerFn)

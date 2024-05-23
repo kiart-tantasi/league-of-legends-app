@@ -1,7 +1,7 @@
 package env
 
 import (
-	"fmt"
+	"log"
 	"path/filepath"
 
 	"github.com/joho/godotenv"
@@ -25,5 +25,5 @@ func LoadEnvFile(environment, projectRoot string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("loaded env file for environment \"%s\"\n", environment)
+	log.Printf("loaded env file for environment \"%s\"\n", environment)
 }

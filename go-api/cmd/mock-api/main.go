@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -16,7 +17,7 @@ func main() {
 	http.Handle("/lol/match/v5/matches/", loggingMiddleware(http.HandlerFunc(matchDetailHandleFn)))
 	// start
 	port := "8090"
-	fmt.Println("app is listening and serving on port", port)
+	log.Println("app is listening and serving on port", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 	if err != nil {
 		panic(err)
@@ -73,7 +74,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
-		fmt.Printf("%s %s, %d ms\n", r.Method, r.URL, time.Since(start).Milliseconds())
+		log.Printf("%s %s, %d ms\n", r.Method, r.URL, time.Since(start).Milliseconds())
 	}
 	return http.HandlerFunc(fn)
 }
