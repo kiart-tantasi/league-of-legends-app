@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -29,7 +30,7 @@ func user(next http.Handler) http.Handler {
 			userId = existingCookie.Value
 		}
 		message := fmt.Sprintf("user id: %s, %s", userId, getHeaderValues(r))
-		fmt.Println(message)
+		log.Println(message)
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(handlerFn)

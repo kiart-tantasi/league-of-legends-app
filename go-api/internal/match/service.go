@@ -97,7 +97,7 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, e
 			defer wg.Done()
 			response, err := getMatchDetail(matchId)
 			if err != nil {
-				fmt.Printf("getMatchDetail error for match id %s: %s\n", matchId, err)
+				log.Printf("getMatchDetail error for match id %s: %s\n", matchId, err)
 			} else {
 				responses[i] = response
 			}
@@ -138,7 +138,7 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	if cache.IsEnabled() {
 		err := cache.CacheMatchDetail(matchId, string(bytes))
 		if err != nil {
-			fmt.Println("CacheMatchDetail error:", err)
+			log.Println("CacheMatchDetail error:", err)
 		}
 	}
 	var matchDetailResponse RiotMatchDetailResponse

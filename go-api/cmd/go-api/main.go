@@ -6,6 +6,7 @@ import (
 	"go-api/internal/health"
 	"go-api/internal/match"
 	"go-api/internal/middlewares"
+	"log"
 	"net/http"
 	"os"
 
@@ -26,7 +27,7 @@ func main() {
 	http.Handle("/api/v1/matches", middlewares.ApiMiddlewares((http.Handler(&match.MatchHandler{}))))
 	// start
 	port := os.Getenv("SERVER_PORT")
-	fmt.Println("app is listening and serving on port", port)
+	log.Println("app is listening and serving on port", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 	if err != nil {
 		panic(err)
