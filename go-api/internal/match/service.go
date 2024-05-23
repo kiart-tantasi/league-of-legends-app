@@ -150,8 +150,11 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 }
 
 func getMatchDetailFromCache(matchId string) *RiotMatchDetailResponse {
+	if !cache.IsEnabled() {
+		return nil
+	}
 	responseBody, err := cache.GetMatchDetail(matchId)
-	// not found in cache
+	// error because it is not found in cache
 	if err != nil {
 		return nil
 	}
