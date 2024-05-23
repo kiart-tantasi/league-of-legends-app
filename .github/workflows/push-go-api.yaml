@@ -4,6 +4,9 @@ on:
     paths:
       - "go-api/**"
       - "scripts/go-api-test/**"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   api-test:

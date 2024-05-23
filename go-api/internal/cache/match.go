@@ -9,13 +9,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type MatchCache struct {
+type matchCache struct {
 	Id           string `bson:"_id"`
 	ResponseBody string `bson:"responseBody"`
 }
 
 func CacheMatchDetail(matchId, responseBody string) error {
-	collection := getCollectionMatches()
+	collection := getCollection()
 	opts := options.Update().SetUpsert(true)
 	update := bson.D{{"$set", bson.D{{"responseBody", responseBody}}}}
 	ctx, cancel := context.WithTimeout(context.Background(), getDefaultTimeout())
@@ -25,12 +25,12 @@ func CacheMatchDetail(matchId, responseBody string) error {
 }
 
 func GetMatchDetail(matchId string) (string, error) {
-	collection := getCollectionMatches()
+	collection := getCollection()
 	filter := bson.D{{"_id", matchId}}
 	ctx, cancel := context.WithTimeout(context.Background(), getDefaultTimeout())
 	defer cancel()
 	result := collection.FindOne(ctx, filter)
-	var match MatchCache
+	var match matchCache
 	err := result.Decode(&match)
 	if err != nil {
 		return "", err
@@ -38,7 +38,7 @@ func GetMatchDetail(matchId string) (string, error) {
 	return match.ResponseBody, nil
 }
 
-func getCollectionMatches() *mongo.Collection {
+func getCollection() *mongo.Collection {
 	return client.Database(databaseName).Collection("matches")
 }
 
