@@ -7,6 +7,7 @@ import (
 	"go-api/internal/api"
 	"go-api/internal/cache"
 	"io"
+	"log"
 	"net/http"
 	"sync"
 )
@@ -108,6 +109,12 @@ func getMatchesResponse(matchIds *[]string, puuid string) (*MatchesResponseV1, e
 }
 
 func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
+	// find in cache
+	matchFromCache := getMatchDetailFromCache(matchId)
+	if matchFromCache != nil {
+		return matchFromCache, nil
+	}
+	// riot api
 	url := getRiotMatchDetailApiUrl(matchId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -140,6 +147,21 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 		return nil, err
 	}
 	return &matchDetailResponse, nil
+}
+
+func getMatchDetailFromCache(matchId string) *RiotMatchDetailResponse {
+	responseBody, err := cache.GetMatchDetail(matchId)
+	// not found in cache
+	if err != nil {
+		return nil
+	}
+	var matchDetailResponse RiotMatchDetailResponse
+	err = json.Unmarshal([]byte(responseBody), &matchDetailResponse)
+	if err != nil {
+		log.Printf("Unmarshal response body from cache error: %v", err)
+		return nil
+	}
+	return &matchDetailResponse
 }
 
 func mapToResponse(responses []*RiotMatchDetailResponse, puuid string) *MatchesResponseV1 {
