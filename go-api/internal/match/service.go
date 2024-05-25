@@ -122,7 +122,8 @@ func getMatchDetail(matchId string) (*RiotMatchDetailResponse, error) {
 	}
 	req.Header.Set("X-Riot-Token", getRiotApiKey())
 	res, err := (api.NewHttpClient()).Do(req)
-	// why check error before `defer res.Body.Close()`: https://stackoverflow.com/a/16280362/21331113
+	// why we need to check error before `res.Body.Close`
+	// https://stackoverflow.com/a/16280362/21331113
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +155,7 @@ func getMatchDetailFromCache(matchId string) *RiotMatchDetailResponse {
 		return nil
 	}
 	responseBody, err := cache.GetMatchDetail(matchId)
-	// error because it is not found in cache
+	// not found error
 	if err != nil {
 		return nil
 	}
