@@ -13,6 +13,7 @@ import { Size } from '../constants/common'
 import { searchPlaceholder } from '../configs/placeholder'
 import { handleChamionImageName as handleImageName } from '../utils/image'
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay'
+import { ddragonConfig } from '../configs/ddragon'
 
 const PRIORITIZED_CARD_AMOUNT = 4
 
@@ -244,14 +245,16 @@ function ChampionImage({
   const widthHeightClass =
     size === Size.BIG ? `w-12 h-12 md:w-12 md:h-12` : 'w-10 h-10 md:w-9 md:h-9'
   if (isError) {
-    return <div className={widthHeightClass} />
+    return (
+      <div data-champion-name={championName} className={widthHeightClass} />
+    )
   }
   return (
     <img
       className={widthHeightClass}
-      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${handleImageName(
-        championName,
-      )}.png`}
+      src={`https://ddragon.leagueoflegends.com/cdn/${
+        ddragonConfig.version
+      }/img/champion/${handleImageName(championName)}.png`}
       alt={`${championName}`}
       onError={() => {
         setIsError(true)
@@ -278,12 +281,12 @@ function ItemImage({
   const widthHeightClass =
     size === Size.BIG ? 'w-9 h-9 md:w-10 md:h-10' : 'w-8 h-8 md:w-8 md:h-8'
   if (isError) {
-    return <div className={widthHeightClass} />
+    return <div data-item-id={itemId} className={widthHeightClass} />
   }
   return (
     <img
       className={widthHeightClass}
-      src={`https://ddragon.leagueoflegends.com/cdn/14.2.1/img/item/${itemId}.png`}
+      src={`https://ddragon.leagueoflegends.com/cdn/${ddragonConfig.version}/img/item/${itemId}.png`}
       alt={`league of legends item id ${itemId}`}
       onError={() => setIsError(true)}
       loading={shouldLazy ? 'lazy' : 'eager'}
