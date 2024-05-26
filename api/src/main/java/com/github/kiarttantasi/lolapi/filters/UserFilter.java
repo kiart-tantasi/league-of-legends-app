@@ -83,10 +83,10 @@ public class UserFilter extends OncePerRequestFilter {
 
   private String getHeaderValues(HttpServletRequest request) {
     if (request.getHeaderNames() == null) {
-      return "";
+      return null;
     }
     return Collections.list(request.getHeaderNames()).stream()
         .reduce((prev, cur) -> String.format("%s;%s:%s", prev, cur, request.getHeader(cur)))
-        .orElse("");
+        .orElse(null);
   }
 }
