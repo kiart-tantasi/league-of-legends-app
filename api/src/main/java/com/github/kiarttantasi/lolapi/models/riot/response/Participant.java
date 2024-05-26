@@ -8,6 +8,7 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 public class Participant {
+  private String puuid;
   private String riotIdGameName;
   private String riotIdTagline;
   private Integer kills;

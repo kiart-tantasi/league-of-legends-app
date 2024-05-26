@@ -47,16 +47,16 @@ public class MatchHistoryControllerTest {
   }
 
   private MatchDetailV1 mockMatch() {
-    return new MatchDetailV1(
-        "MOCK",
-        1,
-        2,
-        3,
-        true,
-        "MOCK",
-        123L,
-        new ArrayList<>(),
-        new ArrayList<>()
-    );
+    final MatchDetailV1 mock = new MatchDetailV1();
+    mock.setChampionName("MOCK");
+    mock.setKills(1);
+    mock.setDeaths(1);
+    mock.setAssists(1);
+    mock.setWin(true);
+    mock.setGameMode("MOCK");
+    mock.setGameCreation(123L);
+    mock.setParticipantList(new ArrayList<>());
+    mock.setItemIds(new ArrayList<>());
+    return mock;
   }
 }
