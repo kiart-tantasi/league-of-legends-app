@@ -6,9 +6,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ApiService {
   private static final HttpResponse.BodyHandler<String> BODYHANDLER =
       HttpResponse.BodyHandlers.ofString();
@@ -16,6 +19,14 @@ public class ApiService {
   public <T> T send(HttpRequest request, Class<T> mappingClass)
       throws IOException, InterruptedException {
     final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
+    if (response.statusCode() != HttpStatus.OK.value()) {
+      log.warn(
+          String.format("request with URI %s got status code %s and response body %s",
+              response.uri(),
+              response.statusCode(),
+              response.body()));
+      return null;
+    }
     return new ObjectMapper().readValue(response.body(), mappingClass);
   }
 

@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @Order
 @Slf4j
-public class RequestLogger extends OncePerRequestFilter {
+public class RequestLoggingFilter extends OncePerRequestFilter {
   private static String getUri(HttpServletRequest request) {
     if (request.getQueryString() == null) {
       return request.getRequestURI();

@@ -35,9 +35,18 @@ public class MatchService {
 
   public List<MatchDetailV1> getMatches(String gameName, String tagLine)
       throws URISyntaxException, IOException, InterruptedException {
-    final String puuid = getPuuid(gameName, tagLine); // TODO: handle cannot find a user (404)
+    // puuid
+    final String puuid = getPuuid(gameName, tagLine);
+    if (puuid == null) {
+      return null;
+    }
+    // match ids
     final String[] matchIds = getMatchIds(puuid);
-    return getMatchDetailV1List(matchIds, gameName);
+    if (matchIds == null || matchIds.length == 0) {
+      return null;
+    }
+    // matches
+    return getMatchDetailV1List(matchIds, puuid);
   }
 
   private String getPuuid(String gameName, String tagLine)
@@ -52,7 +61,9 @@ public class MatchService {
             .header("X-Riot-Token", this.riotConfig.getRiotApiKey())
             .build();
     final AccountResponse accountResponse = apiService.send(request, AccountResponse.class);
-
+    if (accountResponse == null) {
+      return null;
+    }
     return accountResponse.getPuuid();
   }
 
@@ -68,7 +79,7 @@ public class MatchService {
     return apiService.send(request, String[].class);
   }
 
-  private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String gameName) {
+  private List<MatchDetailV1> getMatchDetailV1List(String[] matchIds, String puuid) {
     final List<CompletableFuture<HttpResponse<String>>> completables = new ArrayList<>();
     for (final String matchId : matchIds) {
       try {
@@ -84,20 +95,21 @@ public class MatchService {
         log.error(e.getMessage());
       }
     }
-    return getMatchDetailV1ListHelper(completables, gameName);
+    return getMatchDetailV1ListHelper(completables, puuid);
   }
 
   private List<MatchDetailV1> getMatchDetailV1ListHelper(
-      List<CompletableFuture<HttpResponse<String>>> completables, String gameName) {
+      List<CompletableFuture<HttpResponse<String>>> completables, String puuid) {
     final List<MatchDetailV1> matchDetails = new ArrayList<>();
     for (final CompletableFuture<HttpResponse<String>> completable : completables) {
       try {
         final MatchDetailResponse response =
             new ObjectMapper().readValue(completable.get().body(), MatchDetailResponse.class);
         final List<ParticipantV1> participants = new ArrayList<>();
-        ParticipantV1 self = null;
+        final MatchDetailV1 matchDetailV1 = new MatchDetailV1();
         for (Participant parti : response.getInfo().getParticipants()) {
           try {
+            // all cases
             final ParticipantV1 newParti = new ParticipantV1(
                 parti.getRiotIdGameName(),
                 parti.getRiotIdTagline(),
@@ -109,27 +121,23 @@ public class MatchService {
                 parti.getItemIds()
             );
             participants.add(newParti);
-            if (parti.getRiotIdGameName().equals(gameName)) {
-              self = newParti;
+            // id owner case
+            if (parti.getPuuid().equals(puuid)) {
+              matchDetailV1.setChampionName(parti.getChampionName());
+              matchDetailV1.setKills(parti.getKills());
+              matchDetailV1.setDeaths(parti.getDeaths());
+              matchDetailV1.setAssists(parti.getAssists());
+              matchDetailV1.setWin(parti.getWin());
+              matchDetailV1.setItemIds(parti.getItemIds());
             }
           } catch (Exception e) {
             log.error(e.getMessage());
           }
         }
-        if (self != null) {
-          matchDetails.add(
-              new MatchDetailV1(
-                  self.getChampionName(),
-                  self.getKills(),
-                  self.getDeaths(),
-                  self.getAssists(),
-                  self.getWin(),
-                  response.getInfo().getGameMode(),
-                  response.getInfo().getGameCreation(),
-                  participants,
-                  self.getItemIds()
-              ));
-        }
+        matchDetailV1.setGameMode(response.getInfo().getGameMode());
+        matchDetailV1.setGameCreation(response.getInfo().getGameCreation());
+        matchDetailV1.setParticipantList(participants);
+        matchDetails.add(matchDetailV1);
       } catch (Exception e) {
         log.error(e.getMessage());
       }
