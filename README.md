@@ -10,11 +10,10 @@
 
 # Roadmap
 
-- MongoDB for caching match details
 - Search suggestion
+- Graph of damage done and recieved (mvp)
 - Migrate React to Nextjs and deployment from EC2 to Vercel
 - CSRF token
-- Graph of damage done and recieved (mvp)
 
 # Environment variables
 
