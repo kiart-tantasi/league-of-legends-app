@@ -38,9 +38,8 @@ public class UserFilter extends OncePerRequestFilter {
         userId = UUID.randomUUID().toString();
         response.addCookie(createCookie(USER_ID_COOKIE_NAME, userId, true, true, 3));
       }
-      log.info("===================================================");
-      log.info("user id: " + userId);
-      logHeaders(request);
+      final String message = String.format("user id: %s, %s", userId, getHeaderValues(request));
+      log.info(message);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     } finally {
@@ -82,12 +81,12 @@ public class UserFilter extends OncePerRequestFilter {
     return !Pattern.compile("^/api/v1/").matcher(request.getRequestURI()).find();
   }
 
-  private void logHeaders(HttpServletRequest request) {
+  private String getHeaderValues(HttpServletRequest request) {
     if (request.getHeaderNames() == null) {
-      return;
+      return "";
     }
-    Collections.list(request.getHeaderNames()).forEach(headerName -> {
-      log.info(headerName + ": " + request.getHeader(headerName));
-    });
+    return Collections.list(request.getHeaderNames()).stream()
+        .reduce((prev, cur) -> String.format("%s;%s:%s", prev, cur, request.getHeader(cur)))
+        .orElse("");
   }
 }
