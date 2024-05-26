@@ -108,8 +108,8 @@ public class MatchService {
         final List<ParticipantV1> participants = new ArrayList<>();
         final MatchDetailV1 matchDetailV1 = new MatchDetailV1();
         for (Participant parti : response.getInfo().getParticipants()) {
-          // all cases
           try {
+            // all cases
             final ParticipantV1 newParti = new ParticipantV1(
                 parti.getRiotIdGameName(),
                 parti.getRiotIdTagline(),
@@ -121,6 +121,7 @@ public class MatchService {
                 parti.getItemIds()
             );
             participants.add(newParti);
+            // id owner case
             if (parti.getPuuid().equals(puuid)) {
               matchDetailV1.setChampionName(parti.getChampionName());
               matchDetailV1.setKills(parti.getKills());
@@ -133,7 +134,6 @@ public class MatchService {
             log.error(e.getMessage());
           }
         }
-        // id owner case
         matchDetailV1.setGameMode(response.getInfo().getGameMode());
         matchDetailV1.setGameCreation(response.getInfo().getGameCreation());
         matchDetailV1.setParticipantList(participants);
