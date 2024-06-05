@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class HttpClientConfig {
-    @Bean
-    public HttpClient httpClient() {
-        return HttpClient.newHttpClient();
-    }
+  @Bean
+  public HttpClient httpClient() {
+    return HttpClient.newHttpClient();
+  }
 }
