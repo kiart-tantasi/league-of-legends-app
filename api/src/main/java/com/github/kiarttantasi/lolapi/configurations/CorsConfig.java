@@ -10,7 +10,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Component
-public class Cors {
+public class CorsConfig {
 
   @Value("${client.domain}")
   private String clientDomain;

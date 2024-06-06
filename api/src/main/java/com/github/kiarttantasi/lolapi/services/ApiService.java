@@ -15,10 +15,15 @@ import org.springframework.stereotype.Service;
 public class ApiService {
   private static final HttpResponse.BodyHandler<String> BODYHANDLER =
       HttpResponse.BodyHandlers.ofString();
+  private final HttpClient httpClient;
+
+  public ApiService(HttpClient httpClient) {
+    this.httpClient = httpClient;
+  }
 
   public <T> T send(HttpRequest request, Class<T> mappingClass)
       throws IOException, InterruptedException {
-    final HttpResponse<String> response = HttpClient.newHttpClient().send(request, BODYHANDLER);
+    final HttpResponse<String> response = httpClient.send(request, BODYHANDLER);
     if (response.statusCode() != HttpStatus.OK.value()) {
       log.warn(
           String.format("request with URI %s got status code %s and response body %s",
@@ -31,6 +36,6 @@ public class ApiService {
   }
 
   public CompletableFuture<HttpResponse<String>> sendAsync(HttpRequest request) {
-    return HttpClient.newHttpClient().sendAsync(request, BODYHANDLER);
+    return httpClient.sendAsync(request, BODYHANDLER);
   }
 }
