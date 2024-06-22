@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"context"
-	"go-api/internal/contexts"
+	"goapi/internal/contexts"
 	"log"
 	"net/http"
 	"time"

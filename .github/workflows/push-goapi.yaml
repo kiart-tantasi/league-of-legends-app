@@ -1,9 +1,9 @@
-name: Test on Push (go-api)
+name: Test on Push (goapi)
 on:
   push:
     paths:
-      - "go-api/**"
-      - "scripts/go-api-test/**"
+      - "goapi/**"
+      - "scripts/goapi-test/**"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -16,9 +16,9 @@ jobs:
       - uses: actions/setup-go@v5
       - name: Run mock-api
         run: nohup go run cmd/mock-api/main.go > /dev/null & echo 'started mock-api'
-        working-directory: go-api
-      - name: Run go-api
-        run: nohup go run cmd/go-api/main.go > /dev/null & echo 'started go-api'
-        working-directory: go-api
+        working-directory: goapi
+      - name: Run goapi
+        run: nohup go run cmd/goapi/main.go > /dev/null & echo 'started goapi'
+        working-directory: goapi
       - name: Run script
-        run: go run scripts/go-api-test/main.go
+        run: go run scripts/goapi-test/main.go

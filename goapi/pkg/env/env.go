@@ -15,7 +15,7 @@ func LoadEnvFile(environment, projectRoot string) {
 		// [why we need to set PROJECT_ROOT in production and not in development]
 		// production app is running on systemd and current directory will be "/"
 		// so we need to tell the app where env file is located
-		// on the other hand, running app at `go-api` in development is already in correct directory
+		// on the other hand, running app at `goapi` in development is already in correct directory
 	} else {
 		// development and others
 		path = filepath.Join(projectRoot, ".env")
