@@ -1,4 +1,4 @@
-module go-api/pkg/env
+module goapi/pkg/env
 
 go 1.22.2
 

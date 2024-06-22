@@ -1,7 +1,7 @@
 package match
 
 import (
-	"go-api/internal/contexts"
+	"goapi/internal/contexts"
 	"log"
 	"net/http"
 )

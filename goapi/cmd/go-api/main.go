@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-api/internal/cache"
-	"go-api/internal/health"
-	"go-api/internal/match"
-	"go-api/internal/middlewares"
+	"goapi/internal/cache"
+	"goapi/internal/health"
+	"goapi/internal/match"
+	"goapi/internal/middlewares"
 	"log"
 	"net/http"
 	"os"

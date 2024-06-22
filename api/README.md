@@ -1,6 +1,6 @@
 # Spring project's README.md
 
-**NOTE:** Spring project is now deprecated and is replaced by Go (./go-api), sadly
+**NOTE:** Spring project is now deprecated and is replaced by Go (./goapi), sadly
 
 ## Environment variables
 

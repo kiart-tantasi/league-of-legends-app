@@ -29,8 +29,8 @@ REACT_APP_IS_MOCK=true # replace fetching api with mocks
 
 ## API (Go)
 
-- `go-api/.env`
-- `go-api/.env.production`
+- `goapi/.env`
+- `goapi/.env.production`
 
 ```
 # optional (actual api urls and api key are required for production)
@@ -53,12 +53,12 @@ To use `.env.production`, you need to:
 - Export these env vars with any method you prefer e.g. profile file, inline command
   - Env vars
     - `ENV=production`
-    - `PROJECT_ROOT=<project-location>/go-api`
+    - `PROJECT_ROOT=<project-location>/goapi`
   - Example (inline command)
     ```
-    cd go-api/cmd/go-api
+    cd goapi/cmd/goapi
     go build
-    ENV=production PROJECT_ROOT=/home/league-of-legends-app/go-api ./go-api
+    ENV=production PROJECT_ROOT=/home/league-of-legends-app/goapi ./goapi
     ```
 
 # Run app locally
@@ -78,15 +78,15 @@ Then visit http://localhost:3000
 ### First, Run mock-api (mocking Riot API)
 
 ```
-cd go-api
+cd goapi
 go run cmd/mock-api/main.go
 ```
 
-### Seond, Run go-api
+### Seond, Run goapi
 
 ```
-cd go-api
-go run cmd/go-api/main.go
+cd goapi
+go run cmd/goapi/main.go
 ```
 
 ### Test API manually
