@@ -10,10 +10,10 @@
 
 # Roadmap
 
+- User data stored in MongoDB (might change to other database in the future)
 - Search suggestion
 - Graph of damage done and recieved (mvp)
-- Migrate React to Nextjs and deployment from EC2 to Vercel
-- CSRF token
+- Migrate React to Nextjs and deployment from EC2 to Vercel + CSRF token
 
 # Environment variables
 
@@ -99,3 +99,27 @@ go run cmd/goapi/main.go
   ```
   curl "http://localhost:8080/api/v1/matches?gameName=%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3&tagLine=ARAM" -I
   ```
+
+# User data
+
+- request
+  - request_id (primary key)
+  - timestamp (epoch)
+  - url
+  - query_parameters
+  - method
+
+- user
+  - user_id
+  - ip
+  - headers
+  - user_agent (important header)
+  - cookie (important header)
+  - referer
+
+- response
+  - status_code
+  - server_time
+  - content type
+  - content size ?
+  - redirect to (optional) ?
