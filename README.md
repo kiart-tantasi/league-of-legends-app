@@ -11,6 +11,7 @@
 # Roadmap
 
 - User data stored in MongoDB (will change to sql db for compatibility with growthbook or other data-analysis tools)
+- Deploy a self-managed or Purchase a managed sql database for keeping user data
 - Search suggestion
 - Graph of damage done and recieved (mvp)
 - Migrate React to Nextjs and deployment from EC2 to Vercel + CSRF token
@@ -115,7 +116,7 @@ go run cmd/goapi/main.go
   - headers
   - user_agent (important header)
   - cookie (important header)
-  - referer
+  - referer (important header)
 
 - response
   - status_code
