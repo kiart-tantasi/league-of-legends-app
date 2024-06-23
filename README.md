@@ -10,7 +10,7 @@
 
 # Roadmap
 
-- User data stored in MongoDB (might change to other database in the future)
+- User data stored in MongoDB (will change to sql db for compatibility with growthbook or other data-analysis tools)
 - Search suggestion
 - Graph of damage done and recieved (mvp)
 - Migrate React to Nextjs and deployment from EC2 to Vercel + CSRF token
