@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func user(next http.Handler) http.Handler {
+func userCookie(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		userId := ""
 		userIdCookieName := "user_id"
