@@ -103,24 +103,28 @@ go run cmd/goapi/main.go
 
 # User data
 
-- request
-  - request_id (primary key)
-  - timestamp (epoch)
-  - url
-  - query_parameters
-  - method
+- request_log
+  - request
+    - request_id (primary key)
+    - timestamp
+    - url
+    - query_parameters
+    - method
 
-- user
+  - user
+    - user_id
+    - ip
+    - headers
+
+  - response
+    - status_code
+    - server_time
+    - content_type ?
+    - content_size ?
+
+- experiment_assignment
   - user_id
-  - ip
-  - headers
-  - user_agent (important header)
-  - cookie (important header)
-  - referer (important header)
-
-- response
-  - status_code
-  - server_time
-  - content type
-  - content size ?
-  - redirect to (optional) ?
+  - timestamp
+  - experiment_id
+  - variation_id
+  - request_id
