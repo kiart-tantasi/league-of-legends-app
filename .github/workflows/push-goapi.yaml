@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
-      - name: Run mock-api
-        run: nohup go run cmd/mock-api/main.go > /dev/null & echo 'started mock-api'
+      - name: Run mockapi
+        run: nohup go run cmd/mockapi/main.go > /dev/null & echo 'started mockapi'
         working-directory: goapi
       - name: Run goapi
         run: nohup go run cmd/goapi/main.go > /dev/null & echo 'started goapi'

@@ -9,7 +9,7 @@
 
 ## build
 goapi/cmd/goapi/goapi
-goapi/cmd/mock-api/mock-api
+goapi/cmd/mockapi/mockapi
 
 ## env
 .env.production
