@@ -119,8 +119,7 @@ go run cmd/goapi/main.go
   - response
     - status_code
     - server_time
-    - content_type ?
-    - content_size ?
+    - headers
 
 - experiment_assignment
   - user_id
