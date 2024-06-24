@@ -11,7 +11,7 @@
 
 # Roadmap
 
-- User data stored in MongoDB (will change to sql db for compatibility with growthbook or other data-analysis tools)
+- User data stored in a SQL database
 - Deploy a self-managed or Purchase a managed sql database for keeping user data
 - Search suggestion
 - Graph of damage done and recieved (mvp)
