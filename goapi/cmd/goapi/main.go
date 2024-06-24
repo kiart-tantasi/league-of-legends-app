@@ -6,11 +6,10 @@ import (
 	"goapi/internal/health"
 	"goapi/internal/match"
 	"goapi/internal/middlewares"
+	"goapi/pkg/env"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/kiart-tantasi/env"
 )
 
 func main() {

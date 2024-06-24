@@ -1,6 +1,7 @@
-package contexts
+package requestcontext
 
 import (
+	"goapi/internal/contexts"
 	"net/http"
 )
 
@@ -13,7 +14,7 @@ type RequestContext struct {
 func WriteStatus(w http.ResponseWriter, statusCode int, r *http.Request) {
 	w.WriteHeader(statusCode)
 	// retrieve request context and write status code
-	ctx, ok := r.Context().Value(RequestContextKey).(*RequestContext)
+	ctx, ok := r.Context().Value(contexts.RequestContextKey).(*RequestContext)
 	if ok && ctx != nil {
 		ctx.StatusCode = statusCode
 	}

@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-// different between actual api urls and mock-api urls is that
-// actual api urls contain sub-domain (for region option) while mock-api urls do not
+// different between actual api urls and mockapi urls is that
+// actual api urls contain sub-domain (for region option) while mockapi urls do not
 
 func getRiotAccountApiUrl(gameName, tagLine string) string {
 	defaultUrl := "http://localhost:8090/riot/account/v1/accounts/by-riot-id/%s/%s"

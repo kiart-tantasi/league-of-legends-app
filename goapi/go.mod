@@ -4,8 +4,8 @@ go 1.22.2
 
 require (
 	github.com/google/uuid v1.6.0
-	github.com/kiart-tantasi/env v0.0.0-00010101000000-000000000000
 	go.mongodb.org/mongo-driver v1.15.0
+	goapi/pkg/env v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -22,4 +22,4 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 )
 
-replace github.com/kiart-tantasi/env => ./pkg/env
+replace goapi/pkg/env => ./pkg/env

@@ -10,10 +10,11 @@
 
 # Roadmap
 
+- User data stored in MongoDB (will change to sql db for compatibility with growthbook or other data-analysis tools)
+- Deploy a self-managed or Purchase a managed sql database for keeping user data
 - Search suggestion
 - Graph of damage done and recieved (mvp)
-- Migrate React to Nextjs and deployment from EC2 to Vercel
-- CSRF token
+- Migrate React to Nextjs and deployment from EC2 to Vercel + CSRF token
 
 # Environment variables
 
@@ -75,11 +76,11 @@ Then visit http://localhost:3000
 
 ## API (Go)
 
-### First, Run mock-api (mocking Riot API)
+### First, Run mockapi (mocking Riot API)
 
 ```
 cd goapi
-go run cmd/mock-api/main.go
+go run cmd/mockapi/main.go
 ```
 
 ### Seond, Run goapi
@@ -99,3 +100,30 @@ go run cmd/goapi/main.go
   ```
   curl "http://localhost:8080/api/v1/matches?gameName=%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3&tagLine=ARAM" -I
   ```
+
+# User data
+
+- request_log
+  - request
+    - request_id (primary key)
+    - timestamp
+    - url
+    - query_parameters
+    - method
+
+  - user
+    - user_id
+    - ip
+    - headers
+
+  - response
+    - status_code
+    - server_time
+    - headers
+
+- experiment_assignment
+  - user_id
+  - timestamp
+  - experiment_id
+  - variation_id
+  - request_id

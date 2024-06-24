@@ -1,7 +1,7 @@
 package match
 
 import (
-	"goapi/internal/contexts"
+	"goapi/internal/middlewares/requestcontext"
 	"log"
 	"net/http"
 )
@@ -13,18 +13,18 @@ func (*MatchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 	if gameName == "" || tagLine == "" {
-		contexts.WriteStatus(w, http.StatusBadRequest, r)
+		requestcontext.WriteStatus(w, http.StatusBadRequest, r)
 		return
 	}
 	// get matches from riot api
 	matches, err := getMatchesV1(gameName, tagLine)
 	if err != nil {
 		log.Println("getMatchesV1 error:", err)
-		contexts.WriteStatus(w, http.StatusBadRequest, r)
+		requestcontext.WriteStatus(w, http.StatusBadRequest, r)
 		return
 	}
 	// write response
 	w.Header().Set("Content-Type", "application/json")
-	contexts.WriteStatus(w, http.StatusOK, r)
+	requestcontext.WriteStatus(w, http.StatusOK, r)
 	w.Write(matches)
 }
