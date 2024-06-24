@@ -5,8 +5,9 @@
 # About project
 
 - This is a simple app to see League of Legends match history
-- Client is React and API is Go
-- API was written with Spring and got replaced with Go (2024/05/05)
+- Client is written with React and API is written with Go (net/http)
+- The API was originally written with Spring (Java) but was replaced with Go (2024/05/05)
+  - The deprecated Spring (Java) version can still be accessed here: https://github.com/kiart-tantasi/deprecated-league-of-legends-app-api
 
 # Roadmap
 
@@ -28,7 +29,7 @@ DISABLE_ESLINT_PLUGIN=true # disable lintint while developing
 REACT_APP_IS_MOCK=true # replace fetching api with mocks
 ```
 
-## API (Go)
+## API
 
 - `goapi/.env`
 - `goapi/.env.production`
@@ -74,7 +75,7 @@ npm start
 
 Then visit http://localhost:3000
 
-## API (Go)
+## API
 
 ### First, Run mockapi (mocking Riot API)
 

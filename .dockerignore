@@ -2,7 +2,4 @@ client/node_modules
 client/build
 client/.env
 
-api/.gradle
-api/bin
-api/build
-api/src/main/resources/static
+<!-- TODO: put ignore list for goapi -->
