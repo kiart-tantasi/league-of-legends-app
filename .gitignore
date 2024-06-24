@@ -6,10 +6,8 @@
 .vscode
 
 # go
-
 ## build
 goapi/cmd/goapi/goapi
 goapi/cmd/mockapi/mockapi
-
 ## env
 .env.production
