@@ -1,17 +1,17 @@
-package middlewares
+package servertime
 
 import (
-	"goapi/internal/contexts"
+	"goapi/internal/middlewares/requestcontext"
 	"log"
 	"net/http"
 	"time"
 )
 
-func serverTime(next http.Handler) http.Handler {
+func Handler(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
-		requestContext, ok := r.Context().Value(contexts.RequestContextKey).(*contexts.RequestContext)
+		requestContext, ok := r.Context().Value(requestcontext.RequestContextKey).(*requestcontext.RequestContext)
 		if ok && requestContext != nil {
 			log.Printf("%s %s, %d ms, %d\n", r.Method, r.URL, time.Since(start).Milliseconds(), requestContext.StatusCode)
 		}

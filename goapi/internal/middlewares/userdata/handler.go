@@ -1,10 +1,10 @@
-package middlewares
+package userdata
 
 import (
 	"net/http"
 )
 
-func userData(next http.Handler) http.Handler {
+func Handler(next http.Handler) http.Handler {
 	// TODO: config on/off
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		next.ServeHTTP(w, r)

@@ -1,8 +1,13 @@
 package middlewares
 
-import "net/http"
+import (
+	"goapi/internal/middlewares/requestcontext"
+	"goapi/internal/middlewares/servertime"
+	"goapi/internal/middlewares/usercookie"
+	"goapi/internal/middlewares/userdata"
+	"net/http"
+)
 
-// TODO: create sub-package for each middleware
 func ApiMiddlewares(next http.Handler) http.Handler {
-	return requestContextInitiator(userData(serverTime(userCookie(next))))
+	return requestcontext.Handler((userdata.Handler(servertime.Handler(usercookie.Handler(next)))))
 }

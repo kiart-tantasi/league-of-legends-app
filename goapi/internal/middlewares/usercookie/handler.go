@@ -1,4 +1,4 @@
-package middlewares
+package usercookie
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func userCookie(next http.Handler) http.Handler {
+func Handler(next http.Handler) http.Handler {
 	handlerFn := func(w http.ResponseWriter, r *http.Request) {
 		userId := ""
 		userIdCookieName := "user_id"
