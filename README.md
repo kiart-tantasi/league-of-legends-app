@@ -7,6 +7,7 @@
 - This is a simple app to see League of Legends match history
 - Client is React and API is Go
 - API was written with Spring (Java) and got replaced with Go (2024/05/05)
+  - Spring (Java) repo: https://github.com/kiart-tantasi/deprecated-league-of-legends-app-api
 
 # Roadmap
 
