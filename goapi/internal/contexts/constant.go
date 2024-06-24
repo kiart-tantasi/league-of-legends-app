@@ -4,5 +4,5 @@ type ContextKey string
 
 const (
 	RequestContextKey ContextKey = "RequestContext"
-	// please other context keys below
+	// please add other context keys below
 )
