@@ -10,5 +10,5 @@ export function handleChamionImageName(_championName: string) {
 }
 
 function handleSwarm(championName: string): string {
-  return championName.replace("Strawberry_", "")
+  return championName.replace('Strawberry_', '')
 }
