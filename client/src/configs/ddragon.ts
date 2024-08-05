@@ -1,4 +1,4 @@
-// NOTE: changed from 14.2.1 because it does not have some items' image
+// latest version at https://developer.riotgames.com/docs/lol
 export const ddragonConfig = {
-  version: '14.10.1',
+  version: '14.15.1',
 }
