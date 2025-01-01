@@ -60,7 +60,7 @@ export default function SearchPage() {
           </button>
           <button
             onClick={() => {
-              navigate('/match?gameName=เพชร&tagLine=ARAM')
+              navigate('/match?gameName=BACONs&tagLine=111')
             }}
             className="mt-[70px] w-[250px] bg-white rounded p-1 text-[10px] font-bold
                       hover:bg-black hover:text-white"
