@@ -18,7 +18,8 @@ jobs:
         with:
           node-version: 18
       - name: Set up env file
-        run: cp client/.env.example cp client/.env
+        run: cp .env.example .env
+        working-directory: client
       - name: Install dependencies
         run: npm install
         working-directory: client
