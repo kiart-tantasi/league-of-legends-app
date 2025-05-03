@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-const TEMP_MAX_WIDTH = 'max-w-[600px]'
+const TEMP_MAX_WIDTH = 'max-w-[600px]' // test
 
 export default function Layout({
   children,
