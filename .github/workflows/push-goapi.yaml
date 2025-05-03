@@ -4,6 +4,7 @@ on:
     paths:
       - "goapi/**"
       - "scripts/goapi-test/**"
+      - ".github/workflows/push-goapi.yaml"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "client/**"
+      - ".github/workflows/push-client.yaml"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
