@@ -6,6 +6,8 @@
 
 - This is a simple app to see League of Legends match history
 - Client is written with React and API is written with Go (net/http)
+- The API needs to connect to Riot API which you can apply for API key at https://developer.riotgames.com
+  - This repo also provides mockapi for convenience. please see `Run app locally` section below
 - The API was originally written with Spring (Java) but was replaced with Go (2024/05/05)
   - The deprecated Spring (Java) version can still be accessed [here](https://github.com/kiart-tantasi/deprecated-league-of-legends-app-api)
 
