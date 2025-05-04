@@ -4,6 +4,7 @@ on:
     paths:
       - "goapi/**"
       - "scripts/goapi-test/**"
+      - ".github/workflows/push-goapi.yaml"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -14,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
+      - name: Set up env file
+        run: cp .env.example .env
+        working-directory: goapi
       - name: Run mockapi
         run: nohup go run cmd/mockapi/main.go > /dev/null & echo 'started mockapi'
         working-directory: goapi

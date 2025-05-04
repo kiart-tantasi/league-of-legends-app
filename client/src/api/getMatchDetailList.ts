@@ -9,7 +9,8 @@ export default async function getMatchDetailList({
   paramTagLine: string
 }) {
   // ========= DEV ========= //
-  if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_IS_MOCK) {
+  const REACT_APP_IS_MOCK = false // in case you want to mock results so you don't have to connect to backend api
+  if (REACT_APP_IS_MOCK) {
     return {
       status: 200,
       matchDetailList: matchDetailListMock,
