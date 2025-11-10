@@ -5,6 +5,7 @@ on:
       - "goapi/**"
       - "scripts/goapi-test/**"
       - ".github/workflows/push-goapi.yaml"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -15,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
+      - name: Run unit tests
+        run: go run ./...
       - name: Set up env file
         run: cp .env.example .env
         working-directory: goapi
